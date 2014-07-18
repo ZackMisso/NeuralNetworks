@@ -10,6 +10,12 @@ public abstract class InputNeuron extends Neuron{
         inputID=-1;
     }
     
+    public String toString(){
+        String data="InputNeuron\n";
+        data+=super.toString();
+        return data;
+    }
+    
     //public abstract double evaluate();
     //public abstract InputNeuron makeCopy();
     

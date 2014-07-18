@@ -14,13 +14,20 @@ public class Connection{
     }
     
     public void calculateWeight(){
-        weight=recieveNeuron.evaluate();
+        weight=giveNeuron.evaluate();
     }
     
     public Connection makeCopy(){
         Connection copy=new Connection();
         // implement
         return null;
+    }
+    
+    public String toString(){
+        String data="Connection\n";
+        data+="GiveNeuron :: "+giveNeuron.getNeuronID()+"\n";
+        data+="RecieveNeuron :: "+recieveNeuron.getNeuronID()+"\n";
+        return data;
     }
     
     // getter methods

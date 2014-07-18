@@ -1,8 +1,20 @@
 // This class is used to do unit tests
 import java.util.ArrayList;
+import java.util.Random;
 public class TestClass{
     public TestClass(){
-        mergeSortUnitTest();
+        //mergeSortUnitTest();
+        networkMutatingTest();
+    }
+    
+    private void networkMutatingTest(){
+        NeuralNetwork net=new NeuralNetwork();
+        //System.out.println(net);
+        Neuron neuron=net.getNeurons().get(1);
+        net.addNeuron(neuron.getOutputs(),neuron,new Random()); // 4 connect, 4 neurons
+        //System.out.println(net);
+        net.newRandomConnection(net.getNeurons().get(net.getNeurons().size()-1));
+        //System.out.println(net); // 5 connect, 4 neurons
     }
     
     private void mergeSortUnitTest(){

@@ -1,7 +1,7 @@
 public class Driver{
     public Driver(){
         //new EvolutionaryAlgorithm();
-        //new TestClass();
+        new TestClass();
     }
     
     public static void main(String[] args){

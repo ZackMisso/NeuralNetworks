@@ -5,9 +5,10 @@ public class NeuralNetwork {
     private ArrayList<Integer> inputs; // maybe use this
     private ArrayList<Integer> outputs; // maybe use this
     private double fitness;
+    private int neuronCnt;
     
     public NeuralNetwork(){
-        this(3,1);
+        this(2,1);
     }
     
     public NeuralNetwork(int ins,int outs){
@@ -15,6 +16,7 @@ public class NeuralNetwork {
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
         fitness=0.0;
+        neuronCnt=0;
         initializeNetwork(ins,outs);
     }
     
@@ -22,11 +24,13 @@ public class NeuralNetwork {
         for(int i=0;i<insnum;i++){
             InputNeuron_Add neuron=new InputNeuron_Add();
             neuron.setInputID(i);
-           neurons.add(neuron);
+            neuron.setNeuronID(neuronCnt++);
+            neurons.add(neuron);
         }
         for(int i=0;i<outsnum;i++){
             OutputNeuron_Add neuron=new OutputNeuron_Add();
             neuron.setOutputID(i);
+            neuron.setNeuronID(neuronCnt++);
             neurons.add(neuron);
         }
         ArrayList<InputNeuron> ins=findInputs();
@@ -34,6 +38,8 @@ public class NeuralNetwork {
         for(int i=0;i<ins.size();i++)
             for(int f=0;f<outs.size();f++)
                 makeConnection(ins.get(i),outs.get(f));
+        //for(int i=0;i<neurons.size();i++)
+        //    neurons.initializeWeights();
         // possibly add logic for initializing hidden layers in the future
     }
     
@@ -43,6 +49,13 @@ public class NeuralNetwork {
             totalConnections+=neurons.get(i).getNumberOfConnections();
         totalConnections/=2;
         return totalConnections+neurons.size()*2;
+    }
+    
+    private int totalConnections(){
+        int totalConnections=0;
+        for(int i=0;i<neurons.size();i++)
+            totalConnections+=neurons.get(i).getNumberOfConnections();
+        return totalConnections/2;
     }
     
     // controls the mutation of the neural network
@@ -119,7 +132,8 @@ public class NeuralNetwork {
     }
     
     // THIS METHOD IS VERY INEFFICIENT FIX IT LATER
-    private void newRandomConnection(Neuron neuron){
+    public void newRandomConnection(Neuron neuron){
+        System.out.println("Making a new Random Connection");
         ArrayList<Neuron> connected=new ArrayList<>();
         for(int i=0;i<neuron.getInputs().size();i++)
             connected.add(neuron.getInputs().get(i).getGiveNeuron());
@@ -133,6 +147,10 @@ public class NeuralNetwork {
         if(connected.size()==neurons.size()-1)
             return;
         Random random=new Random();
+        if(indexes.size()==0){
+            System.out.println("This is causing the error");
+            return;
+        }
         int chosenNeuron=random.nextInt(indexes.size());
         double recogiv=random.nextDouble();
         int otherIndex=indexes.get(chosenNeuron);
@@ -141,27 +159,35 @@ public class NeuralNetwork {
             return;
         if(otherNeuron instanceof InputNeuron&&neuron instanceof InputNeuron){
             mutate();
+            System.out.println("Input-Input");
         }
         else if(otherNeuron instanceof OutputNeuron&&neuron instanceof OutputNeuron){
             mutate();
+            System.out.println("Output-Output");
         }
         else if(otherNeuron instanceof InputNeuron&&neuron instanceof OutputNeuron){
             makeConnection(otherNeuron,neuron);
+            System.out.println("Input-Output");
         }
         else if(otherNeuron instanceof OutputNeuron&&neuron instanceof InputNeuron){
             makeConnection(neuron,otherNeuron);
+            System.out.println("Output-Input");
         }
         else if(otherNeuron instanceof InputNeuron){
             makeConnection(otherNeuron,neuron);
+            System.out.println("Other Input");
         }
         else if(otherNeuron instanceof OutputNeuron){
             makeConnection(neuron,otherNeuron);
+            System.out.println("Other Output");
         }
         else if(neuron instanceof InputNeuron){
             makeConnection(neuron,otherNeuron);
+            System.out.println("This Input");
         }
         else if(neuron instanceof OutputNeuron){
             makeConnection(otherNeuron,neuron);
+            System.out.println("This Output");
         }
         else{ // connection between two hidden neurons
             if(recogiv>.5){
@@ -174,6 +200,7 @@ public class NeuralNetwork {
 
     // creates a new connection between two neurons
     private void makeConnection(Neuron give,Neuron recieve){
+        Random random=new Random();
         Connection connection=new Connection();
         connection.setEvaluated(false);
         connection.setActive(true);
@@ -181,12 +208,15 @@ public class NeuralNetwork {
         connection.setRecieveNeuron(recieve);
         give.getOutputs().add(connection);
         recieve.getInputs().add(connection);
+        recieve.getWeights().add(random.nextDouble());
     }
     
     // adds a neuron in the middle of a connection
-    private void addNeuron(ArrayList<Connection> connects,Neuron neuron,Random random){
-        if(connects.isEmpty())
+    public void addNeuron(ArrayList<Connection> connects,Neuron neuron,Random random){
+        if(connects.isEmpty()){
             mutate();
+            return;
+        }
         int connectionNum=random.nextInt(connects.size());
         Connection connection=connects.get(connectionNum);
         Neuron otherNeuron=null;
@@ -202,13 +232,16 @@ public class NeuralNetwork {
             makeConnection(otherNeuron,newNeuron);
             makeConnection(newNeuron,neuron);
         }
+        newNeuron.setNeuronID(neuronCnt++);
         neurons.add(newNeuron);
     }
     
     // turns off a connection
-    private void turnOffConnection(ArrayList<Connection> connects,Neuron neuron,Random random){
-        if(connects.isEmpty())
+    public void turnOffConnection(ArrayList<Connection> connects,Neuron neuron,Random random){
+        if(connects.isEmpty()){
             mutate();
+            return;
+        }
         int connectionNum=random.nextInt(connects.size());
         Connection connection=connects.get(connectionNum);
         Neuron other=null;
@@ -226,10 +259,20 @@ public class NeuralNetwork {
     
     public ArrayList<Double> run(Test param){
         ArrayList<OutputNeuron> outputs=findOutputs();
+        ArrayList<InputNeuron> inputs=findInputs();
         ArrayList<Double> results=new ArrayList<>();
         outputs=sortOutputs(outputs);
+        inputs=sortInputs(inputs);
+        //System.out.println();
+        for(int i=0;i<param.getInputs().size();i++){
+            inputs.get(i).setWeight(param.getInputs().get(i));
+            // CONTINUE WORKING FROM HERE
+        }
+        //System.out.println("DEBUG 7");
         for(int i=0;i<outputs.size();i++){
+            //System.out.println("DEBUG 8");
             outputs.get(i).evaluate();
+            //System.out.println("DEBUG 9");
             results.add(outputs.get(i).getOutput());
         }
         nextGeneration();
@@ -237,14 +280,18 @@ public class NeuralNetwork {
     }
     
     public NeuralNetwork copyAndMutate(){
-        // implement
-        return null;
+        NeuralNetwork network=new NeuralNetwork();
+        network.getNeurons().clear();
+        for(int i=0;i<neurons.size();i++)
+            network.getNeurons().add(neurons.get(i).makeCopy());
+        network.mutate();
+        return network;
     }
     
     private void nextGeneration(){
         for(int i=0;i<neurons.size();i++)
             neurons.get(i).deEvaluate();
-        fitness=0.0;
+        //fitness=0.0;
     }
     
     private ArrayList<InputNeuron> findInputs(){
@@ -276,9 +323,26 @@ public class NeuralNetwork {
         return list;
     }
     
+    private ArrayList<InputNeuron> sortInputs(ArrayList<InputNeuron> inputs){
+        ArrayList<InputNeuron> list=new ArrayList<>();
+        int cnt=0;
+        while(!inputs.isEmpty()){
+            for(int i=0;i<inputs.size();i++)
+                if(inputs.get(i).getInputID()==cnt)
+                    list.add(inputs.remove(i--));
+            cnt++;
+        }
+        return list;
+    }
+    
     public String toString(){
-        // implement to write to file
-        return "";
+        String data="";
+        data+="Total Neurons "+neurons.size()+"\n";
+        data+="Total Connections "+totalConnections()+"\n";
+        for(int i=0;i<neurons.size();i++){
+            data+=neurons.toString();
+        }
+        return data;
     }
     
     // getter methods
@@ -286,10 +350,12 @@ public class NeuralNetwork {
     public ArrayList<Integer> getInputs(){return inputs;}
     public ArrayList<Integer> outputs(){return outputs;}
     public double getFitness(){return fitness;}
+    public int getNeuronCnt(){return neuronCnt;}
     
     // setter methods
     public void setNeurons(ArrayList<Neuron> param){neurons=param;}
     public void setInputs(ArrayList<Integer> param){inputs=param;}
     public void setOutputs(ArrayList<Integer> param){outputs=param;}
     public void setFitness(double param){fitness=param;}
+    public void setNeuronCnt(int param){neuronCnt=param;}
 }

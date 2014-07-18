@@ -12,7 +12,7 @@ public class EvolutionaryAlgorithm {
         bests=new ArrayList<>();
         tests=new TestCases();
         recorder=new DataRecorder();
-        numberOfGenerations=20;
+        numberOfGenerations=1000;
         populationSize=20;
         initializeFirstGeneration();
         runXORExperiment();
@@ -25,19 +25,23 @@ public class EvolutionaryAlgorithm {
     }
     
     private void runXORExperiment(){
+        System.out.println("Starting XOR Test\n\n");
         NeuralNetwork totalBest=new NeuralNetwork();
         XORTest test=tests.getXORTest();
         int f;
         for(int i=0;i<numberOfGenerations;i++){
             ArrayList<NeuralNetwork> newList=new ArrayList<>();
             for(f=0;f<networks.size();f++){
+                //System.out.println("DEBUG 3");
                 tests.runXORTests(networks.get(f));
+                //System.out.println("DEBUG 2");
             }
+            //System.out.println("DEBUG 1");
             networks=sortNetworksByFitness(networks);
-            bests.add(networks.get(i));
-            if(networks.get(i).getFitness()>totalBest.getFitness())
-                totalBest=networks.get(i);
-            if(networks.get(i).getFitness()==test.getSolutionFitness())
+            bests.add(networks.get(0));
+            if(networks.get(0).getFitness()>totalBest.getFitness())
+                totalBest=networks.get(0);
+            if(networks.get(0).getFitness()==test.getSolutionFitness())
                 System.out.println("Solution Found :: Generation "+i);
             for(f=0;f<networks.size()/2;f++){
                 networks.get(f).mutate();
@@ -48,8 +52,10 @@ public class EvolutionaryAlgorithm {
             if(networks.size()!=newList.size())
                 System.out.println("Error :: Size Mismatch :: EvolutionaryAlgorithm");
             networks=newList;
+            System.out.println("Generation "+i+" Over :: Best "+bests.get(bests.size()-1).getFitness());
             // continue implementation
         }
+        System.out.println(networks.get(0));
     }
     
     // this is going to be Merge Sort, possibly implement others later

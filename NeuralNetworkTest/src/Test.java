@@ -10,7 +10,7 @@ public class Test {
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
         posneg=false;
-        one=false;
+        one=true;
         exact=false;
     }
     
