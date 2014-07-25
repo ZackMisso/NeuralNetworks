@@ -9,7 +9,7 @@ public class TestCases{
         tests=new ArrayList<>();
         xorTest=new XORTest();
         andTest=new ANDTest();
-        hack=true;
+        hack=false;
     }
     
     public void runXORTests(NeuralNetwork net){

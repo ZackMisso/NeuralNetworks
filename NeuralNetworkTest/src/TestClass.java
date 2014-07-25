@@ -14,7 +14,20 @@ public class TestClass{
         net.addNeuron(neuron.getOutputs(),neuron,new Random()); // 4 connect, 4 neurons
         //System.out.println(net);
         net.newRandomConnection(net.getNeurons().get(net.getNeurons().size()-1));
-        //System.out.println(net); // 5 connect, 4 neurons
+        XORTest test=new XORTest();
+        ArrayList<Double> list=net.run(test.getTests().get(0));
+        while(net.getFitness()!=4.0){
+            net.setFitness(0.0);
+            for(int i=0;i<test.getTests().size();i++){
+                list=net.run(test.getTests().get(i));
+                if(test.checkTest(list,i)){
+                    net.setFitness(net.getFitness()+1.0);
+                    System.out.println("ONE WORKED!!!");
+                }
+            }
+            net.mutateWeights(new Random());
+        }
+        System.out.println(net); // 5 connect, 4 neurons
     }
     
     private void mergeSortUnitTest(){

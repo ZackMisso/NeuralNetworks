@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 public class EvolutionaryAlgorithm {
     private ArrayList<NeuralNetwork> networks;
     private ArrayList<NeuralNetwork> bests;
@@ -12,8 +13,8 @@ public class EvolutionaryAlgorithm {
         bests=new ArrayList<>();
         tests=new TestCases();
         recorder=new DataRecorder();
-        numberOfGenerations=1000;
-        populationSize=20;
+        numberOfGenerations=300;
+        populationSize=10;
         initializeFirstGeneration();
         runXORExperiment();
     }
@@ -47,15 +48,21 @@ public class EvolutionaryAlgorithm {
                 networks.get(f).mutate();
                 newList.add(networks.get(f).copyAndMutate());
                 newList.add(networks.get(f).copyAndMutate());
+                //System.out.println(networks.get(f).getNeurons().size());
                 // Add in crossover functionality
             }
+            //for(f=0;f<networks.size();f++){
+            //    networks.get(f).mutate();
+            //    System.out.println(networks.get(f).getNeurons().size());
+            //    newList.add(networks.get(f));
+            //}
             if(networks.size()!=newList.size())
                 System.out.println("Error :: Size Mismatch :: EvolutionaryAlgorithm");
             networks=newList;
             System.out.println("Generation "+i+" Over :: Best "+bests.get(bests.size()-1).getFitness());
             // continue implementation
         }
-        System.out.println(networks.get(0));
+        //System.out.println(totalBest);
     }
     
     // this is going to be Merge Sort, possibly implement others later
@@ -83,10 +90,15 @@ public class EvolutionaryAlgorithm {
             else if(one.get(0).getFitness()<two.get(0).getFitness())
                 merged.add(two.remove(0));
             else{
-                if(one.get(0).size()>two.get(0).size())
-                    merged.add(two.remove(0));
-                else
+                double random=(new Random()).nextDouble();
+                if(random>.5)
                     merged.add(one.remove(0));
+                else
+                    merged.add(two.remove(0));
+                //if(one.get(0).size()>two.get(0).size())
+                    //merged.add(one.remove(0));
+                //else
+                    //merged.add(two.remove(0));
             }
         }
         while(!one.isEmpty())

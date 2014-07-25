@@ -46,6 +46,8 @@ public class Test {
             else
                 chk.add(0.0);
         }
+        //System.out.println(chk);
+        //System.out.println(outputs+"\n");
         for(int i=0;i<chk.size();i++)
             if(chk.get(i)!=outputs.get(i))
                 return false;
