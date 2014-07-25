@@ -38,9 +38,6 @@ public class NeuralNetwork {
         for(int i=0;i<ins.size();i++)
             for(int f=0;f<outs.size();f++)
                 makeConnection(ins.get(i),outs.get(f));
-        //for(int i=0;i<neurons.size();i++)
-        //    neurons.initializeWeights();
-        // possibly add logic for initializing hidden layers in the future
     }
     
     public int size(){
@@ -73,19 +70,20 @@ public class NeuralNetwork {
     public void mutateWeights(Random random){
         int neuronNum=random.nextInt(neurons.size());
         Neuron neuron=neurons.get(neuronNum);
-        if(neuron instanceof InputNeuron){
-            mutateWeights(random);
-        }else{
+        //if(neuron instanceof InputNeuron){
+        //    mutateWeights(random);
+        //}else{
             ArrayList<Double> weights=neuron.getWeights();
             double isNeg=random.nextDouble();
             double change=random.nextDouble();
             int weightsNum=random.nextInt(weights.size());
             if(isNeg>.5)
                 change*=-1;
+            System.out.println("Neuron "+neuron.getNeuronID()+" Weight "+weightsNum+" Change "+change);
             weights.set(weightsNum,weights.get(weightsNum)+change);
             //System.out.println("CHange WE NEed");
             // implement more if needed
-        }
+        //}
     }
     
     // mutates the topography of the neural network
@@ -154,7 +152,6 @@ public class NeuralNetwork {
             //System.out.println("This is causing the error");
             return;
         }
-        //System.out.println("Does This Work?");
         int chosenNeuron=random.nextInt(indexes.size());
         double recogiv=random.nextDouble();
         int otherIndex=indexes.get(chosenNeuron);
@@ -210,7 +207,7 @@ public class NeuralNetwork {
     }
 
     // creates a new connection between two neurons
-    private void makeConnection(Neuron give,Neuron recieve){
+    public void makeConnection(Neuron give,Neuron recieve){
         Random random=new Random();
         Connection connection=new Connection();
         connection.setEvaluated(false);
@@ -276,7 +273,7 @@ public class NeuralNetwork {
         inputs=sortInputs(inputs);
         //System.out.println();
         for(int i=0;i<param.getInputs().size();i++){
-            inputs.get(i).setWeight(param.getInputs().get(i));
+            inputs.get(i).setInput(param.getInputs().get(i));
         }
         //System.out.println("DEBUG 7");
         for(int i=0;i<outputs.size();i++){
@@ -318,6 +315,13 @@ public class NeuralNetwork {
             if(neurons.get(i)instanceof OutputNeuron)
                 outs.add((OutputNeuron)neurons.get(i));
         return outs;
+    }
+    
+    public Neuron getSpecific(int index){
+        for(int i=0;i<neurons.size();i++)
+            if(neurons.get(i).getNeuronID()==index)
+                return neurons.get(i);
+        return null;
     }
     
     // there will not be many outputs so this sort will be ineffitient

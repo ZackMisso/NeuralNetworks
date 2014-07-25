@@ -5,8 +5,8 @@ public class InputNeuron_Add extends InputNeuron{
     
     public double evaluate(){
         for(int i=0;i<getOutputs().size();i++)
-            getOutputs().get(i).setWeight(getWeight());
-        return getWeight();
+            getOutputs().get(i).setWeight(getWeight()*getInput());
+        return getWeight()*getInput();
     }
     
     //public InputNeuron makeCopy(){

@@ -9,8 +9,8 @@ public class Test {
     public Test(){
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
-        posneg=false;
-        one=true;
+        posneg=true;
+        one=false;
         exact=false;
     }
     
