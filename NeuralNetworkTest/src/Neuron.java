@@ -4,6 +4,8 @@ public abstract class Neuron {
     private ArrayList<Connection> inputs;
     private ArrayList<Connection> outputs;
     private ArrayList<Double> weights;
+    private double threshold;
+    private double bias;
     private int neuronID;
     
     public Neuron(){
@@ -11,31 +13,27 @@ public abstract class Neuron {
         outputs=new ArrayList<>();
         weights=new ArrayList<>();
         neuronID=-100;
+        threshold=1.0;
         Random random=new Random();
-        weights.add(random.nextDouble()); // control
+        //weights.add(random.nextDouble());
+        bias=random.nextDouble();
     }
     
     public abstract double evaluate();
     
+    public double checkThreshold(double value){
+        if(value>threshold)
+            return 1.0;
+        return 0.0;
+    }
+    
     public void checkInputs(){
         for(int i=0;i<inputs.size();i++)
             if(!inputs.get(i).getEvaluated()){
-                //System.out.println(inputs.size());
                 inputs.get(i).calculateWeight();
                 inputs.get(i).setEvaluated(true);
             }
     }
-    
-    //public void initializeWeights(){
-    //    Random random=new Random();
-    //    for(int i=0;i<inputs.size()+1;i++){
-    //        double neg=random.nextDouble();
-    //        double weight=random.nextDouble();
-    //        if(neg>.5)
-    //            weight*=-1;
-    //        weights.add(weight);
-    //    }
-    //}
     
     public void deEvaluate(){
         for(int i=0;i<inputs.size();i++)
@@ -146,11 +144,15 @@ public abstract class Neuron {
     public ArrayList<Connection> getInputs(){return inputs;}
     public ArrayList<Connection> getOutputs(){return outputs;}
     public ArrayList<Double> getWeights(){return weights;}
+    public double getThreshold(){return threshold;}
+    public double getBias(){return bias;}
     public int getNeuronID(){return neuronID;}
     
     // setter methods
     public void setInputs(ArrayList<Connection> param){inputs=param;}
     public void setOutputs(ArrayList<Connection> param){outputs=param;}
     public void setWeights(ArrayList<Double> param){weights=param;}
+    public void setThreshold(double param){threshold=param;}
+    public void setBias(double param){bias=param;}
     public void setNeuronID(int param){neuronID=param;}
 }

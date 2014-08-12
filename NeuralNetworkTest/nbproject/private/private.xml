@@ -5,16 +5,11 @@
         <group>
             <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/Neuron_Add.java</file>
             <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/TestClass.java</file>
-            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/Test.java</file>
-            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/TestCases.java</file>
             <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/Neuron.java</file>
-            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/InputNeuron.java</file>
-            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/OutputNeuron.java</file>
+            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/Connection.java</file>
             <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/InputNeuron_Add.java</file>
             <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/Driver.java</file>
             <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/NeuralNetwork.java</file>
-            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/XORTest.java</file>
-            <file>file:/Users/ZackMisso/Documents/Research/NeuralNetworks/NeuralNetworkTest/src/GlobalConstants.java</file>
         </group>
     </open-files>
 </project-private>

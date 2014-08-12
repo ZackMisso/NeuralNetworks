@@ -59,7 +59,7 @@ public class NeuralNetwork {
     public void mutate(){
         Random random=new Random();
         double chance=random.nextDouble();
-        if(chance>.8){
+        if(chance>.9){
             mutateTopography(random);
         }else{
             mutateWeights(random);
@@ -70,20 +70,27 @@ public class NeuralNetwork {
     public void mutateWeights(Random random){
         int neuronNum=random.nextInt(neurons.size());
         Neuron neuron=neurons.get(neuronNum);
-        //if(neuron instanceof InputNeuron){
-        //    mutateWeights(random);
-        //}else{
+        if(neuron instanceof InputNeuron){
+            InputNeuron input=(InputNeuron)neuron;
+            input.inputWeightsMutate();
+            //mutateWeights(random);
+        }else{
             ArrayList<Double> weights=neuron.getWeights();
             double isNeg=random.nextDouble();
             double change=random.nextDouble();
-            int weightsNum=random.nextInt(weights.size());
+            int weightsNum=random.nextInt(weights.size()+1);
             if(isNeg>.5)
                 change*=-1;
-            System.out.println("Neuron "+neuron.getNeuronID()+" Weight "+weightsNum+" Change "+change);
-            weights.set(weightsNum,weights.get(weightsNum)+change);
+            if(weightsNum==weights.size()){
+                neuron.setBias(neuron.getBias()+change);
+                //System.out.println("Bias Changed");
+            }
+            //System.out.println("Neuron "+neuron.getNeuronID()+" Weight "+weightsNum+" Change "+change);
+            else
+                weights.set(weightsNum,weights.get(weightsNum)+change);
             //System.out.println("CHange WE NEed");
             // implement more if needed
-        //}
+        }
     }
     
     // mutates the topography of the neural network
@@ -97,34 +104,46 @@ public class NeuralNetwork {
         }
         else if(neuron instanceof InputNeuron){
             ArrayList<Connection> outputs=neuron.getOutputs();
-            if(newNeuron>.8){
+            if(newNeuron>.8&&neurons.size()<GlobalConstants.maxNeurons){
                 addNeuron(outputs,neuron,random);
-            }else{
+            }else if(totalConnections()>GlobalConstants.minConnections){
                 turnOffConnection(outputs,neuron,random);
+            }else{
+                mutateTopography(random);
+                return;
             }
         }
         else if(neuron instanceof OutputNeuron){
             ArrayList<Connection> inputs=neuron.getInputs();
-            if(newNeuron>.5){
+            if(newNeuron>.5&&neurons.size()<GlobalConstants.maxNeurons){
                 addNeuron(inputs,neuron,random);
-            }else{
+            }else if(totalConnections()>GlobalConstants.minConnections){
                 turnOffConnection(inputs,neuron,random);
+            }else{
+                mutateTopography(random);
+                return;
             }
         }else{ // hidden neurons
             ArrayList<Connection> inputs=neuron.getInputs();
             ArrayList<Connection> outputs=neuron.getOutputs();
             double inorout=random.nextDouble();
-            if(inorout>.5){
+            if(inorout>.5&&neurons.size()<GlobalConstants.maxNeurons){
                 if(newNeuron>.5){
                     addNeuron(inputs,neuron,random);
+                }else if(totalConnections()>GlobalConstants.minConnections){
+                    turnOffConnection(outputs,neuron,random);
                 }else{
-                    turnOffConnection(inputs,neuron,random);
+                    mutateTopography(random);
+                    return;
                 }
             }else{
-                if(newNeuron>.5){
-                addNeuron(outputs,neuron,random);
-                }else{
+                if(newNeuron>.5&&neurons.size()<GlobalConstants.maxNeurons){
+                    addNeuron(outputs,neuron,random);
+                }else if(totalConnections()>GlobalConstants.minConnections){
                     turnOffConnection(outputs,neuron,random);
+                }else{
+                    mutateTopography(random);
+                    return;
                 }
             }
         }

@@ -4,13 +4,10 @@ public class InputNeuron_Add extends InputNeuron{
     }
     
     public double evaluate(){
+        double sum=getWeight()*getInput()+getBias();
+        double activation=checkThreshold(sum);
         for(int i=0;i<getOutputs().size();i++)
-            getOutputs().get(i).setWeight(getWeight()*getInput());
-        return getWeight()*getInput();
+            getOutputs().get(i).setWeight(activation);
+        return activation;
     }
-    
-    //public InputNeuron makeCopy(){
-    //    // implement
-    //    return null;
-    //}
 }

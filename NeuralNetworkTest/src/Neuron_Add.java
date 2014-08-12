@@ -6,16 +6,12 @@ public class Neuron_Add extends Neuron{
     public double evaluate(){
         double sum=0.0;
         checkInputs();
-        sum+=getWeights().get(0)*1.0;
+        sum+=getBias();
         for(int i=0;i<getInputs().size();i++)
-            sum+=getInputs().get(i).getWeight()*getWeights().get(i+1);
+            sum+=getInputs().get(i).getWeight()*getWeights().get(i);
+        double activation=checkThreshold(sum);
         for(int i=0;i<getOutputs().size();i++)
-            getOutputs().get(i).setWeight(sum);
-        return sum;
+            getOutputs().get(i).setWeight(activation);
+        return activation;
     }
-    
-    //public Neuron makeCopy(){
-    //    // implement
-    //    return null;
-    //}
 }

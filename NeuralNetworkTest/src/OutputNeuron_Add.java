@@ -9,11 +9,12 @@ public class OutputNeuron_Add extends OutputNeuron{
         checkInputs();
         // TODO :: ALSO ADD THE EXTRA WEIGHTS PER INPUT
         //System.out.println("DEBUG 11 :: OutputNeuron_Add");
-        sum+=getWeights().get(0)*1.0;
+        sum+=getBias();
         for(int i=0;i<getInputs().size();i++)
-            sum+=getInputs().get(i).getWeight()*getWeights().get(i+1);
-        setOutput(sum);
+            sum+=getInputs().get(i).getWeight()*getWeights().get(i);
+        double activation=checkThreshold(sum);
+        setOutput(activation);
         //System.out.println("DEBUG 12");
-        return sum;
+        return activation;
     }
 }

@@ -1,4 +1,5 @@
 //import java.util.ArrayList;
+import java.util.Random;
 public abstract class InputNeuron extends Neuron{
     //private ArrayList<Connection> outputs;
     private double input;
@@ -16,6 +17,19 @@ public abstract class InputNeuron extends Neuron{
         String data="InputNeuron\n";
         data+=super.toString();
         return data;
+    }
+    
+    public void inputWeightsMutate(){
+        Random random=new Random();
+        double chance=random.nextDouble();
+        double neg=random.nextDouble();
+        double change=random.nextDouble();
+        if(neg>.5)
+            change*=-1;
+        if(chance>.5)
+            setBias(getBias()+change);
+        else
+            weight+=change;
     }
     
     //public abstract double evaluate();

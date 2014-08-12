@@ -40,7 +40,7 @@ public class TestClass{
             for(int f=0;f<n.getWeights().size();f++)
                 n.getWeights().set(f,0.0);
         }
-        System.out.println(shouldWork);
+        //System.out.println(shouldWork);
         Random random=new Random();
         //System.out.println(net); // 5 connect, 4 neurons
         while(shouldWork.getFitness()!=4.0){
@@ -50,13 +50,14 @@ public class TestClass{
                 //System.out.println(list);
                 
                 if(test.checkTest(list,i)){
-                    net.setFitness(net.getFitness()+1.0);
-                    System.out.println("ONE WORKED!!!");
+                    shouldWork.setFitness(shouldWork.getFitness()+1.0);
+                    //System.out.println("ONE WORKED!!!");
                 }
             }
             shouldWork.mutateWeights(random);
             System.out.println(shouldWork.getFitness());
         }
+        System.out.println(shouldWork);
     }
     
     private void mergeSortUnitTest(){

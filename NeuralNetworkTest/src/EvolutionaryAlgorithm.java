@@ -13,8 +13,8 @@ public class EvolutionaryAlgorithm {
         bests=new ArrayList<>();
         tests=new TestCases();
         recorder=new DataRecorder();
-        numberOfGenerations=300;
-        populationSize=10;
+        numberOfGenerations=600;
+        populationSize=500;
         initializeFirstGeneration();
         runXORExperiment();
     }

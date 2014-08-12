@@ -5,13 +5,15 @@ public class Test {
     private boolean posneg; // if pos or negative is accepted
     private boolean one; // if only 1,0,-1 are accepted
     private boolean exact; // if the exact values are needed
+    private boolean posnegdiff;
     
     public Test(){
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
-        posneg=true;
+        posneg=false;
         one=false;
-        exact=false;
+        exact=true;
+        posnegdiff=false;
     }
     
     public boolean matches(ArrayList<Double> test){
@@ -21,6 +23,8 @@ public class Test {
             return oneTest(test);
         if(exact)
             return exactTest(test);
+        if(posnegdiff)
+            return posNegDiffTest(test);
         return false;
     }
     
@@ -28,9 +32,21 @@ public class Test {
         if(test.isEmpty()||outputs.isEmpty())
             return false;
         for(int i=0;i<outputs.size();i++){
-            if(outputs.get(i)>=0.0&&test.get(i)<0.0)
+            if(outputs.get(i)>0.0&&test.get(i)<=0.0)
                 return false;
-            if(outputs.get(i)<0.0&&test.get(i)>=0.0)
+            if(outputs.get(i)<=0.0&&test.get(i)>0.0)
+                return false;
+        }
+        return true;
+    }
+    
+    private boolean posNegDiffTest(ArrayList<Double> test){
+        if(test.isEmpty()||outputs.isEmpty())
+            return false;
+        for(int i=0;i<outputs.size();i++){
+            if(outputs.get(i)>=0.0&&test.get(i)>=0.0)
+                return false;
+            if(outputs.get(i)<0.0&&test.get(i)<0.0)
                 return false;
         }
         return true;
@@ -67,6 +83,7 @@ public class Test {
     public boolean getPosNeg(){return posneg;}
     public boolean getOne(){return one;}
     public boolean getExact(){return exact;}
+    public boolean getPosNegDiff(){return posnegdiff;}
     
     // setter methods
     public void setInputs(ArrayList<Double> param){inputs=param;}
@@ -74,4 +91,5 @@ public class Test {
     public void setPosNeg(boolean param){posneg=param;}
     public void setOne(boolean param){one=param;}
     public void setExact(boolean param){exact=param;}
+    public void setPosNegDiff(boolean param){posnegdiff=param;}
 }

@@ -21,6 +21,7 @@ public class TestCases{
             //System.out.println("DEBUG 5");
             if(xorTest.checkTest(outs,i)){
                 net.setFitness(net.getFitness()+1.0);
+                //System.out.println("THIS IS RAN");
                 if(hack){
                     System.out.println(net);
                     hack=false;
