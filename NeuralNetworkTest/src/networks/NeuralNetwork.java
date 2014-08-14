@@ -13,10 +13,10 @@ import java.util.Random;
 public class NeuralNetwork {
     private ArrayList<Neuron> neurons;
     private ArrayList<Connection> connections;
-    private ArrayList<Integer> inputs; // maybe use this
-    private ArrayList<Integer> outputs; // maybe use this
+    private ArrayList<Integer> inputs;
+    private ArrayList<Integer> outputs;
     private double fitness;
-    private int neuronCnt;
+    private int nodeCnt;
     
     public NeuralNetwork(){
         this(2,1);
@@ -28,7 +28,7 @@ public class NeuralNetwork {
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
         fitness=0.0;
-        neuronCnt=0;
+        nodeCnt=0;
         initializeNetwork(ins,outs);
     }
     
@@ -38,20 +38,20 @@ public class NeuralNetwork {
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
         fitness=0.0;
-        neuronCnt=0;
+        nodeCnt=0;
     }
     
     private void initializeNetwork(int insnum,int outsnum){
         for(int i=0;i<insnum;i++){
             InputNeuron_Add neuron=new InputNeuron_Add();
             neuron.setInputID(i);
-            neuron.setNeuronID(neuronCnt++);
+            neuron.setInnovationNum(nodeCnt++);
             neurons.add(neuron);
         }
         for(int i=0;i<outsnum;i++){
             OutputNeuron_Add neuron=new OutputNeuron_Add();
             neuron.setOutputID(i);
-            neuron.setNeuronID(neuronCnt++);
+            neuron.setInnovationNum(nodeCnt++);
             neurons.add(neuron);
         }
         ArrayList<InputNeuron> ins=findInputs();
@@ -283,7 +283,7 @@ public class NeuralNetwork {
             makeConnection(otherNeuron,newNeuron);
             makeConnection(newNeuron,neuron);
         }
-        newNeuron.setNeuronID(neuronCnt++);
+        newNeuron.setInnovationNum(nodeCnt++);
         neurons.add(newNeuron);
     }
     
@@ -312,8 +312,13 @@ public class NeuralNetwork {
         ArrayList<OutputNeuron> outputs=findOutputs();
         ArrayList<InputNeuron> inputs=findInputs();
         ArrayList<Double> results=new ArrayList<>();
-        outputs=sortOutputs(outputs);
-        inputs=sortInputs(inputs);
+        //System.out.println("GOT HERE");
+        //outputs=sortOutputs(outputs);
+        //System.out.println("GOT HERE 3");
+        //inputs=sortInputs(inputs);
+        //System.out.println("GOT HERE 2");
+        //System.out.println(outputs.size());
+        //System.out.println(inputs.size());
         //System.out.println();
         for(int i=0;i<param.getInputs().size();i++){
             inputs.get(i).setInput(param.getInputs().get(i));
@@ -362,12 +367,13 @@ public class NeuralNetwork {
     
     public Neuron getSpecific(int index){
         for(int i=0;i<neurons.size();i++)
-            if(neurons.get(i).getNeuronID()==index)
+            if(neurons.get(i).getInnovationNum()==index)
                 return neurons.get(i);
         return null;
     }
     
     // there will not be many outputs so this sort will be ineffitient
+    // ERROR :: NEED TO FIX THIS
     private ArrayList<OutputNeuron> sortOutputs(ArrayList<OutputNeuron> outputs){
         ArrayList<OutputNeuron> list=new ArrayList<>();
         int cnt=0;
@@ -380,6 +386,7 @@ public class NeuralNetwork {
         return list;
     }
     
+    // ERROR :: NEED TO FIX THIS
     private ArrayList<InputNeuron> sortInputs(ArrayList<InputNeuron> inputs){
         ArrayList<InputNeuron> list=new ArrayList<>();
         int cnt=0;
@@ -390,6 +397,13 @@ public class NeuralNetwork {
             cnt++;
         }
         return list;
+    }
+    
+    public void reset(){
+        for(int i=0;i<neurons.size();i++)
+            neurons.get(i).reset();
+        for(int i=0;i<connections.size();i++)
+            connections.get(i).reset();
     }
     
     public String toString(){
@@ -407,12 +421,12 @@ public class NeuralNetwork {
     public ArrayList<Integer> getInputs(){return inputs;}
     public ArrayList<Integer> outputs(){return outputs;}
     public double getFitness(){return fitness;}
-    public int getNeuronCnt(){return neuronCnt;}
+    public int getNodeCnt(){return nodeCnt;}
     
     // setter methods
     public void setNeurons(ArrayList<Neuron> param){neurons=param;}
     public void setInputs(ArrayList<Integer> param){inputs=param;}
     public void setOutputs(ArrayList<Integer> param){outputs=param;}
     public void setFitness(double param){fitness=param;}
-    public void setNeuronCnt(int param){neuronCnt=param;}
+    public void setNodeCnt(int param){nodeCnt=param;}
 }

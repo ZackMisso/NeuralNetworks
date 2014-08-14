@@ -34,8 +34,8 @@ public class TestClass{
         }*/
         NeuralNetwork shouldWork=new NeuralNetwork();
         Neuron_Add temp=new Neuron_Add();
-        temp.setNeuronID(shouldWork.getNeuronCnt());
-        shouldWork.setNeuronCnt(shouldWork.getNeuronCnt()+1);
+        temp.setInnovationNum(shouldWork.getNodeCnt());
+        shouldWork.setNodeCnt(shouldWork.getNodeCnt()+1);
         shouldWork.makeConnection(shouldWork.getSpecific(0),temp);
         shouldWork.makeConnection(shouldWork.getSpecific(1),temp);
         shouldWork.makeConnection(temp,shouldWork.getSpecific(2));

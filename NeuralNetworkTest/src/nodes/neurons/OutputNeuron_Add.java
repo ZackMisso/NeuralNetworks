@@ -16,10 +16,16 @@ public class OutputNeuron_Add extends OutputNeuron{
         //System.out.println("DEBUG 11 :: OutputNeuron_Add");
         sum+=getBias();
         for(int i=0;i<getInputs().size();i++)
-            sum+=getInputs().get(i).getWeight()*getWeights().get(i);
+            sum+=getInputs().get(i).calculateValue();
         double activation=checkThreshold(sum);
         setOutput(activation);
+        setEvaluated(true);
+        setCache(activation);
+        //System.out.println("HiddenNeuron :: "+getInnovationNum());
+        //System.out.println("Activation :: "+activation);
+        //System.out.println("Bias :: "+getBias());
         //System.out.println("DEBUG 12");
+        //System.out.println(activation);
         return activation;
     }
 }

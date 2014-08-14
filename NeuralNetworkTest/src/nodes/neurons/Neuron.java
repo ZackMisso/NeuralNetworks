@@ -26,7 +26,7 @@ public abstract class Neuron extends Node{
     public abstract double evaluate();
     
     public double checkThreshold(double value){
-        if(value>threshold)
+        if(value>=threshold)
             return 1.0;
         return 0.0;
     }
