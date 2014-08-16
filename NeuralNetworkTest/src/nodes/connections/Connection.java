@@ -32,6 +32,13 @@ public class Connection extends Node{
         return null;
     }
     
+    public boolean isSameConnection(Connection other){
+        if(giveNeuron.getInnovationNum()==other.getGiveNeuron().getInnovationNum())
+            if(recieveNeuron.getInnovationNum()==other.getRecieveNeuron().getInnovationNum())
+                return true;
+        return false;
+    }
+    
     public String toString(){
         String data="Connection\n";
         data+="GiveNeuron :: "+giveNeuron.getInnovationNum()+"\n";

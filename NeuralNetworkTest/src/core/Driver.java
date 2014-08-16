@@ -4,9 +4,9 @@ import experiments.GuaranteedXORTest;
 import experiments.TestClass;
 public class Driver{
     public Driver(){
-        //new EvolutionaryAlgorithm();
+        new EvolutionaryAlgorithm();
         //new TestClass();
-        new GuaranteedXORTest();
+        //new GuaranteedXORTest();
     }
     
     public static void main(String[] args){

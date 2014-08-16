@@ -42,8 +42,8 @@ public class TestClass{
         shouldWork.getNeurons().add(temp);
         for(int i=0;i<shouldWork.getNeurons().size();i++){
             Neuron n=shouldWork.getNeurons().get(i);
-            for(int f=0;f<n.getWeights().size();f++)
-                n.getWeights().set(f,0.0);
+            //for(int f=0;f<n.getWeights().size();f++)
+            //    n.getWeights().set(f,0.0);
         }
         //System.out.println(shouldWork);
         Random random=new Random();

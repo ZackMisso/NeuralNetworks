@@ -6,7 +6,9 @@ import java.util.Random;
 public abstract class Neuron extends Node{
     private ArrayList<Connection> inputs;
     private ArrayList<Connection> outputs;
-    private ArrayList<Double> weights;
+    //private ArrayList<Double> weights;
+    private Neuron initInput;
+    private Neuron initOutput;
     private double threshold;
     private double bias;
     //private int neuronID;
@@ -14,8 +16,10 @@ public abstract class Neuron extends Node{
     public Neuron(){
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
-        weights=new ArrayList<>();
+        //weights=new ArrayList<>();
         //neuronID=-100;
+        initInput=null;
+        initOutput=null;
         setInnovationNum(-100);
         threshold=1.0;
         Random random=new Random();
@@ -97,8 +101,8 @@ public abstract class Neuron extends Node{
         ArrayList<Connection> ins=new ArrayList<>();
         ArrayList<Connection> outs=new ArrayList<>();
         ArrayList<Double> doubs=new ArrayList<>();
-        for(int i=0;i<weights.size();i++)
-            doubs.add(weights.get(i).doubleValue());
+        //for(int i=0;i<weights.size();i++)
+        //    doubs.add(weights.get(i).doubleValue());
         for(int i=0;i<inputs.size();i++){
             Connection connection=new Connection();
             connection.setGiveNeuron(inputs.get(i).getGiveNeuron());
@@ -119,8 +123,30 @@ public abstract class Neuron extends Node{
         }
         neuron.setInputs(ins);
         neuron.setOutputs(outs);
-        neuron.setWeights(doubs);
+        //neuron.setWeights(doubs);
         return neuron;
+    }
+    
+    public boolean isSameNeuron(Neuron other){
+        boolean outputs=false;
+        boolean inputs=false;
+        if(initInput==null&&other.getInitInput()!=null)
+            return false;
+        if(initInput!=null&&other.getInitInput()==null)
+            return false;
+        if(initOutput==null&&other.getInitOutput()!=null)
+            return false;
+        if(initOutput!=null&&other.getInitOutput()==null)
+            return false;
+        if(initInput==null&&other.getInitInput()==null)
+            inputs=true;
+        if(initOutput==null&&other.getInitOutput()==null)
+            outputs=true;
+        if(!inputs&&initInput.getInnovationNum()==other.getInitInput().getInnovationNum())
+            inputs=true;
+        if(!outputs&&initOutput.getInnovationNum()==other.getInitOutput().getInnovationNum())
+            outputs=true;
+        return outputs&&inputs;
     }
     
     public String toString(){
@@ -130,11 +156,11 @@ public abstract class Neuron extends Node{
         if(this instanceof InputNeuron)
             System.out.println("InputNeuron\n");
         data+="NeuronID :: "+getInnovationNum()+"\n";
-        data+="Control Weight :: "+weights.get(0)+"\n";
+        //data+="Control Weight :: "+weights.get(0)+"\n";
         data+="Inputs\n\n";
         for(int i=0;i<inputs.size();i++){
             data+=inputs.get(i).toString();
-            data+="Input Weight :: "+weights.get(i+1)+"\n";
+            //data+="Input Weight :: "+weights.get(i+1)+"\n";
         }
         data+="Outputs\n\n";
         for(int i=0;i<outputs.size();i++){
@@ -147,7 +173,9 @@ public abstract class Neuron extends Node{
     // getter methods
     public ArrayList<Connection> getInputs(){return inputs;}
     public ArrayList<Connection> getOutputs(){return outputs;}
-    public ArrayList<Double> getWeights(){return weights;}
+    //public ArrayList<Double> getWeights(){return weights;}
+    public Neuron getInitInput(){return initInput;}
+    public Neuron getInitOutput(){return initOutput;}
     public double getThreshold(){return threshold;}
     public double getBias(){return bias;}
     //public int getNeuronID(){return neuronID;}
@@ -155,7 +183,9 @@ public abstract class Neuron extends Node{
     // setter methods
     public void setInputs(ArrayList<Connection> param){inputs=param;}
     public void setOutputs(ArrayList<Connection> param){outputs=param;}
-    public void setWeights(ArrayList<Double> param){weights=param;}
+    //public void setWeights(ArrayList<Double> param){weights=param;}
+    public void setInitInput(Neuron param){initInput=param;}
+    public void getSetInitOutput(Neuron param){initOutput=param;}
     public void setThreshold(double param){threshold=param;}
     public void setBias(double param){bias=param;}
     //public void setNeuronID(int param){neuronID=param;}

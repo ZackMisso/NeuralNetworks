@@ -8,6 +8,7 @@ import nodes.neurons.Neuron_Add;
 import nodes.connections.Connection;
 import experiments.Test;
 import evolution.GlobalConstants;
+import datastructures.RandomNumberGenerator;
 import java.util.ArrayList;
 import java.util.Random;
 public class NeuralNetwork {
@@ -15,6 +16,7 @@ public class NeuralNetwork {
     private ArrayList<Connection> connections;
     private ArrayList<Integer> inputs;
     private ArrayList<Integer> outputs;
+    private RandomNumberGenerator rng;
     private double fitness;
     private int nodeCnt;
     
@@ -27,6 +29,7 @@ public class NeuralNetwork {
         connections=new ArrayList<>();
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
+        rng=new RandomNumberGenerator();
         fitness=0.0;
         nodeCnt=0;
         initializeNetwork(ins,outs);
@@ -37,6 +40,7 @@ public class NeuralNetwork {
         connections=param2;
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
+        rng=new RandomNumberGenerator();
         fitness=0.0;
         nodeCnt=0;
     }
@@ -257,7 +261,7 @@ public class NeuralNetwork {
         connection.setRecieveNeuron(recieve);
         give.getOutputs().add(connection);
         recieve.getInputs().add(connection);
-        recieve.getWeights().add(random.nextDouble());
+        //recieve.getWeights().add(random.nextDouble());
         connection.setWeight(random.nextDouble());
         connections.add(connection);
     }
@@ -420,6 +424,7 @@ public class NeuralNetwork {
     public ArrayList<Neuron> getNeurons(){return neurons;}
     public ArrayList<Integer> getInputs(){return inputs;}
     public ArrayList<Integer> outputs(){return outputs;}
+    public RandomNumberGenerator getRNG(){return rng;}
     public double getFitness(){return fitness;}
     public int getNodeCnt(){return nodeCnt;}
     
@@ -427,6 +432,7 @@ public class NeuralNetwork {
     public void setNeurons(ArrayList<Neuron> param){neurons=param;}
     public void setInputs(ArrayList<Integer> param){inputs=param;}
     public void setOutputs(ArrayList<Integer> param){outputs=param;}
+    public void setRNG(RandomNumberGenerator param){rng=param;}
     public void setFitness(double param){fitness=param;}
     public void setNodeCnt(int param){nodeCnt=param;}
 }
