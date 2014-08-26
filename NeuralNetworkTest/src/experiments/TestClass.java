@@ -16,7 +16,7 @@ public class TestClass{
         NeuralNetwork net=new NeuralNetwork();
         //System.out.println(net);
         Neuron neuron=net.getNeurons().get(1);
-        net.addNeuron(neuron.getOutputs(),neuron,new Random()); // 4 connect, 4 neurons
+        net.addNeuron(neuron.getOutputs(),neuron); // 4 connect, 4 neurons
         //System.out.println(net);
         net.newRandomConnection(net.getNeurons().get(net.getNeurons().size()-1));
         XORTest test=new XORTest();
@@ -59,7 +59,7 @@ public class TestClass{
                     //System.out.println("ONE WORKED!!!");
                 }
             }
-            shouldWork.mutateWeights(random);
+            shouldWork.mutateWeights();
             System.out.println(shouldWork.getFitness());
         }
         System.out.println(shouldWork);

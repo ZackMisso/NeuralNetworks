@@ -1,6 +1,7 @@
 package nodes.neurons;
 import nodes.Node;
 import nodes.connections.Connection;
+import datastructures.RandomNumberGenerator;
 import java.util.ArrayList;
 import java.util.Random;
 public abstract class Neuron extends Node{
@@ -63,6 +64,10 @@ public abstract class Neuron extends Node{
                 return true;
         return false;
     }
+
+    public void mutateBias(RandomNumberGenerator rng){
+        bias=rng.changeDouble(bias,true);
+    }
     
     public Connection getConnectionWith(Neuron other){
         for(int i=0;i<outputs.size();i++)
@@ -82,7 +87,8 @@ public abstract class Neuron extends Node{
             inputs.remove(connection);
     }
     
-    public Neuron makeCopy(){
+    // TODO :: Edit this
+    public Neuron makeCopy(){ // is this really needed
         Neuron neuron;
         if(this instanceof InputNeuron){
             InputNeuron_Add newNeuron=new InputNeuron_Add();
@@ -147,6 +153,14 @@ public abstract class Neuron extends Node{
         if(!outputs&&initOutput.getInnovationNum()==other.getInitOutput().getInnovationNum())
             outputs=true;
         return outputs&&inputs;
+    }
+
+    // This method is used by CMDTester
+    public static ArrayList<Integer> getInnovations(ArrayList<Neuron> list){
+        ArrayList<Integer> nums=new ArrayList<>();
+        for(int i=0;i<list.size();i++)
+            nums.add(list.get(i).getInnovationNum());
+        return nums;
     }
     
     public String toString(){

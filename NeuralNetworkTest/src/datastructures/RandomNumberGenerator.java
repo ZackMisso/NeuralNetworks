@@ -4,12 +4,24 @@
  * 
  */
 package datastructures;
+import evolution.GlobalConstants;
 import java.util.Random;
 public class RandomNumberGenerator{
     private Random random;
     
     public RandomNumberGenerator(){
         random=new Random();
+    }
+
+    public int getInt(int max,boolean canBeNeg){
+        boolean neg=false;
+        int num=0;
+        if(canBeNeg)
+            neg=isNegative();
+        num=random.nextInt(max);
+        if(neg)
+            num*=-1;
+        return num;
     }
     
     public int getInt(int max,int[] not,boolean canBeNeg){
@@ -28,6 +40,10 @@ public class RandomNumberGenerator{
                 num*=-1;
         }
         return num;
+    }
+
+    public double changeDouble(double prev,boolean canBeNeg){
+        return changeDouble(prev,GlobalConstants.MAX_WEIGHT_VALUE,GlobalConstants.MIN_WEIGHT_VALUE,canBeNeg);
     }
     
     public double changeDouble(double prev,double max,double min,boolean canBeNeg){
@@ -51,12 +67,18 @@ public class RandomNumberGenerator{
     public double initDouble(double max,double min){
         return min+random.nextDouble()*max;
     }
+
+    public double simpleDouble(){
+        return random.nextDouble();
+    }
     
     private boolean doubleBounds(double num,double min,double max){
         return num>max||num<min;
     }
     
     private boolean intIn(int num,int[] list){
+        if(list==null)
+            return false;
         for(int i=0;i<list.length;i++)
             if(num==list[i])
                 return true;

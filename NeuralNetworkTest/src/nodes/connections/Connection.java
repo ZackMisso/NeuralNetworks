@@ -1,4 +1,5 @@
 package nodes.connections;
+import datastructures.RandomNumberGenerator;
 import nodes.Node;
 import nodes.neurons.Neuron;
 public class Connection extends Node{
@@ -24,6 +25,10 @@ public class Connection extends Node{
         //System.out.println("Value To Push :: "+getCache());
         setEvaluated(true);
         return getCache();
+    }
+
+    public void mutateWeight(RandomNumberGenerator rng){
+        weight=rng.changeDouble(weight,true);
     }
     
     public Connection makeCopy(){

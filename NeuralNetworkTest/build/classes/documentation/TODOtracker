@@ -1,0 +1,6 @@
+java -jar "C:\Users\Zack Misso\Documents\ProgrammingProjects\NeuralNetworks\NeuralNetworkTest\dist\NeuralNetworkTest.jar"
+
+Neuron :: 85 :: edit makeCopy to work with new design
+NeuralNetwork :: 148 :: rewrite method to avoid miss case
+NeuralNetwork :: 188 :: Fix inefficient method
+ALL :: Create CMD changer
