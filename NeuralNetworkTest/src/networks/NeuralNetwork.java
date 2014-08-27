@@ -1,4 +1,5 @@
 package networks;
+import nodes.Node;
 import nodes.neurons.InputNeuron_Add;
 import nodes.neurons.OutputNeuron_Add;
 import nodes.neurons.InputNeuron;
@@ -17,7 +18,7 @@ public class NeuralNetwork {
     private ArrayList<Integer> outputs;
     private RandomNumberGenerator rng;
     private double fitness;
-    private int nodeCnt;
+    private int nodeCnt; // this will be global soon
     
     public NeuralNetwork(){
         this(2,1);
@@ -266,7 +267,7 @@ public class NeuralNetwork {
 
     // creates a new connection between two neurons
     // TODO :: EDIT THIS
-    public void makeConnection(Neuron give,Neuron recieve){
+    public Connection makeConnection(Neuron give,Neuron recieve){
         //Random random=new Random();
         Connection connection=new Connection();
         connection.setEvaluated(false);
@@ -279,6 +280,7 @@ public class NeuralNetwork {
         connection.setInnovationNum(nodeCnt++);
         connection.setWeight(rng.simpleDouble());
         connections.add(connection);
+        return connection;
     }
     
     // adds a neuron in the middle of a connection
@@ -358,9 +360,28 @@ public class NeuralNetwork {
     public NeuralNetwork copyAndMutate(){
         NeuralNetwork network=new NeuralNetwork();
         network.getNeurons().clear();
+        network.getConnections().clear();
         for(int i=0;i<neurons.size();i++)
             network.getNeurons().add(neurons.get(i).makeCopy());
+        for(int i=0;i<connections.size();i++)
+            network.getConnections().add(connections.get(i).makeCopy());
+        network.setNodeCnt(nodeCnt);
+        network.setRNG(rng);
         network.mutate();
+        return network;
+    }
+
+    // THIS METHOD IS JUST BEING USED FOR CMDTESTER
+    public NeuralNetwork copy(){
+        NeuralNetwork network=new NeuralNetwork();
+        network.getNeurons().clear();
+        network.getConnections().clear();
+        for(int i=0;i<neurons.size();i++)
+            network.getNeurons().add(neurons.get(i).makeCopy());
+        for(int i=0;i<connections.size();i++)
+            network.getConnections().add(connections.get(i).makeCopy());
+        network.setNodeCnt(nodeCnt);
+        network.setRNG(rng);
         return network;
     }
     
@@ -399,10 +420,12 @@ public class NeuralNetwork {
             if(neurons.get(i).getInnovationNum()==nodeNum)
                 return neurons.get(i);
         for(int i=0;i<connections.size();i++)
-            if(connections.get(i).getInnovationNum==nodeNum)
+            if(connections.get(i).getInnovationNum()==nodeNum)
                 return connections.get(i);
         return null;
     }
+
+    // TODO :: Create a reference to the list of all nodes
 
     public ArrayList<Node> getAllNodes(){
         ArrayList<Node> nodes=new ArrayList<>();
@@ -410,6 +433,7 @@ public class NeuralNetwork {
             nodes.add(neurons.get(i));
         for(int i=0;i<connections.size();i++)
             nodes.add(connections.get(i));
+        return nodes;
     }
     
     // there will not be many outputs so this sort will be ineffitient
@@ -458,6 +482,7 @@ public class NeuralNetwork {
     
     // getter methods
     public ArrayList<Neuron> getNeurons(){return neurons;}
+    public ArrayList<Connection> getConnections(){return connections;}
     public ArrayList<Integer> getInputs(){return inputs;}
     public ArrayList<Integer> outputs(){return outputs;}
     public RandomNumberGenerator getRNG(){return rng;} // needed for CMDTest
@@ -466,6 +491,7 @@ public class NeuralNetwork {
     
     // setter methods
     public void setNeurons(ArrayList<Neuron> param){neurons=param;}
+    public void setConnections(ArrayList<Connection> param){connections=param;}
     public void setInputs(ArrayList<Integer> param){inputs=param;}
     public void setOutputs(ArrayList<Integer> param){outputs=param;}
     public void setRNG(RandomNumberGenerator param){rng=param;}

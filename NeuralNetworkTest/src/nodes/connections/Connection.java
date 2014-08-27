@@ -2,6 +2,7 @@ package nodes.connections;
 import datastructures.RandomNumberGenerator;
 import nodes.Node;
 import nodes.neurons.Neuron;
+import java.util.ArrayList;
 public class Connection extends Node{
     private Neuron giveNeuron;
     private Neuron recieveNeuron;
@@ -33,8 +34,12 @@ public class Connection extends Node{
     
     public Connection makeCopy(){
         Connection copy=new Connection();
-        // implement
-        return null;
+        copy.setInnovationNum(getInnovationNum());
+        copy.setWeight(weight);
+        copy.setActive(active);
+        copy.setGiveNeuron(giveNeuron);
+        copy.setRecieveNeuron(recieveNeuron);
+        return copy;
     }
     
     public boolean isSameConnection(Connection other){
@@ -42,6 +47,14 @@ public class Connection extends Node{
             if(recieveNeuron.getInnovationNum()==other.getRecieveNeuron().getInnovationNum())
                 return true;
         return false;
+    }
+
+    // This method is used by CMDTester
+    public static ArrayList<Integer> getInnovations(ArrayList<Connection> list){
+        ArrayList<Integer> nums=new ArrayList<>();
+        for(int i=0;i<list.size();i++)
+            nums.add(list.get(i).getInnovationNum());
+        return nums;
     }
     
     public String toString(){

@@ -1,0 +1,13 @@
+dn :: displays network information
+dni :: displays neuron information
+dci :: displays connection information
+an :: adds a neuron by splitting a connection
+ac :: adds a connection between two neurons
+mn :: mutates a neurons bias
+mc :: mutates a connections weight
+rn :: removes a neuron an all of the connections associated with it
+rc :: removes a connection
+rg :: replicates a generation (NOT AVAILABLE YET)
+test :: tests the network on the XOR test
+rwc :: replaces the current network with its exact copy
+cnn :: creates, or recreates, the neural network
