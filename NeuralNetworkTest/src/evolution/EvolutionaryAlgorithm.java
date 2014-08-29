@@ -1,5 +1,4 @@
 package evolution;
-
 import data.DataRecorder;
 import networks.NeuralNetwork;
 import experiments.XORTest;
