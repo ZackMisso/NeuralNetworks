@@ -36,15 +36,15 @@ public abstract class Node {
     public static ArrayList<Node> merge(ArrayList<Node> one,ArrayList<Node> two){
         ArrayList<Node> merged=new ArrayList<>();
         while(!one.isEmpty()&&!two.isEmpty()){
-            if(one.get(0).getInnovationNum()>two.get(0).getInnovationNum())
+            if(one.get(0).getInnovationNum()<two.get(0).getInnovationNum())
                 merged.add(one.remove(0));
             else
                 merged.add(two.remove(0));
         }
         while(!one.isEmpty())
-            merged.add(one.get(0));
+            merged.add(one.remove(0));
         while(!two.isEmpty())
-            merged.add(two.get(0));
+            merged.add(two.remove(0));
         return merged;
     }
     

@@ -1,5 +1,6 @@
 package nodes.connections;
 import datastructures.RandomNumberGenerator;
+import networks.NeuralNetwork;
 import nodes.Node;
 import nodes.neurons.Neuron;
 import java.util.ArrayList;
@@ -32,13 +33,22 @@ public class Connection extends Node{
         weight=rng.changeDouble(weight,true);
     }
     
-    public Connection makeCopy(){
+    public Connection makeCopy(ArrayList<Neuron> neurons,NeuralNetwork net){
         Connection copy=new Connection();
         copy.setInnovationNum(getInnovationNum());
         copy.setWeight(weight);
         copy.setActive(active);
-        copy.setGiveNeuron(giveNeuron);
-        copy.setRecieveNeuron(recieveNeuron);
+        int giveNeuronNum=giveNeuron.getInnovationNum();
+        int recieveNeuronNum=recieveNeuron.getInnovationNum();
+        for(int i=0;i<neurons.size();i++){
+            if(neurons.get(i).getInnovationNum()==giveNeuronNum)
+                copy.setGiveNeuron(neurons.get(i));
+            if(neurons.get(i).getInnovationNum()==recieveNeuronNum)
+                copy.setRecieveNeuron(neurons.get(i));
+        }
+        copy.getGiveNeuron().getOutputs().add(copy);
+        //System.out.println(getGiveNeuron().getOutputs().toString()+" HAHAHAHAHA");
+        copy.getRecieveNeuron().getInputs().add(copy);
         return copy;
     }
     

@@ -11,7 +11,6 @@ import nodes.neurons.Neuron;
 import nodes.neurons.Neuron_Add;
 import nodes.neurons.InputNeuron;
 import nodes.neurons.OutputNeuron;
-import experiments.TestCases;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class CMDTester {
@@ -23,6 +22,13 @@ public class CMDTester {
     	input=new Scanner(System.in);
     	displayNetworkInfo();
     	run();
+    }
+    
+    public CMDTester(NeuralNetwork network){
+        net=network;
+        input=new Scanner(System.in);
+        displayNetworkInfo();
+        run();
     }
 
     public void run(){
@@ -132,6 +138,9 @@ public class CMDTester {
         Neuron bot=oldConnection.getGiveNeuron();
         Neuron top=oldConnection.getRecieveNeuron();
         Neuron_Add newNeuron=new Neuron_Add();
+        newNeuron.setInnovationNum(net.getNodeCnt());
+        net.setNodeCnt(net.getNodeCnt()+1);
+        net.getNeurons().add(newNeuron);
         net.makeConnection(newNeuron,top);
         net.makeConnection(bot,newNeuron);
         net.getConnections().remove(oldConnection);
@@ -219,30 +228,4 @@ public class CMDTester {
             neurons.add(connections.get(i));
         return neurons;
     }
-
-    /*private ArrayList<Node> sortNodes(ArrayList<Node> nodes){
-        ArrayList<Node> one=new ArrayList<>();
-        ArrayList<Node> two=new ArrayList<>();
-        int i=0;
-        for(;i<nodes.size()/2;i++)
-            one.add(nodes.get(i));
-        for(;i<nodes.size();i++)
-            two.add(nodes.get(i));
-        return mergeNodes(sortNodes(one),sortNodes(two));
-    }
-
-    private ArrayList<Node> mergeNodes(ArrayList<Node> one,ArrayList<Node> two){
-        ArrayList<Node> sorted=new ArrayList<>();
-        while(!one.isEmpty()||!two.isEmpty()){
-            if(one.get(0).getInnovationNum()<two.get(0).getInnovationNum())
-                sorted.add(one.remove(0));
-            else
-                sorted.add(two.remove(0));
-        }
-        while(!one.isEmpty())
-            sorted.add(one.remove(0));
-        while(!two.isEmpty())
-            sorted.add(two.remove(0));
-        return sorted;
-    }*/
 }

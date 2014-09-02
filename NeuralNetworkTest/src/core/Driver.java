@@ -5,10 +5,10 @@ import experiments.TestClass;
 import experiments.CMDTester;
 public class Driver{
     public Driver(){
-        //new EvolutionaryAlgorithm();
+        new EvolutionaryAlgorithm();
         //new TestClass();
         //new GuaranteedXORTest();
-        new CMDTester();
+        //new CMDTester();
     }
     
     public static void main(String[] args){

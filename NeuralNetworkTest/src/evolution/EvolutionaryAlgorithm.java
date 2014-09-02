@@ -3,6 +3,7 @@ import data.DataRecorder;
 import networks.NeuralNetwork;
 import experiments.XORTest;
 import experiments.TestCases;
+import experiments.CMDTester;
 import java.util.ArrayList;
 import java.util.Random;
 public class EvolutionaryAlgorithm {
@@ -35,7 +36,8 @@ public class EvolutionaryAlgorithm {
         NeuralNetwork totalBest=new NeuralNetwork();
         XORTest test=tests.getXORTest();
         int f;
-        for(int i=0;i<numberOfGenerations;i++){
+        boolean chk=true;
+        for(int i=0;i<numberOfGenerations&&chk;i++){
             ArrayList<NeuralNetwork> newList=new ArrayList<>();
             for(f=0;f<networks.size();f++){
                 //System.out.println("DEBUG 3");
@@ -45,14 +47,18 @@ public class EvolutionaryAlgorithm {
             //System.out.println("DEBUG 1");
             networks=sortNetworksByFitness(networks);
             bests.add(networks.get(0));
+            if(networks.get(0).getFitness()==4.0){
+                chk=false;
+                totalBest=networks.get(0);
+            }
             if(networks.get(0).getFitness()>totalBest.getFitness())
                 totalBest=networks.get(0);
             if(networks.get(0).getFitness()==test.getSolutionFitness())
                 System.out.println("Solution Found :: Generation "+i);
             for(f=0;f<networks.size()/2;f++){
                 networks.get(f).mutate();
-                newList.add(networks.get(f).copyAndMutate());
-                newList.add(networks.get(f).copyAndMutate());
+                newList.add(networks.get(f).copy());
+                newList.add(networks.get(f).copy());
                 //System.out.println(networks.get(f).getNeurons().size());
                 // Add in crossover functionality
             }
@@ -67,6 +73,7 @@ public class EvolutionaryAlgorithm {
             System.out.println("Generation "+i+" Over :: Best "+bests.get(bests.size()-1).getFitness());
             // continue implementation
         }
+        new CMDTester(totalBest);
         //System.out.println(totalBest);
     }
     

@@ -87,8 +87,7 @@ public abstract class Neuron extends Node{
             inputs.remove(connection);
     }
     
-    // TODO :: Edit this
-    public Neuron makeCopy(){ // is this really needed
+    public Neuron makeCopy(){
         Neuron neuron;
         if(this instanceof InputNeuron){
             InputNeuron_Add newNeuron=new InputNeuron_Add();
@@ -103,33 +102,8 @@ public abstract class Neuron extends Node{
         }else{
             neuron=new Neuron_Add();
         }
+        neuron.setBias(bias);
         neuron.setInnovationNum(getInnovationNum());
-        ArrayList<Connection> ins=new ArrayList<>();
-        ArrayList<Connection> outs=new ArrayList<>();
-        ArrayList<Double> doubs=new ArrayList<>();
-        //for(int i=0;i<weights.size();i++)
-        //    doubs.add(weights.get(i).doubleValue());
-        for(int i=0;i<inputs.size();i++){
-            Connection connection=new Connection();
-            connection.setGiveNeuron(inputs.get(i).getGiveNeuron());
-            connection.setRecieveNeuron(this);
-            connection.setActive(inputs.get(i).getActive());
-            connection.setWeight(inputs.get(i).getWeight());
-            connection.setEvaluated(inputs.get(i).getEvaluated());
-            ins.add(connection);
-        }
-        for(int i=0;i<outputs.size();i++){
-            Connection connection=new Connection();
-            connection.setGiveNeuron(this);
-            connection.setRecieveNeuron(outputs.get(i).getRecieveNeuron());
-            connection.setActive(outputs.get(i).getActive());
-            connection.setWeight(outputs.get(i).getWeight());
-            connection.setEvaluated(outputs.get(i).getEvaluated());
-            outs.add(connection);
-        }
-        neuron.setInputs(ins);
-        neuron.setOutputs(outs);
-        //neuron.setWeights(doubs);
         return neuron;
     }
     
