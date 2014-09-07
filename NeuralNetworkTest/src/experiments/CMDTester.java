@@ -5,6 +5,8 @@
  */
 package experiments;
 import networks.NeuralNetwork;
+import evolution.HistoricalTracker;
+import evolution.species.Species;
 import nodes.Node;
 import nodes.connections.Connection;
 import nodes.neurons.Neuron;
@@ -14,9 +16,12 @@ import nodes.neurons.OutputNeuron;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class CMDTester {
+    private HistoricalTracker history;
+    private Species species;
     private NeuralNetwork net;
     private Scanner input;
-
+    // TODO :: ADD SPECIES FUNCTIONALITY
+    // TODO :: POSSIBLY ADD HISTORICALTRACKER FUNCTIONALITY
     public CMDTester(){
     	net=new NeuralNetwork();
     	input=new Scanner(System.in);
@@ -28,6 +33,13 @@ public class CMDTester {
         net=network;
         input=new Scanner(System.in);
         displayNetworkInfo();
+        run();
+    }
+    
+    public CMDTester(Species spec){
+        species=spec;
+        input=new Scanner(System.in);
+        displaySpeciesInfo();
         run();
     }
 
@@ -89,6 +101,10 @@ public class CMDTester {
             }
             // implement more as needed
     	}
+    }
+    
+    private void displaySpeciesInfo(){
+        // implement
     }
 
     private void displayNetworkInfo(){

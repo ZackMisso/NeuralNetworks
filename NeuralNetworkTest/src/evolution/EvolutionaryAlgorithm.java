@@ -1,34 +1,111 @@
 package evolution;
-import data.DataRecorder;
 import networks.NeuralNetwork;
+import datastructures.RandomNumberGenerator;
 import experiments.XORTest;
 import experiments.TestCases;
 import experiments.CMDTester;
+import evolution.species.Species;
 import java.util.ArrayList;
 import java.util.Random;
 public class EvolutionaryAlgorithm {
+    // TODO :: MAKE A GLOBAL RNG
+    private HistoricalTracker history;
+    private RandomNumberGenerator rng;
+    private ArrayList<Species> species;
     private ArrayList<NeuralNetwork> networks;
     private ArrayList<NeuralNetwork> bests;
     private TestCases tests;
-    private DataRecorder recorder;
     private int numberOfGenerations;
     private int populationSize;
     
     public EvolutionaryAlgorithm(){
+        history=new HistoricalTracker();
+        rng=new RandomNumberGenerator();
+        species=new ArrayList<>();
         networks=new ArrayList<>();
         bests=new ArrayList<>();
         tests=new TestCases();
-        recorder=new DataRecorder();
         numberOfGenerations=600;
         populationSize=500;
-        initializeFirstGeneration();
-        runXORExperiment();
+        if(GlobalConstants.TEST){
+            initializeFirstGenerationTest();
+            runXORExperimentTest();
+        }
+        else{
+            initializeFirstGeneration();
+            runXORExperiment();
+        }
+    }
+    
+    private void initializeFirstGenerationTest(){
+        species.add(new Species());
+        species.get(0).setMaxAllowed(populationSize);
+        species.get(0).initFromStart();
     }
     
     // possibly change this to allow for different set-ups
     private void initializeFirstGeneration(){
         for(int i=0;i<populationSize;i++)
             networks.add(new NeuralNetwork());
+    }
+    
+    private void runXORExperimentTest(){
+        NeuralNetwork totalBest=new NeuralNetwork();
+        XORTest test=tests.getXORTest();
+        for(int i=0;i<numberOfGenerations;i++){
+            ArrayList<NeuralNetwork> deviated=new ArrayList<>();
+            ArrayList<Species> newSpecies=new ArrayList<>();
+            for(int f=0;f<species.size();f++){
+                for(int g=0;g<species.get(f).getIndividuals().size();g++){ // HEAVIEST LOOP For Simulation
+                    tests.runXORTests(species.get(f).getIndividuals().get(g));
+                }
+                ArrayList<NeuralNetwork> temp=species.get(f).checkDeviation();
+                for(int g=0;g<temp.size();g++)
+                    deviated.add(temp.get(g));
+                species.get(f).setAge(species.get(f).getAge()+1);
+            }
+            // Can make this seperate function
+            for(int f=0;f<deviated.size();f++){
+                boolean foundFit=false;
+                for(int g=0;g<species.size()&&!foundFit;g++){
+                    if(species.get(g).belongs(deviated.get(f))){
+                        foundFit=true;
+                    }
+                }
+                for(int g=0;g<newSpecies.size()&&!foundFit;g++){
+                    if(newSpecies.get(g).belongs(deviated.get(f))){
+                        foundFit=true;
+                    }
+                }
+                if(!foundFit){
+                    Species add=new Species(deviated.get(f));
+                    //add.setSpeciesNum();
+                    newSpecies.add(add);
+                }
+            }
+            for(int f=0;f<newSpecies.size();f++)
+                species.add(newSpecies.get(f));
+            double sum=0.0;
+            int chk=0;
+            for(int f=0;f<species.size();f++){
+                species.get(f).calculateAverageFitness();
+                sum+=species.get(f).getAverageFitness();
+            }
+            for(int f=0;f<species.size();f++){
+                double proportion=species.get(f).getAverageFitness()/sum;
+                species.get(f).setMaxAllowed((int)(proportion*populationSize));
+                chk++;
+            }
+            if(chk>populationSize)
+                System.out.println("OVERPOPULATION!!!");
+            while(chk<populationSize){
+                species.get(0).setMaxAllowed(species.get(0).getMaxAllowed()+1);
+                chk++;
+            }
+            for(int f=0;f<species.size();f++){
+                species.get(f).mutate();
+            }
+        }
     }
     
     private void runXORExperiment(){
@@ -124,7 +201,6 @@ public class EvolutionaryAlgorithm {
     public ArrayList<NeuralNetwork> getNetworks(){return networks;}
     public ArrayList<NeuralNetwork> getBests(){return bests;}
     public TestCases getTests(){return tests;}
-    public DataRecorder getRecorder(){return recorder;}
     public int getNumberOfGenerations(){return numberOfGenerations;}
     public int getPopulationSize(){return populationSize;}
     
@@ -132,7 +208,6 @@ public class EvolutionaryAlgorithm {
     public void setNetworks(ArrayList<NeuralNetwork> param){networks=param;}
     public void setBests(ArrayList<NeuralNetwork> param){bests=param;}
     public void setTestCases(TestCases param){tests=param;}
-    public void setRecorder(DataRecorder param){recorder=param;}
     public void setNumberOfGenerations(int param){numberOfGenerations=param;}
     public void setPopulationSize(int param){populationSize=param;}
 }

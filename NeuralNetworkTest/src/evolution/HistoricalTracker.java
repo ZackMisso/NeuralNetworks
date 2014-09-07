@@ -12,11 +12,13 @@ public class HistoricalTracker {
     private ArrayList<Node> master; // contains all made nodes put together
     //private ArrayList<Node> addedNodes;
     private int nextInnovation;
+    private int nextSpecies;
     
     public HistoricalTracker(){
         master=new ArrayList<>();
         //addedNodes=new ArrayList<>();
         nextInnovation=0;
+        nextSpecies=0;
         initializeMaster();
     }
     
@@ -86,9 +88,11 @@ public class HistoricalTracker {
     public ArrayList<Node> getMaster(){return master;}
     //public ArrayList<Node> getAddedNodes(){return addedNodes;}
     public int getNextInnovation(){return nextInnovation;}
+    public int getNextSpecies(){return nextSpecies;}
     
     // setter methods
     public void setMaster(ArrayList<Node> param){master=param;}
     //public void setAddedNodes(ArrayList<Node> param){addedNodes=param;}
     public void setNextInnovation(int param){nextInnovation=param;}
+    public void setNextSpecies(int param){nextSpecies=param;}
 }

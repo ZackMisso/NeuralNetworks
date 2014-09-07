@@ -8,14 +8,18 @@ public class Connection extends Node{
     private Neuron giveNeuron;
     private Neuron recieveNeuron;
     private double weight;
+    private double cache;
     private boolean active;
+    private boolean recurrent; // implement recurrent functionality
     
     public Connection(){
         giveNeuron=null;
         recieveNeuron=null;
+        cache=0.0;
         weight=0.0;
         setInnovationNum(-1);
         active=false;
+        recurrent=false;
     }
     
     public double calculateValue(){
@@ -79,10 +83,12 @@ public class Connection extends Node{
     public Neuron getRecieveNeuron(){return recieveNeuron;}
     public double getWeight(){return weight;}
     public boolean getActive(){return active;}
+    public boolean getRecurrent(){return recurrent;}
     
     // setter methods
     public void setGiveNeuron(Neuron param){giveNeuron=param;}
     public void setRecieveNeuron(Neuron param){recieveNeuron=param;}
     public void setWeight(double param){weight=param;}
     public void setActive(boolean param){active=param;}
+    public void setRecurrent(boolean param){recurrent=param;}
 }

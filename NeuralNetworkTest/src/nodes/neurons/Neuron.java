@@ -7,25 +7,35 @@ import java.util.Random;
 public abstract class Neuron extends Node{
     private ArrayList<Connection> inputs;
     private ArrayList<Connection> outputs;
-    //private ArrayList<Double> weights;
-    private Neuron initInput;
-    private Neuron initOutput;
+    //private Neuron initInput; // what
+    //private Neuron initOutput; // what
     private double threshold;
     private double bias;
-    //private int neuronID;
+    private int connectionCreated; // use this for speciation
+    private int depth;
     
     public Neuron(){
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
-        //weights=new ArrayList<>();
-        //neuronID=-100;
-        initInput=null;
-        initOutput=null;
+        //initInput=null;
+        //initOutput=null;
         setInnovationNum(-100);
         threshold=1.0;
+        connectionCreated=-1;
+        depth=-1;
         Random random=new Random();
-        //weights.add(random.nextDouble());
         bias=random.nextDouble();
+    }
+    
+    public int findDepth(){
+        if(depth!=-1)
+            return depth;
+        int temp=0;
+        for(int i=0;i<inputs.size();i++)
+            if(inputs.get(i).getGiveNeuron().findDepth()>depth)
+                temp=inputs.get(i).getGiveNeuron().findDepth()+1;
+        depth=temp;
+        return depth;
     }
     
     public abstract double evaluate();
@@ -108,9 +118,9 @@ public abstract class Neuron extends Node{
     }
     
     public boolean isSameNeuron(Neuron other){
-        boolean outputs=false;
-        boolean inputs=false;
-        if(initInput==null&&other.getInitInput()!=null)
+        //boolean outputs=false;
+        //boolean inputs=false;
+        /*if(initInput==null&&other.getInitInput()!=null)
             return false;
         if(initInput!=null&&other.getInitInput()==null)
             return false;
@@ -125,8 +135,8 @@ public abstract class Neuron extends Node{
         if(!inputs&&initInput.getInnovationNum()==other.getInitInput().getInnovationNum())
             inputs=true;
         if(!outputs&&initOutput.getInnovationNum()==other.getInitOutput().getInnovationNum())
-            outputs=true;
-        return outputs&&inputs;
+            outputs=true;*/
+        return other.getConnectionCreated()==connectionCreated;
     }
 
     // This method is used by CMDTester
@@ -138,7 +148,7 @@ public abstract class Neuron extends Node{
     }
     
     public String toString(){
-        String data="";
+        /*String data="";
         if(this instanceof OutputNeuron)
             System.out.println("OutputNeuron\n");
         if(this instanceof InputNeuron)
@@ -155,26 +165,26 @@ public abstract class Neuron extends Node{
             data+=outputs.get(i).toString();
         }
         data+="\n";
-        return data;
+        return data;*/
+        return "";
     }
     
     // getter methods
     public ArrayList<Connection> getInputs(){return inputs;}
     public ArrayList<Connection> getOutputs(){return outputs;}
-    //public ArrayList<Double> getWeights(){return weights;}
-    public Neuron getInitInput(){return initInput;}
-    public Neuron getInitOutput(){return initOutput;}
+    //public Neuron getInitInput(){return initInput;}
+    //public Neuron getInitOutput(){return initOutput;}
     public double getThreshold(){return threshold;}
     public double getBias(){return bias;}
-    //public int getNeuronID(){return neuronID;}
+    public int getDepth(){return depth;}
+    public int getConnectionCreated(){return connectionCreated;}
     
     // setter methods
     public void setInputs(ArrayList<Connection> param){inputs=param;}
     public void setOutputs(ArrayList<Connection> param){outputs=param;}
-    //public void setWeights(ArrayList<Double> param){weights=param;}
-    public void setInitInput(Neuron param){initInput=param;}
-    public void getSetInitOutput(Neuron param){initOutput=param;}
+    //public void setInitInput(Neuron param){initInput=param;}
+    //public void getSetInitOutput(Neuron param){initOutput=param;}
     public void setThreshold(double param){threshold=param;}
     public void setBias(double param){bias=param;}
-    //public void setNeuronID(int param){neuronID=param;}
+    public void setConnectionCreated(int param){connectionCreated=param;}
 }
