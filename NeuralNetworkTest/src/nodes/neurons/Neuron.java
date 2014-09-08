@@ -11,7 +11,7 @@ public abstract class Neuron extends Node{
     //private Neuron initOutput; // what
     private double threshold;
     private double bias;
-    private int connectionCreated; // use this for speciation
+    private int connectionCreated; // possibly use this for speciation
     private int depth;
     
     public Neuron(){
@@ -27,7 +27,7 @@ public abstract class Neuron extends Node{
         bias=random.nextDouble();
     }
     
-    public int findDepth(){
+    public int findDepth(){ // NEED TO TEST
         if(depth!=-1)
             return depth;
         int temp=0;
@@ -79,6 +79,10 @@ public abstract class Neuron extends Node{
         bias=rng.changeDouble(bias,true);
     }
     
+    public void crossover(Neuron other){
+        // implement
+    }
+    
     public Connection getConnectionWith(Neuron other){
         for(int i=0;i<outputs.size();i++)
             if(outputs.get(i).getGiveNeuron()==other||outputs.get(i).getRecieveNeuron()==other)
@@ -117,6 +121,7 @@ public abstract class Neuron extends Node{
         return neuron;
     }
     
+    // I DONT KNOW HOW TO IMPLEMENT THIS YET
     public boolean isSameNeuron(Neuron other){
         //boolean outputs=false;
         //boolean inputs=false;
@@ -145,28 +150,6 @@ public abstract class Neuron extends Node{
         for(int i=0;i<list.size();i++)
             nums.add(list.get(i).getInnovationNum());
         return nums;
-    }
-    
-    public String toString(){
-        /*String data="";
-        if(this instanceof OutputNeuron)
-            System.out.println("OutputNeuron\n");
-        if(this instanceof InputNeuron)
-            System.out.println("InputNeuron\n");
-        data+="NeuronID :: "+getInnovationNum()+"\n";
-        //data+="Control Weight :: "+weights.get(0)+"\n";
-        data+="Inputs\n\n";
-        for(int i=0;i<inputs.size();i++){
-            data+=inputs.get(i).toString();
-            //data+="Input Weight :: "+weights.get(i+1)+"\n";
-        }
-        data+="Outputs\n\n";
-        for(int i=0;i<outputs.size();i++){
-            data+=outputs.get(i).toString();
-        }
-        data+="\n";
-        return data;*/
-        return "";
     }
     
     // getter methods

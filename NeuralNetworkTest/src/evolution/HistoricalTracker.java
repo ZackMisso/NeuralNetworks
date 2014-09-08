@@ -9,21 +9,32 @@ import nodes.connections.Connection;
 import nodes.neurons.Neuron;
 import java.util.ArrayList;
 public class HistoricalTracker {
-    private ArrayList<Node> master; // contains all made nodes put together
-    //private ArrayList<Node> addedNodes;
-    private int nextInnovation;
-    private int nextSpecies;
+    private ArrayList<Node> master; // contains all developed genes
+    private ArrayList<Node> addedNodes; // contains new genes added this generation (need to implement this)
+    private int nextInnovation; // the next node identifier
+    private int nextSpecies; // the next species identifier
     
-    public HistoricalTracker(){
+    public HistoricalTracker(){ // default constructor
         master=new ArrayList<>();
-        //addedNodes=new ArrayList<>();
+        addedNodes=new ArrayList<>();
         nextInnovation=0;
         nextSpecies=0;
         initializeMaster();
     }
     
+    // initializes the master node list
     private void initializeMaster(){
         // implement
+    }
+    
+    // returns the current nest species identifier and increments it
+    public int nextSpecies(){
+        return nextSpecies++;
+    }
+    
+    // returns the current nest node identifier and increments it
+    public int nextInnovationNum(){
+        return nextInnovation++;
     }
     
     // MAYBE DONT NEED
@@ -31,18 +42,22 @@ public class HistoricalTracker {
         //addedNodes.clear();
     }
     
+    // possibly need?
     public void beginGeneration(){
         Node.sort(master);
     }
     
+    // defines a new node based on what was evolved in the past
     public void defineNode(Node added){
         if(added instanceof Connection)
             defineConnection((Connection)added);
-        defineNeuron((Neuron)added);
+        else
+            defineNeuron((Neuron)added);
     }
     
     // TODO :: FIX THE INNEFFICIENTCIES HERE
     
+    // defines a connection based on what was evolved in the past
     private void defineConnection(Connection added){
         boolean chk=true;
         ArrayList<Connection> connections=getConnectionsFromMaster();
@@ -56,6 +71,7 @@ public class HistoricalTracker {
         }
     }
     
+    // defines a neuron based on what was evolved in the past
     private void defineNeuron(Neuron added){
         boolean chk=true;
         ArrayList<Neuron> neurons=getNeuronsFromMaster();
@@ -68,6 +84,7 @@ public class HistoricalTracker {
         }
     }
     
+    // gets all the neurons from the master list
     private ArrayList<Neuron> getNeuronsFromMaster(){
         ArrayList<Neuron> neurons=new ArrayList<>();
         for(int i=0;i<master.size();i++)
@@ -76,6 +93,7 @@ public class HistoricalTracker {
         return neurons;
     }
     
+    // gets all the connections from the master list
     private ArrayList<Connection> getConnectionsFromMaster(){
         ArrayList<Connection> connections=new ArrayList<>();
         for(int i=0;i<master.size();i++)
@@ -86,13 +104,7 @@ public class HistoricalTracker {
     
     // getter methods
     public ArrayList<Node> getMaster(){return master;}
-    //public ArrayList<Node> getAddedNodes(){return addedNodes;}
-    public int getNextInnovation(){return nextInnovation;}
-    public int getNextSpecies(){return nextSpecies;}
     
     // setter methods
     public void setMaster(ArrayList<Node> param){master=param;}
-    //public void setAddedNodes(ArrayList<Node> param){addedNodes=param;}
-    public void setNextInnovation(int param){nextInnovation=param;}
-    public void setNextSpecies(int param){nextSpecies=param;}
 }

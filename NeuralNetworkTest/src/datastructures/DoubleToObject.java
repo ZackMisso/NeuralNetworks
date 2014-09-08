@@ -3,6 +3,7 @@
  * @author Zackary Misso
  * 
  */
+// THIS CLASS IS DEPRECIATED
 package datastructures;
 import java.util.ArrayList;
 public class DoubleToObject {

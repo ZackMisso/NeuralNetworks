@@ -19,6 +19,7 @@ public class CMDTester {
     private HistoricalTracker history;
     private Species species;
     private NeuralNetwork net;
+    private NeuralNetwork net2; // to test speciation distance
     private Scanner input;
     // TODO :: ADD SPECIES FUNCTIONALITY
     // TODO :: POSSIBLY ADD HISTORICALTRACKER FUNCTIONALITY

@@ -18,11 +18,13 @@ public class Connection extends Node{
         cache=0.0;
         weight=0.0;
         setInnovationNum(-1);
-        active=false;
+        active=true;
         recurrent=false;
     }
     
     public double calculateValue(){
+        if(!active)
+            return 0.0;
         if(getEvaluated())
             return getCache();
         setCache(giveNeuron.evaluate()*weight);
@@ -35,6 +37,10 @@ public class Connection extends Node{
 
     public void mutateWeight(RandomNumberGenerator rng){
         weight=rng.changeDouble(weight,true);
+    }
+    
+    public void crossover(Connection other){
+        // implement
     }
     
     public Connection makeCopy(ArrayList<Neuron> neurons,NeuralNetwork net){

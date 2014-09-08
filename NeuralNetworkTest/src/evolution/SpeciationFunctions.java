@@ -13,10 +13,12 @@ public class SpeciationFunctions {
 	public static final double THRESHOLD=10.0; // change as needed
 	public static final double weightConstant=.4; // change as needed
 
+    // returns if the two individuals are apart of the same species
 	public static boolean sameSpecies(NeuralNetwork one,NeuralNetwork two){
 		return findNetworkDistance(one,two)<THRESHOLD;
 	}
 
+    // calculates the theoretical "distance" between two individuals' phenotypes
     public static double findNetworkDistance(NeuralNetwork one,NeuralNetwork two){
     	ArrayList<Node> oneNodes=Node.sort(one.getAllNodes());
     	ArrayList<Node> twoNodes=Node.sort(two.getAllNodes());
@@ -49,7 +51,7 @@ public class SpeciationFunctions {
     	return distance;
     }
 
-    // this is always going to be less than .4 (to be changed)
+    // finds the distance between two of the same node
     public static double findNodeDistance(Node one,Node two){
     	if(one instanceof Neuron)
     		return findNeuronDistance((Neuron)one,(Neuron)two);
@@ -57,6 +59,7 @@ public class SpeciationFunctions {
     		return findConnectionDistance((Connection)one,(Connection)two);
     }
 
+    // finds the distance between two of the same neuron
     public static double findNeuronDistance(Neuron one,Neuron two){
     	double biasDistance=one.getBias()-two.getBias();
     	double maxDistance=GlobalConstants.MAX_WEIGHT_VALUE-GlobalConstants.MIN_WEIGHT_VALUE;
@@ -66,6 +69,7 @@ public class SpeciationFunctions {
     	return proportion/weightConstant;
     }
 
+    // finds the distance between two of the same connections
     public static double findConnectionDistance(Connection one,Connection two){
     	double weightDistance=one.getWeight()-two.getWeight();
     	double maxDistance=GlobalConstants.MAX_WEIGHT_VALUE-GlobalConstants.MIN_WEIGHT_VALUE;

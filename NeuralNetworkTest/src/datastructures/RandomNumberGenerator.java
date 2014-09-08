@@ -13,6 +13,7 @@ public class RandomNumberGenerator{
         random=new Random();
     }
 
+    // returns an integer whose absolute value is less than max
     public int getInt(int max,boolean canBeNeg){
         boolean neg=false;
         int num=0;
@@ -24,6 +25,8 @@ public class RandomNumberGenerator{
         return num;
     }
     
+    // returns an integer whose absolute value is less than max
+    // the integer can not be in the list
     public int getInt(int max,int[] not,boolean canBeNeg){
         boolean neg=false;
         int num=0;
@@ -41,12 +44,14 @@ public class RandomNumberGenerator{
         }
         return num;
     }
-
+    
+    // changes a double without going outside the globally set bounds
     public double changeDouble(double prev,boolean canBeNeg){
         return changeDouble(prev,GlobalConstants.MAX_WEIGHT_VALUE,GlobalConstants.MIN_WEIGHT_VALUE,canBeNeg);
     }
     
-    public double changeDouble(double prev,double max,double min,boolean canBeNeg){
+    // auxillary function for the changeDouble method
+    private double changeDouble(double prev,double max,double min,boolean canBeNeg){
         boolean neg=false;
         double change=0.0;
         if(canBeNeg)
@@ -64,18 +69,22 @@ public class RandomNumberGenerator{
         return change+prev;
     }
     
+    // creates a double between max and min
     public double initDouble(double max,double min){
-        return min+random.nextDouble()*max;
+        return min+random.nextDouble()*(max-min);
     }
-
+    
+    // creates a double between 1.0 and 0.0
     public double simpleDouble(){
         return random.nextDouble();
     }
     
+    // checks if a double is between two others
     private boolean doubleBounds(double num,double min,double max){
         return num>max||num<min;
     }
     
+    // checks if a specific integer is in a list
     private boolean intIn(int num,int[] list){
         if(list==null)
             return false;
@@ -85,6 +94,7 @@ public class RandomNumberGenerator{
         return false;
     }
     
+    // returns if a number will be negative
     public boolean isNegative(){
         return random.nextBoolean();
     }

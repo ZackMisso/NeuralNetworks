@@ -8,17 +8,16 @@ import evolution.species.Species;
 import java.util.ArrayList;
 import java.util.Random;
 public class EvolutionaryAlgorithm {
-    // TODO :: MAKE A GLOBAL RNG
-    private HistoricalTracker history;
-    private RandomNumberGenerator rng;
-    private ArrayList<Species> species;
-    private ArrayList<NeuralNetwork> networks;
-    private ArrayList<NeuralNetwork> bests;
-    private TestCases tests;
-    private int numberOfGenerations;
-    private int populationSize;
+    private HistoricalTracker history; // controls the origins of genes
+    private RandomNumberGenerator rng; // creates forms of random numbers
+    private ArrayList<Species> species; // the current species
+    private ArrayList<NeuralNetwork> networks; // the current networks (will be removed soon)
+    private ArrayList<NeuralNetwork> bests; // the list of best networks
+    private TestCases tests; // the tests
+    private int numberOfGenerations; // number of generations (should be global)
+    private int populationSize; // population size (should be global)
     
-    public EvolutionaryAlgorithm(){
+    public EvolutionaryAlgorithm(){ // default constructor
         history=new HistoricalTracker();
         rng=new RandomNumberGenerator();
         species=new ArrayList<>();
@@ -37,18 +36,21 @@ public class EvolutionaryAlgorithm {
         }
     }
     
+    // a unit test for the initializeFirstGeneration method
     private void initializeFirstGenerationTest(){
         species.add(new Species());
         species.get(0).setMaxAllowed(populationSize);
         species.get(0).initFromStart();
     }
     
-    // possibly change this to allow for different set-ups
+    // initializes the first generation of individuals
     private void initializeFirstGeneration(){
         for(int i=0;i<populationSize;i++)
             networks.add(new NeuralNetwork());
     }
     
+    // unit test for run XORExperiment method
+    // this is currently an attempt to implement speciation
     private void runXORExperimentTest(){
         NeuralNetwork totalBest=new NeuralNetwork();
         XORTest test=tests.getXORTest();
@@ -56,7 +58,7 @@ public class EvolutionaryAlgorithm {
             ArrayList<NeuralNetwork> deviated=new ArrayList<>();
             ArrayList<Species> newSpecies=new ArrayList<>();
             for(int f=0;f<species.size();f++){
-                for(int g=0;g<species.get(f).getIndividuals().size();g++){ // HEAVIEST LOOP For Simulation
+                for(int g=0;g<species.get(f).getIndividuals().size();g++){
                     tests.runXORTests(species.get(f).getIndividuals().get(g));
                 }
                 ArrayList<NeuralNetwork> temp=species.get(f).checkDeviation();
@@ -64,22 +66,17 @@ public class EvolutionaryAlgorithm {
                     deviated.add(temp.get(g));
                 species.get(f).setAge(species.get(f).getAge()+1);
             }
-            // Can make this seperate function
             for(int f=0;f<deviated.size();f++){
                 boolean foundFit=false;
-                for(int g=0;g<species.size()&&!foundFit;g++){
-                    if(species.get(g).belongs(deviated.get(f))){
+                for(int g=0;g<species.size()&&!foundFit;g++)
+                    if(species.get(g).belongs(deviated.get(f)))
                         foundFit=true;
-                    }
-                }
-                for(int g=0;g<newSpecies.size()&&!foundFit;g++){
-                    if(newSpecies.get(g).belongs(deviated.get(f))){
+                for(int g=0;g<newSpecies.size()&&!foundFit;g++)
+                    if(newSpecies.get(g).belongs(deviated.get(f)))
                         foundFit=true;
-                    }
-                }
                 if(!foundFit){
                     Species add=new Species(deviated.get(f));
-                    //add.setSpeciesNum();
+                    add.setSpeciesNum(history.nextSpecies());
                     newSpecies.add(add);
                 }
             }
@@ -108,6 +105,7 @@ public class EvolutionaryAlgorithm {
         }
     }
     
+    // the "main" loop.
     private void runXORExperiment(){
         System.out.println("Starting XOR Test\n\n");
         NeuralNetwork totalBest=new NeuralNetwork();
@@ -116,12 +114,8 @@ public class EvolutionaryAlgorithm {
         boolean chk=true;
         for(int i=0;i<numberOfGenerations&&chk;i++){
             ArrayList<NeuralNetwork> newList=new ArrayList<>();
-            for(f=0;f<networks.size();f++){
-                //System.out.println("DEBUG 3");
+            for(f=0;f<networks.size();f++)
                 tests.runXORTests(networks.get(f));
-                //System.out.println("DEBUG 2");
-            }
-            //System.out.println("DEBUG 1");
             networks=sortNetworksByFitness(networks);
             bests.add(networks.get(0));
             if(networks.get(0).getFitness()==4.0){
@@ -136,25 +130,16 @@ public class EvolutionaryAlgorithm {
                 networks.get(f).mutate();
                 newList.add(networks.get(f).copy());
                 newList.add(networks.get(f).copy());
-                //System.out.println(networks.get(f).getNeurons().size());
-                // Add in crossover functionality
             }
-            //for(f=0;f<networks.size();f++){
-            //    networks.get(f).mutate();
-            //    System.out.println(networks.get(f).getNeurons().size());
-            //    newList.add(networks.get(f));
-            //}
             if(networks.size()!=newList.size())
                 System.out.println("Error :: Size Mismatch :: EvolutionaryAlgorithm");
             networks=newList;
             System.out.println("Generation "+i+" Over :: Best "+bests.get(bests.size()-1).getFitness());
-            // continue implementation
         }
-        new CMDTester(totalBest);
-        //System.out.println(totalBest);
+        new CMDTester(totalBest); // command line debugger
     }
     
-    // this is going to be Merge Sort, possibly implement others later
+    // MergeSort
     private ArrayList<NeuralNetwork> sortNetworksByFitness(ArrayList<NeuralNetwork> nets){
         if(nets.size()==1)
             return nets;
@@ -170,7 +155,7 @@ public class EvolutionaryAlgorithm {
         return merge(one,two);
     }
     
-    // merge for te merge sort
+    // merge for the merge sort
     private ArrayList<NeuralNetwork> merge(ArrayList<NeuralNetwork> one,ArrayList<NeuralNetwork> two){
         ArrayList<NeuralNetwork> merged=new ArrayList<>();
         while(!one.isEmpty()&&!two.isEmpty()){
@@ -184,10 +169,6 @@ public class EvolutionaryAlgorithm {
                     merged.add(one.remove(0));
                 else
                     merged.add(two.remove(0));
-                //if(one.get(0).size()>two.get(0).size())
-                    //merged.add(one.remove(0));
-                //else
-                    //merged.add(two.remove(0));
             }
         }
         while(!one.isEmpty())

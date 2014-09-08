@@ -3,6 +3,7 @@
  * @author Zackary Misso
  * 
  */
+// THIS CLASS IS DEPRECIATED
 package datastructures;
 public class IntToObject {
     private int value;

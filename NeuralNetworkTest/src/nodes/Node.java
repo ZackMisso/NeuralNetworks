@@ -33,6 +33,15 @@ public abstract class Node {
         return merge(one,two);
     }
     
+    public boolean isSame(Node other){
+        if(other instanceof Neuron&&this instanceof Neuron)
+            return ((Neuron)other).isSameNeuron((Neuron)this);
+        else if(other instanceof Connection&&this instanceof Connection)
+            return ((Connection)other).isSameConnection((Connection)this);
+        else
+            return false;
+    }
+    
     public static ArrayList<Node> merge(ArrayList<Node> one,ArrayList<Node> two){
         ArrayList<Node> merged=new ArrayList<>();
         while(!one.isEmpty()&&!two.isEmpty()){
@@ -55,6 +64,22 @@ public abstract class Node {
         for(int i=0;i<ns.size();i++)
             nodes.add(ns.get(i));
         return nodes;
+    }
+    
+    public static ArrayList<Connection> getConnections(ArrayList<Node> list){
+        ArrayList<Connection> cons=new ArrayList<>();
+        for(int i=0;i<list.size();i++)
+            if(list.get(i)instanceof Connection)
+                cons.add((Connection)list.get(i));
+        return cons;
+    }
+    
+    public static ArrayList<Neuron> getNeurons(ArrayList<Node> list){
+        ArrayList<Neuron> ns=new ArrayList<>();
+        for(int i=0;i<list.size();i++)
+            if(list.get(i)instanceof Neuron)
+                ns.add((Neuron)list.get(i));
+        return ns;
     }
     
     // getter methods

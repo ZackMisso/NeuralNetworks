@@ -13,7 +13,7 @@ public class Species{
     private double averageFitness;
     private int maxAllowed;
     private int speciesNum;
-    private int age; // in generations
+    private int age;
     
     public Species(){
         nets=new ArrayList<>();
@@ -36,7 +36,7 @@ public class Species{
         Random random=new Random();
         for(int i=0;i<nets.size();i++){
             double mORc=random.nextDouble();
-            if(mORc>.5)
+            if(mORc>.5) // possibly make this global
                 crossover(nets.get(i),random);
             else
                 nets.get(i).copyAndMutate();
@@ -64,11 +64,11 @@ public class Species{
     }
     
     public boolean shouldDie(){
-        return nets.size()==1;
+        return age>10&&nets.size()<=5;
     }
     
     public boolean belongs(NeuralNetwork net){
-        if(SpeciationFunctions.findNetworkDistance(net,nets.get(0))<SpeciationFunctions.THRESHOLD){
+        if(SpeciationFunctions.sameSpecies(net,nets.get(0))){
             nets.add(net);
             return true;
         }
