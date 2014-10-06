@@ -62,6 +62,12 @@ public class Connection extends Node{
         return copy;
     }
     
+    public Connection makeCopy(){
+        Connection copy=new Connection();
+        // implmeent maybe
+        return copy;
+    }
+    
     public boolean isSameConnection(Connection other){
         if(giveNeuron.getInnovationNum()==other.getGiveNeuron().getInnovationNum())
             if(recieveNeuron.getInnovationNum()==other.getRecieveNeuron().getInnovationNum())

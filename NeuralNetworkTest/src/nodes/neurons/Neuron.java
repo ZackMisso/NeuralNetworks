@@ -11,7 +11,7 @@ public abstract class Neuron extends Node{
     //private Neuron initOutput; // what
     private double threshold;
     private double bias;
-    private int connectionCreated; // possibly use this for speciation
+    private int connectionCreated; // ignore this
     private int depth;
     
     public Neuron(){
@@ -121,7 +121,7 @@ public abstract class Neuron extends Node{
         return neuron;
     }
     
-    // I DONT KNOW HOW TO IMPLEMENT THIS YET
+    // IGNORE
     public boolean isSameNeuron(Neuron other){
         //boolean outputs=false;
         //boolean inputs=false;

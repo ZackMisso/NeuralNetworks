@@ -27,12 +27,16 @@ public class Species{
         nets.add(base);
     }
     
-    public void mutate(){
+    public void mutate(){ // TODO :: Pass in RNG
+        // sort the individuals in the species based on fitness
         nets=NeuralNetwork.sort(nets);
+        // remove an individual if there are too many
         while(nets.size()>maxAllowed)
             nets.remove(nets.size()-1);
+        // add an individual if there are too few
         while(nets.size()<maxAllowed)
             nets.add(nets.get(0).copyAndMutate());
+        // mutate every one
         Random random=new Random();
         for(int i=0;i<nets.size();i++){
             double mORc=random.nextDouble();
@@ -45,9 +49,15 @@ public class Species{
     
     public void crossover(NeuralNetwork net,Random random){
         NeuralNetwork other;
+        // find the other individual
         do{
             other=nets.get(random.nextInt(nets.size()));
+            if(nets.size()==1){
+                System.out.println("MAJOR ERROR :: ONLY ONE INDIVIDUAL IN THE SPECIES :: Species");
+                System.exit(0);
+            }
         }while(other!=net);
+        // calls the neural network's crossover function
         net=net.crossOver(other);
     }
     

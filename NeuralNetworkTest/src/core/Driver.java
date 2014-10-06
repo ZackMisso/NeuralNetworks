@@ -2,7 +2,7 @@ package core;
 import evolution.EvolutionaryAlgorithm;
 import experiments.GuaranteedXORTest;
 import experiments.TestClass;
-import experiments.CMDTester;
+import testtools.CMDTester;
 public class Driver{
     public Driver(){
         new EvolutionaryAlgorithm();

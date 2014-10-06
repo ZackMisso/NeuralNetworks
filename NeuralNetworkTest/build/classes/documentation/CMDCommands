@@ -11,3 +11,16 @@ rg :: replicates a generation (NOT AVAILABLE YET)
 test :: tests the network on the XOR test
 rwc :: replaces the current network with its exact copy
 cnn :: creates, or recreates, the neural network
+// to be implemented
+db :: distance between two neurons in a species
+sf :: set fitness
+sws :: switch species
+crs :: create species
+crn :: create network
+swn :: switch network
+fmi :: fork and mutate individual (copy and mutate, and replaces)
+ci :: crossover individuals
+arc :: adds a recurrent connection
+arlc :: adds a recurrent connection between two separate neurons
+ssm :: switch to species mode
+snm :: switch to network mode

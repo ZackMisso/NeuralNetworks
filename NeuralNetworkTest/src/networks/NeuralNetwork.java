@@ -9,8 +9,12 @@ import nodes.neurons.Neuron_Add;
 import nodes.connections.Connection;
 import experiments.Test;
 import evolution.GlobalConstants;
+import evolution.SpeciationFunctions;
+import testtools.CMDTester;
 import datastructures.RandomNumberGenerator;
+import datastructures.NodeToNode;
 import java.util.ArrayList;
+import java.util.Random;
 public class NeuralNetwork {
     private ArrayList<Node> nodes; // reference to all the nodes
     // TODO :: replace the bottom two with the one above
@@ -75,30 +79,31 @@ public class NeuralNetwork {
                 makeConnection(ins.get(i),outs.get(f));
     }
     
-    public void testMutate(){
-        Node node=nodes.get(rng.getInt(nodes.size(),false));
-        double weight=rng.simpleDouble();
-        if(node instanceof Neuron){
-            // implement Neuron mutations
-            Neuron neuron=(Neuron)node;
-            if(weight<.9){
-                neuron.mutateBias(rng);
-            }else{
-                double chk=rng.simpleDouble();
-                
-                // implement
-            }
-        }else{
-            // implement Connection mutations
-            Connection connection=(Connection)node;
-            if(weight<.9){
-                connection.mutateWeight(rng);
-            }else{
-                double chk=rng.simpleDouble();
-                // implement
-            }
-        }
-    }
+// Temporarily Depreciated
+//    public void testMutate(){
+//        Node node=nodes.get(rng.getInt(nodes.size(),false));
+//        double weight=rng.simpleDouble();
+//        if(node instanceof Neuron){
+//            // implement Neuron mutations
+//            Neuron neuron=(Neuron)node;
+//            if(weight<.9){
+//                neuron.mutateBias(rng);
+//            }else{
+//                double chk=rng.simpleDouble();
+//                
+//                // implement
+//            }
+//        }else{
+//            // implement Connection mutations
+//            Connection connection=(Connection)node;
+//            if(weight<.9){
+//                connection.mutateWeight(rng);
+//            }else{
+//                double chk=rng.simpleDouble();
+//                // implement
+//            }
+//        }
+//    }
     
     // controls the mutation of the neural network
     public void mutate(){
@@ -297,24 +302,50 @@ public class NeuralNetwork {
         nodes.remove(connection);
     }
     
+    // This method handles the cross over part of evolution
     public NeuralNetwork crossOver(NeuralNetwork other){
-        // implement
-        return null;
+        NeuralNetwork newNetwork=new NeuralNetwork();
+        ArrayList<NodeToNode> similar=SpeciationFunctions.getSimilarNodes(this,other);
+        ArrayList<Node> newNodes=new ArrayList<>();
+        boolean hasBetterFitness=fitness>other.getFitness();
+        Random random=new Random();
+        for(int i=0;i<similar.size();i++){
+            if(similar.get(i).getTwo()!=null){
+                if(random.nextDouble()>.78){
+                    newNodes.add(similar.get(i).mix());
+                }else{
+                    if(hasBetterFitness)
+                        newNodes.add(similar.get(i).getOne());
+                    else
+                        newNodes.add(similar.get(i).getTwo());
+                }
+            }else
+                newNodes.add(similar.get(i).getOne());
+        }
+        newNetwork.setAllNodes(newNodes);
+        return newNetwork;
     }
     
     public ArrayList<Double> run(Test param){
-        ArrayList<OutputNeuron> outputs=findOutputs();
-        ArrayList<InputNeuron> inputs=findInputs();
-        ArrayList<Double> results=new ArrayList<>();
-        for(int i=0;i<param.getInputs().size();i++){
-            inputs.get(i).setInput(param.getInputs().get(i));
+        try{
+            ArrayList<OutputNeuron> outputs=findOutputs();
+            ArrayList<InputNeuron> inputs=findInputs();
+            ArrayList<Double> results=new ArrayList<>();
+            for(int i=0;i<param.getInputs().size();i++){
+                inputs.get(i).setInput(param.getInputs().get(i));
+            }
+            for(int i=0;i<outputs.size();i++){
+                outputs.get(i).evaluate();
+                results.add(outputs.get(i).getOutput());
+            }
+            nextGeneration();
+            return results;
+        }catch(StackOverflowError e){
+            System.out.println("STACK OVERFLOW");
+            new CMDTester(this);
+            System.exit(0);
+            return null;
         }
-        for(int i=0;i<outputs.size();i++){
-            outputs.get(i).evaluate();
-            results.add(outputs.get(i).getOutput());
-        }
-        nextGeneration();
-        return results;
     }
 
     public NeuralNetwork copy(){
@@ -364,6 +395,7 @@ public class NeuralNetwork {
         return null;
     }
     
+    // a merge sort to sort a list of neural networks by their fitness
     public static ArrayList<NeuralNetwork> sort(ArrayList<NeuralNetwork> net){
         ArrayList<NeuralNetwork> one=new ArrayList<>();
         ArrayList<NeuralNetwork> two=new ArrayList<>();
@@ -411,6 +443,22 @@ public class NeuralNetwork {
             nodes.add(connections.get(i));
         return nodes;
     }
+
+    // this method sets all of the nodes in the network
+    public void setAllNodes(ArrayList<Node> list){
+        // first clear all current nodes
+        nodes.clear();
+        neurons.clear();
+        connections.clear();
+        // now add all of the new nodes to their respective lists
+        for(int i=0;i<list.size();i++){
+            if(list.get(i)instanceof Neuron)
+                neurons.add((Neuron)list.get(i));
+            if(list.get(i)instanceof Connection)
+                connections.add((Connection)list.get(i));
+            nodes.add(list.get(i));
+        }
+    }
     
     public void reset(){
         for(int i=0;i<neurons.size();i++)
@@ -430,6 +478,7 @@ public class NeuralNetwork {
     }
     
     // getter methods
+    public ArrayList<Node> getNodes(){return nodes;}
     public ArrayList<Neuron> getNeurons(){return neurons;}
     public ArrayList<Connection> getConnections(){return connections;}
     public ArrayList<Integer> getInputs(){return inputs;}

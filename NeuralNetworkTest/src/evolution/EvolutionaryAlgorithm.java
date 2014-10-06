@@ -3,7 +3,7 @@ import networks.NeuralNetwork;
 import datastructures.RandomNumberGenerator;
 import experiments.XORTest;
 import experiments.TestCases;
-import experiments.CMDTester;
+import testtools.CMDTester;
 import evolution.species.Species;
 import java.util.ArrayList;
 import java.util.Random;
@@ -52,57 +52,79 @@ public class EvolutionaryAlgorithm {
     // unit test for run XORExperiment method
     // this is currently an attempt to implement speciation
     private void runXORExperimentTest(){
-        NeuralNetwork totalBest=new NeuralNetwork();
-        XORTest test=tests.getXORTest();
-        for(int i=0;i<numberOfGenerations;i++){
+        NeuralNetwork totalBest=new NeuralNetwork(); // best neural network
+        XORTest test=tests.getXORTest(); // contains the test cases
+        for(int i=0;i<numberOfGenerations;i++){ // for each generation
+            // Create temporary lists to hold any new species and deviated nets
             ArrayList<NeuralNetwork> deviated=new ArrayList<>();
             ArrayList<Species> newSpecies=new ArrayList<>();
+            // for each species
             for(int f=0;f<species.size();f++){
+                // run the tests to get each individuals fitness
                 for(int g=0;g<species.get(f).getIndividuals().size();g++){
                     tests.runXORTests(species.get(f).getIndividuals().get(g));
                 }
+                // gets the list of individuals who no longer belong to this species
                 ArrayList<NeuralNetwork> temp=species.get(f).checkDeviation();
+                // add those individuals to the deviated list
                 for(int g=0;g<temp.size();g++)
                     deviated.add(temp.get(g));
+                // increments the species age
                 species.get(f).setAge(species.get(f).getAge()+1);
             }
+            // for all of the deviated individuals
             for(int f=0;f<deviated.size();f++){
                 boolean foundFit=false;
+                // check if the individual belongs in a current species
                 for(int g=0;g<species.size()&&!foundFit;g++)
                     if(species.get(g).belongs(deviated.get(f)))
                         foundFit=true;
+                // check if the individual belongs in a newly added species
                 for(int g=0;g<newSpecies.size()&&!foundFit;g++)
                     if(newSpecies.get(g).belongs(deviated.get(f)))
                         foundFit=true;
+                // if not make a new species
                 if(!foundFit){
                     Species add=new Species(deviated.get(f));
                     add.setSpeciesNum(history.nextSpecies());
                     newSpecies.add(add);
                 }
             }
+            // add all the new species to the list of all species
             for(int f=0;f<newSpecies.size();f++)
                 species.add(newSpecies.get(f));
             double sum=0.0;
             int chk=0;
+            // gets the sum of the average fitness of all species
             for(int f=0;f<species.size();f++){
                 species.get(f).calculateAverageFitness();
                 sum+=species.get(f).getAverageFitness();
             }
+            // sets the allowed population size to a proportion of its average fitness to the sum
             for(int f=0;f<species.size();f++){
                 double proportion=species.get(f).getAverageFitness()/sum;
                 species.get(f).setMaxAllowed((int)(proportion*populationSize));
                 chk++;
             }
+            // THIS SHOULD NOT HAPPEN, just a warning if it goes wrong
             if(chk>populationSize)
                 System.out.println("OVERPOPULATION!!!");
+            // hack for under population
             while(chk<populationSize){
                 species.get(0).setMaxAllowed(species.get(0).getMaxAllowed()+1);
                 chk++;
             }
+            // mutates each species
             for(int f=0;f<species.size();f++){
                 species.get(f).mutate();
             }
         }
+        // Debugging code
+        species=Species.sort(species);
+        System.out.println(species.get(0).getAverageFitness());
+        System.out.println(species.get(species.size()-1).getAverageFitness());
+        // Final test (need to implement functionality)
+        new CMDTester(species.get(0));
     }
     
     // the "main" loop.

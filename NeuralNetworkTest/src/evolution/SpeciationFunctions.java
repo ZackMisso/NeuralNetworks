@@ -8,10 +8,60 @@ import networks.NeuralNetwork;
 import nodes.Node;
 import nodes.neurons.Neuron;
 import nodes.connections.Connection;
+import datastructures.NodeToNode;
 import java.util.ArrayList;
 public class SpeciationFunctions {
 	public static final double THRESHOLD=10.0; // change as needed
 	public static final double weightConstant=.4; // change as needed
+ 
+// Temporarily Depreciated
+//    // returns a list of the same nodes
+//    public static ArrayList<Integer> similarNodes(NeuralNetwork one,NeuralNetwork two){
+//        ArrayList<Integer> nodes=new ArrayList<>();
+//        ArrayList<Node> oneNodes=Node.sort(one.getAllNodes());
+//        ArrayList<Node> twoNodes=Node.sort(two.getAllNodes());
+//        int i=0;
+//        int f=0;
+//        
+//        return null;
+//    }
+
+    // returns the list of nodes that have the same innovation between two networks
+    public static ArrayList<NodeToNode> getSimilarNodes(NeuralNetwork one,NeuralNetwork two){
+        // TODO :: Test this method
+        // get both individual's genes
+        ArrayList<Node> oneNodes=one.getAllNodes();
+        ArrayList<Node> twoNodes=two.getAllNodes();
+        ArrayList<Node> oneExtra=new ArrayList<>();
+        ArrayList<Node> twoExtra=new ArrayList<>();
+        ArrayList<NodeToNode> nodes=new ArrayList<>();
+        // sort the two lists of genes
+        Node.sort(oneNodes);
+        Node.sort(twoNodes);
+        int i=0;
+        int f=0;
+        while(i!=oneNodes.size()||f!=twoNodes.size()){
+            if(oneNodes.get(i).getInnovationNum()==twoNodes.get(f).getInnovationNum()){
+                //i++;
+                //f++;
+                nodes.add(new NodeToNode(oneNodes.get(i++),twoNodes.get(f++)));
+            }
+            else if(oneNodes.get(i).getInnovationNum()<twoNodes.get(f).getInnovationNum()){
+                oneExtra.add(oneNodes.get(i++));
+            }
+            else{
+                twoExtra.add(twoNodes.get(f++));
+            }
+        }
+        // add in the extra nodes of the individual with the greater fitness
+        if(one.getFitness()>two.getFitness())
+            for(i=0;i<oneExtra.size();i++)
+                nodes.add(new NodeToNode(oneExtra.get(i),null));
+        else
+            for(f=0;f<twoExtra.size();f++)
+                nodes.add(new NodeToNode(twoExtra.get(f),null));
+        return nodes;
+    }
 
     // returns if the two individuals are apart of the same species
 	public static boolean sameSpecies(NeuralNetwork one,NeuralNetwork two){
