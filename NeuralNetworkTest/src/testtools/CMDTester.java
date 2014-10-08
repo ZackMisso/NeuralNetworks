@@ -132,6 +132,105 @@ public class CMDTester {
                 System.out.println("Recreating NeuralNetwork");
                 recreateNeuralNetwork();
             }
+            if(in.equals("db")){ // needs to be tested
+                if(networkMode)
+                    System.out.println("The distance betwrrn the two networks is :: "+distanceBetween(net,net2));
+                else{
+                    System.out.println("There are "+currentSpecies.size()+" individuals");
+                    int i;
+                    int i2;
+                    System.out.print("What is the first one? :: ");
+                    i=in.nextInt();
+                    System.out.print("What is the second one? :: ");
+                    i2=in.nextInt();
+                    double distance=distanceBetween(currentSpecies.getIndividuals.get(i),currentSpecies.getIndividuals().get(i2));
+                    System.out.println("The Distance is :: "+distance);
+                }
+            }
+            if(in.equals("sf")){ // needs to be tested
+                System.out.println("What would you like the new fitness to be :: ");
+                double fit=in.nextDouble();
+                setFitness(fit);
+                System.out.println("The current network's fitness is now :: "+distance);
+            }
+            if(in.equals("sws")){ // needs to be tested
+                System.out.println("Switching Species");
+                switchSpecies();
+            }
+            if(in.equals("crs")){
+                // implement
+            }
+            if(in.equals("crn")){
+                // implement
+            }
+            if(in.equals("swn")){
+                // implement
+            }
+            if(in.equals("fmi")){ // needs to be tested
+                if(networkMode){
+                    System.out.print("What network would you like to fork :: ");
+                    int i=in.nextInt();
+                    forkAndMutate(i);
+                }else{
+                    System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" individuals");
+                    System.out.print("Which individual would you like to copy :: ");
+                    int i=in.nextInt();
+                    forkAndMutate(i);
+                }
+            }
+            if(in.equals("ci")){ // needs to be tested
+                if(networkMode){
+                    System.out.println("Crossing over both networks");
+                    crossoverIndividuals(0,1);
+                }else{
+                    System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" individuals");
+                    int i;
+                    int i2;
+                    System.out.print("What is the first one you would like to crossover ::");
+                    i=in.nextInt();
+                    System.out.print("What is the second one you would like to crossover :: ");
+                    i2=in.nextInt();
+                    System.out.println("Crossing over individuals");
+                    crossoverIndividuals(i,i2);
+                    System.out.println("The current individual is the child");
+                }
+            }
+            if(in.equals("arc")){
+                // implement
+            }
+            if(in.equals("arlc")){
+                // implement
+            }
+            if(in.equals("ssm")){ // needs to be tested
+                System.out.println("Switching to species mode");
+                switchToSpeciesMode();
+            }
+            if(in.equals("snm")){ // needs to be tested
+                System.out.println("Switching to network mode");
+                switchToNetworkMode();
+            }
+            if(in.equals("snn1")){ // needs to be tested
+                System.out.println("Setting the current network to net 1");
+                setNetworkToNet1();
+            }
+            if(in.equals("snn2")){ // needs to be tested
+                System.out.println("Setting the current network to net 2");
+                setNetworkToNet2();
+            }
+            if(in.equals("ssnn")){ // needs to be tested
+                System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" individuals");
+                System.out.print("What network would you like to replace with the current one :: ");
+                int i=in.nextInt();
+                setSToNetwork(i);
+            }
+            if(in.equals("sn1n")){ // needs to be tested
+                System.out.println("Setting net 1 to the current network");
+                setNet1ToNetwork();
+            }
+            if(in.equals("sn2n")){
+                System.out.println("Setting net 2 to the current network");
+                setNet2ToNetwork();
+            }
             // implement more as needed
     	}
     }
@@ -374,10 +473,29 @@ public class CMDTester {
     
     // copies and mutates the current network
     private void forkAndMutate(int network){
-        // implement
+        NeuralNetork tempNet;
+        if(speciesMode){
+            tempNet=currentSpecies.getIndividuals().get(network);
+        }
+        if(networkMode){
+            if(network==0)
+                tempNet=net;
+            else
+                tempNet=net2;
+        }
+        tempNet=tempNet.copyAndMutate();
+        if(speciesMode){
+            currentSpecies.getIndividuals().get(network)=tempNet;
+        }
+        if(networkMode){
+            if(network==0)
+                net=tempNet;
+            else
+                net2=tempNet;
+        }
     }
     
-    // crossover two individuals
+    // crossover two individuals and sets the current network to the result
     private void crossoverIndividuals(int one,int two){
         // implement
     }
@@ -394,12 +512,41 @@ public class CMDTester {
     
     // switches to Species mode
     private void switchToSpeciesMode(){
-        // implement
+        speciesMode=true;
+        networkMode=false;
     }
     
     // swiches to network mode
     private void switchToNetworkMode(){
-        // implement
+        networkMode=false;
+        speciesMode=true;
+    }
+
+    // sets net to the current network
+    private void setNetworkToNet1(){
+        currentNetwork=net;
+    }
+
+    // sets the current network to net2
+    private void setNetworkToNet2(){
+        currentNetwork=net2;
+    }
+
+    // sets the current network to the individual in the current species
+    private void setSToNetwork(int network){
+        if(speciesMode){
+            currentSpecies.getIndividuals().get(network)=currentNetwork;
+        }
+    }
+
+    // sets net to the current network
+    private void setNet1ToNetwork(){
+        net=currentNetwork;
+    }
+
+    // sets net2 to the current network
+    private void setNet2ToNetwork(){
+        net2=network;
     }
 
     // Deprecated :: Zack

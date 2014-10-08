@@ -1,3 +1,6 @@
+add :: means it is not fully implemented yet
+test :: means it is done, but it needs to be tested
+
 dn :: displays network information
 dni :: displays neuron information
 dci :: displays connection information
@@ -10,17 +13,22 @@ rc :: removes a connection
 rg :: replicates a generation (NOT AVAILABLE YET)
 test :: tests the network on the XOR test
 rwc :: replaces the current network with its exact copy
-cnn :: creates, or recreates, the neural network
+add :: rnn :: creates, or recreates, the neural network
 // to be implemented
-db :: distance between two neurons in a species
-sf :: set fitness
-sws :: switch species
-crs :: create species
-crn :: create network
-swn :: switch network
-fmi :: fork and mutate individual (copy and mutate, and replaces)
-ci :: crossover individuals
-arc :: adds a recurrent connection
-arlc :: adds a recurrent connection between two separate neurons
-ssm :: switch to species mode
-snm :: switch to network mode
+test :: db :: distance between two neurons in a species
+test :: sf :: set fitness
+test :: sws :: switch species
+add :: crs :: create species
+add :: crn :: create network
+add :: swn :: switch network
+test :: fmi :: fork and mutate individual (copy and mutate, and replaces)
+test :: ci :: crossover individuals
+add :: arc :: adds a recurrent connection
+add :: arlc :: adds a recurrent connection between two separate neurons
+test :: ssm :: switch to species mode
+test :: snm :: switch to network mode
+test :: snn1 :: set current network to net 1
+test :: snn2 :: set current network to net 2
+test :: ssnn :: set the species network to current network
+test :: sn1n :: set net 1 to current network
+test :: sn2n :: set net 2 to current network
