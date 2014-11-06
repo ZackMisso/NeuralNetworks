@@ -11,8 +11,11 @@ import nodes.connections.Connection;
 import datastructures.NodeToNode;
 import java.util.ArrayList;
 public class SpeciationFunctions {
-	public static final double THRESHOLD=10.0; // change as needed
+	public static final double THRESHOLD=20.0; // change as needed
 	public static final double weightConstant=.4; // change as needed
+    
+    //public static ArrayList<Integer> connectionNums=new ArrayList<>();
+    //public static ArrayList<Integer> neuronNums=new ArrayList<>();
  
 // Temporarily Depreciated
 //    // returns a list of the same nodes
@@ -32,8 +35,8 @@ public class SpeciationFunctions {
         // get both individual's genes
         ArrayList<Node> oneNodes=one.getAllNodes();
         ArrayList<Node> twoNodes=two.getAllNodes();
-        ArrayList<Node> oneExtra=new ArrayList<>();
-        ArrayList<Node> twoExtra=new ArrayList<>();
+        //ArrayList<Node> oneExtra=new ArrayList<>();
+        //ArrayList<Node> twoExtra=new ArrayList<>();
         ArrayList<NodeToNode> nodes=new ArrayList<>();
         // sort the two lists of genes
         Node.sort(oneNodes);
@@ -47,19 +50,22 @@ public class SpeciationFunctions {
                 nodes.add(new NodeToNode(oneNodes.get(i++),twoNodes.get(f++)));
             }
             else if(oneNodes.get(i).getInnovationNum()<twoNodes.get(f).getInnovationNum()){
-                oneExtra.add(oneNodes.get(i++));
+                //oneExtra.add(oneNodes.get(i++));
+                i++;
             }
             else{
-                twoExtra.add(twoNodes.get(f++));
+                //twoExtra.add(twoNodes.get(f++));
+                f++;
             }
         }
+        //System.out.println(nodes.size());
         // add in the extra nodes of the individual with the greater fitness
-        if(one.getFitness()>two.getFitness())
-            for(i=0;i<oneExtra.size();i++)
-                nodes.add(new NodeToNode(oneExtra.get(i),null));
-        else
-            for(f=0;f<twoExtra.size();f++)
-                nodes.add(new NodeToNode(twoExtra.get(f),null));
+        //if(one.getFitness()>two.getFitness())
+        //    for(i=0;i<oneExtra.size();i++)
+        //        nodes.add(new NodeToNode(oneExtra.get(i),null));
+        //else
+        //    for(f=0;f<twoExtra.size();f++)
+        //        nodes.add(new NodeToNode(twoExtra.get(f),null));
         return nodes;
     }
 
@@ -77,7 +83,7 @@ public class SpeciationFunctions {
     	int f=0;
     	int oneIn=oneNodes.get(i).getInnovationNum();
     	int twoIn=twoNodes.get(i).getInnovationNum();
-    	while(i!=oneNodes.size()&&f!=twoNodes.size()){
+    	while(i!=oneNodes.size()-1&&f!=twoNodes.size()-1){ // causing out of bounds exception
     		if(oneIn==twoIn){
     			distance+=findNodeDistance(oneNodes.get(i),twoNodes.get(f));
     			oneIn=oneNodes.get(++i).getInnovationNum();
@@ -103,10 +109,17 @@ public class SpeciationFunctions {
 
     // finds the distance between two of the same node
     public static double findNodeDistance(Node one,Node two){
-    	if(one instanceof Neuron)
-    		return findNeuronDistance((Neuron)one,(Neuron)two);
-    	else
-    		return findConnectionDistance((Connection)one,(Connection)two);
+        //try{
+            if(one instanceof Neuron)
+            	return findNeuronDistance((Neuron)one,(Neuron)two);
+            else
+                return findConnectionDistance((Connection)one,(Connection)two);
+        
+        // There is an error here that needs to be fixed
+        // neurons are being cast to Connections for whatever reason
+            
+        //}catch(ClassCastException e){System.out.println(one.getInnovationNum());System.exit(0);}
+        //return 0.0;
     }
 
     // finds the distance between two of the same neuron

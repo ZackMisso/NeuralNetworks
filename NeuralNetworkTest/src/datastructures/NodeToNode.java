@@ -38,19 +38,21 @@ public class NodeToNode {
     
     // returns a cross between the two connections
     public Node connectionMix(){
+        //System.out.println("Connection is mixing :: NodeToNode");
         Connection newConnection=new Connection();
         Connection oneC=(Connection)one;
         Connection twoC=(Connection)two;
         Random random=new Random();
-        newConnection.setInnovationNum(one.getInnovationNum());
-        if(oneC.getGiveNeuron()!=twoC.getGiveNeuron()){
-            System.out.println("Connections dont have the same input :: NodeToNode");
-        }
-        if(twoC.getRecieveNeuron()!=oneC.getRecieveNeuron()){
-            System.out.println("Connections dont have the same output :: NodeToNode");
-        }
+        //newConnection.setInnovationNum(one.getInnovationNum());
+        //if(oneC.getGiveNeuron().getInnovationNum()!=twoC.getGiveNeuron().getInnovationNum()){
+        //    System.out.println("Connections dont have the same input :: NodeToNode");
+        //}
+        //if(twoC.getRecieveNeuron().getInnovationNum()!=oneC.getRecieveNeuron().getInnovationNum()){
+        //    System.out.println("Connections dont have the same output :: NodeToNode");
+        //}
         newConnection.setGiveNeuron(oneC.getGiveNeuron());
         newConnection.setRecieveNeuron(oneC.getRecieveNeuron());
+        newConnection.setInnovationNum(oneC.getInnovationNum());
         // set active
         double test=random.nextDouble();
         if(test>.5)
@@ -64,13 +66,14 @@ public class NodeToNode {
         else
             newConnection.setWeight(twoC.getWeight());
         // check for recurrency
-        if(newConnection.getRecieveNeuron()==newConnection.getGiveNeuron())
-            newConnection.setRecurrent(true);
+        //if(newConnection.getRecieveNeuron()==newConnection.getGiveNeuron())
+        //    newConnection.setRecurrent(true);
         return newConnection;
     }
     
     // returns a cross between the two neurons
     public Node neuronMix(){
+        //System.out.println("Neuron is Mixing :: NodeToNode");
         Neuron oneN=(Neuron)one;
         Neuron twoN=(Neuron)two;
         Neuron newNeuron;
@@ -95,21 +98,21 @@ public class NodeToNode {
         // inputs
         test=random.nextDouble();
         //ArrayList<Connection> connections=new ArrayList<>();
-        if(test>.5){
-            newNeuron.setInputs(oneN.getInputs());
+        //if(test>.5){
+        newNeuron.setInputs(oneN.getInputs());
             //for(int i=0;i<oneN.getInputs().size();i++)
             //    connections.add(oneN.getInputs().get(i).makeCopy());
-        }else{
-            newNeuron.setOutputs(twoN.getInputs());
-        }
+        //}else{
+        //    newNeuron.setOutputs(twoN.getInputs());
+        //}
         // outputs
-        test=random.nextDouble();
-        if(test>.5){
-            newNeuron.setOutputs(oneN.getOutputs());
-        }else{
-            newNeuron.setOutputs(twoN.getOutputs());
-        }
-        return null;
+        //test=random.nextDouble();
+        //if(test>.5){
+        newNeuron.setOutputs(oneN.getOutputs());
+        //}else{
+        //    newNeuron.setOutputs(twoN.getOutputs());
+        //}
+        return newNeuron;
     }
 
     // this is used for the debugger

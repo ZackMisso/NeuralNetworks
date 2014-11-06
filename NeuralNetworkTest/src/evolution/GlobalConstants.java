@@ -1,7 +1,7 @@
 package evolution;
 
 public class GlobalConstants {
-    public static final boolean TEST=false;
+    public static final boolean TEST=true;
 	public static final double MAX_WEIGHT_VALUE=10;
 	public static final double MIN_WEIGHT_VALUE=-10;
     public static final double MUTATION_RATE=.1; // TODO :: Implement rates in mutation

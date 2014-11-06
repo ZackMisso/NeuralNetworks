@@ -9,11 +9,33 @@ import java.util.Random;
 public class TestClass{
     public TestClass(){
         //mergeSortUnitTest();
-        networkMutatingTest();
+        //networkMutatingTest();
+        sortNeuronsByDepthTest();
+    }
+    
+    private void sortNeuronsByDepthTest(){
+        ArrayList<Neuron> neurons=new ArrayList<>();
+        ArrayList<Integer> depths=new ArrayList<>();
+        neurons.add(new Neuron_Add(0));
+        neurons.add(new Neuron_Add(0));
+        neurons.add(new Neuron_Add(5));
+        neurons.add(new Neuron_Add(2));
+        neurons.add(new Neuron_Add(3));
+        neurons.add(new Neuron_Add(2));
+        neurons.add(new Neuron_Add(1));
+        neurons.add(new Neuron_Add(3));
+        neurons.add(new Neuron_Add(2));
+        neurons.add(new Neuron_Add(4));
+        neurons.add(new Neuron_Add(1));
+        neurons=Neuron.sortByDepth(neurons);
+        for(int i=0;i<neurons.size();i++)
+            depths.add(new Integer(neurons.get(i).getDepth()));
+        for(int i=0;i<depths.size();i++)
+            System.out.println("Neuron :: "+i+" Depth :: "+depths.get(i));
     }
     
     private void networkMutatingTest(){
-        NeuralNetwork net=new NeuralNetwork();
+        NeuralNetwork net=new NeuralNetwork(null);
         //System.out.println(net);
         Neuron neuron=net.getNeurons().get(1);
         net.addNeuron(neuron.getOutputs(),neuron); // 4 connect, 4 neurons
@@ -32,7 +54,7 @@ public class TestClass{
             }
             net.mutateWeights(new Random());
         }*/
-        NeuralNetwork shouldWork=new NeuralNetwork();
+        NeuralNetwork shouldWork=new NeuralNetwork(null);
         Neuron_Add temp=new Neuron_Add();
         temp.setInnovationNum(shouldWork.getNodeCnt());
         shouldWork.setNodeCnt(shouldWork.getNodeCnt()+1);

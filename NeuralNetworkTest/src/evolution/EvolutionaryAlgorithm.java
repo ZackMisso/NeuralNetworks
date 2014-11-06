@@ -32,13 +32,14 @@ public class EvolutionaryAlgorithm {
         }
         else{
             initializeFirstGeneration();
+            System.out.println("HUMINAHUMINA");
             runXORExperiment();
         }
     }
     
     // a unit test for the initializeFirstGeneration method
     private void initializeFirstGenerationTest(){
-        species.add(new Species());
+        species.add(new Species(history));
         species.get(0).setMaxAllowed(populationSize);
         species.get(0).initFromStart();
     }
@@ -46,15 +47,16 @@ public class EvolutionaryAlgorithm {
     // initializes the first generation of individuals
     private void initializeFirstGeneration(){
         for(int i=0;i<populationSize;i++)
-            networks.add(new NeuralNetwork());
+            networks.add(new NeuralNetwork(null));
     }
     
     // unit test for run XORExperiment method
     // this is currently an attempt to implement speciation
     private void runXORExperimentTest(){
-        NeuralNetwork totalBest=new NeuralNetwork(); // best neural network
+        NeuralNetwork totalBest=new NeuralNetwork(history); // best neural network
         XORTest test=tests.getXORTest(); // contains the test cases
         for(int i=0;i<numberOfGenerations;i++){ // for each generation
+            System.out.println("Starting generation :: "+i);
             // Create temporary lists to hold any new species and deviated nets
             ArrayList<NeuralNetwork> deviated=new ArrayList<>();
             ArrayList<Species> newSpecies=new ArrayList<>();
@@ -62,7 +64,23 @@ public class EvolutionaryAlgorithm {
             for(int f=0;f<species.size();f++){
                 // run the tests to get each individuals fitness
                 for(int g=0;g<species.get(f).getIndividuals().size();g++){
+                    //if(species.get(f).getIndividuals().get(g).getFitness()!=0)
+                    //    System.out.println("INNACCUUUURRRRAAAAATTTTEEEE :: EvoALGO");
                     tests.runXORTests(species.get(f).getIndividuals().get(g));
+                    ////// DELETE THIS IF YOU ARE GOING TO FIX RECURRENT CONNECTIONS
+                    if(species.get(f).getIndividuals().get(g).getFitness()==-100000){
+                        System.out.println("AN ERROR WAS AVERTED");
+                        species.get(f).getIndividuals().remove(g);
+                        if(g>0)
+                            g--;
+                    }else{
+                    ////////////////////////////////////////////////////////////////
+                    //if(species.get(f).getIndividuals().get(g).getFitness()!=0)
+                        //if(species.get(f).getIndividuals().get(g).getFitness()==4.0){
+                        //    System.out.println("A solution was found at Generation :: "+i+" with a total number of species :: "+species.size());
+                        //    new CMDTester(species.get(f).getIndividuals().get(g));
+                        //}
+                    }
                 }
                 // gets the list of individuals who no longer belong to this species
                 ArrayList<NeuralNetwork> temp=species.get(f).checkDeviation();
@@ -85,52 +103,108 @@ public class EvolutionaryAlgorithm {
                         foundFit=true;
                 // if not make a new species
                 if(!foundFit){
-                    Species add=new Species(deviated.get(f));
+                    Species add=new Species(history,deviated.get(f));
                     add.setSpeciesNum(history.nextSpecies());
                     newSpecies.add(add);
                 }
             }
+            //System.out.println("Debug :: 1 :: EVOALG");
             // add all the new species to the list of all species
-            for(int f=0;f<newSpecies.size();f++)
+            for(int f=0;f<newSpecies.size();f++){
+                //System.out.println("New Species was Added :: Evolutionary Algorithm");
                 species.add(newSpecies.get(f));
+            }
             double sum=0.0;
             int chk=0;
+            //System.out.println("Debug :: 2 :: EVOALG");
             // gets the sum of the average fitness of all species
             for(int f=0;f<species.size();f++){
                 species.get(f).calculateAverageFitness();
                 sum+=species.get(f).getAverageFitness();
             }
+            //System.out.println("Debug :: 3");
             // sets the allowed population size to a proportion of its average fitness to the sum
             for(int f=0;f<species.size();f++){
-                double proportion=species.get(f).getAverageFitness()/sum;
-                species.get(f).setMaxAllowed((int)(proportion*populationSize));
-                chk++;
+                if(species.size()==0){
+                    species.get(f).setMaxAllowed(500);
+                }else{
+                    double proportion=species.get(f).getAverageFitness()/sum;
+                    species.get(f).setMaxAllowed((int)(proportion*populationSize)); // species
+                    if(species.get(f).getMaxAllowed()==0)
+                        species.get(f).setMaxAllowed(1);
+                }
+                chk+=species.get(f).getIndividuals().size(); // why did I put this here?
             }
+            //System.out.println("Debug :: 4 :: EVOALG");
             // THIS SHOULD NOT HAPPEN, just a warning if it goes wrong
-            if(chk>populationSize)
-                System.out.println("OVERPOPULATION!!!");
+            //if(chk>populationSize)
+            //    System.out.println("OVERPOPULATION!!!");
             // hack for under population
+            //System.out.println("Debug :: 6 :: EVOALG");
+            
+            // WHAT WAS I THINKING?
             while(chk<populationSize){
                 species.get(0).setMaxAllowed(species.get(0).getMaxAllowed()+1);
                 chk++;
             }
+            
+            //System.out.println("Debug :: 7 :: EVOALG");
             // mutates each species
-            for(int f=0;f<species.size();f++){
-                species.get(f).mutate();
+            if(i!=numberOfGenerations-1)
+                for(int f=0;f<species.size();f++){
+                    species.get(f).mutate();
+                }
+            //System.out.println("Debug :: 8 :: EVOALG");
+            // resets the changes in the history tracker
+            history.endGeneration();
+            if(i!=numberOfGenerations-1)
+                for(int f=0;f<species.size();f++)
+                    species.get(f).reset();
+            else
+                System.out.println("THIS WAS RAN");
+            //System.out.println("Debug :: 5 :: EVOALG");
+            int totalInd=0;
+            for(int g=0;g<species.size();g++){
+                totalInd+=species.get(g).getIndividuals().size();
+                //if(species.get(g).getIndividuals().size()>=1)
+                //    System.out.println(g+" :: "+species.get(g).getIndividuals().size());
             }
+            // Final test (need to implement functionality)
+            System.out.println("Total Individuals :: "+totalInd);
         }
         // Debugging code
         species=Species.sort(species);
-        System.out.println(species.get(0).getAverageFitness());
-        System.out.println(species.get(species.size()-1).getAverageFitness());
+        //System.out.println("AFAFAFAFAFA");
+        System.out.println("Total Species :: "+species.size());
+        System.out.println("Best Species Average Fitness :: "+species.get(0).getAverageFitness());
+        System.out.println("Worst Species Average Fitness :: "+species.get(species.size()-1).getAverageFitness());
+        
+        //species.get(species.size()-1).calculateAverageFitness();
+        //species.get(0).calculateAverageFitness();
+        
+        //System.out.println("Recalculateing");
+        //System.out.println(species.get(0).getAverageFitness());
+        //System.out.println(species.get(species.size()-1).getAverageFitness());
+        //
+        //species.get(species.size()-1).calculateAverageFitnessDescriptive();
+        //species.get(0).calculateAverageFitnessDescriptive();
+        
+        int totalInd=0;
+        for(int i=0;i<species.size();i++){
+            totalInd+=species.get(i).getIndividuals().size();
+            //if(species.get(i).getIndividuals().size()>1)
+            //    System.out.println(i+" :: "+species.get(i).getIndividuals().size());
+        }
         // Final test (need to implement functionality)
+        System.out.println("Total Individuals :: "+totalInd);
+        //species.get(0).calculateAverageFitnessDescriptive();
         new CMDTester(species.get(0));
     }
     
     // the "main" loop.
     private void runXORExperiment(){
         System.out.println("Starting XOR Test\n\n");
-        NeuralNetwork totalBest=new NeuralNetwork();
+        NeuralNetwork totalBest=new NeuralNetwork(null);
         XORTest test=tests.getXORTest();
         int f;
         boolean chk=true;

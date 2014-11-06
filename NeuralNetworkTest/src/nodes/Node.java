@@ -9,11 +9,15 @@ import nodes.neurons.Neuron;
 import java.util.ArrayList;
 public abstract class Node {
     private double cache;
+    private int initIn;
+    private int initOut;
     private int innovationNum;
     private boolean evaluated;
     
     public void reset(){
         cache=0.0;
+        initIn=-1;
+        initOut=-1;
         evaluated=false;
     }
     
@@ -84,11 +88,15 @@ public abstract class Node {
     
     // getter methods
     public double getCache(){return cache;}
+    public int getInitIn(){return initIn;}
+    public int getInitOut(){return initOut;}
     public int getInnovationNum(){return innovationNum;}
     public boolean getEvaluated(){return evaluated;}
     
     // setter methods
     public void setCache(double param){cache=param;}
+    public void setInitIn(int param){initIn=param;}
+    public void setInitOut(int param){initOut=param;}
     public void setInnovationNum(int param){innovationNum=param;}
     public void setEvaluated(boolean param){evaluated=param;}
 }

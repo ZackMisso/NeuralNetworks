@@ -1,8 +1,10 @@
 add :: means it is not fully implemented yet
-test :: means it is done, but it needs to be tested
+toTest :: means it is done, but it needs to be tested
+error :: there is some error with the code causing an exception
 
 dn :: displays network information
 dni :: displays neuron information
+dnb :: displays brief for all neurons
 dci :: displays connection information
 an :: adds a neuron by splitting a connection
 ac :: adds a connection between two neurons
@@ -14,21 +16,30 @@ rg :: replicates a generation (NOT AVAILABLE YET)
 test :: tests the network on the XOR test
 rwc :: replaces the current network with its exact copy
 add :: rnn :: creates, or recreates, the neural network
+nd :: network data
 // to be implemented
-test :: db :: distance between two neurons in a species
-test :: sf :: set fitness
-test :: sws :: switch species
-add :: crs :: create species
-add :: crn :: create network
-add :: swn :: switch network
-test :: fmi :: fork and mutate individual (copy and mutate, and replaces)
-test :: ci :: crossover individuals
+ds :: display species info
+error :: db :: distance between two neurons in a species
+toTest :: sf :: set fitness
+toTest :: sws :: switch species
+crs :: create species
+toTest :: crn :: create network
+toTest :: swn :: switch network
+toTest :: fmi :: fork and mutate individual (copy and mutate, and replaces)
+toTest :: ci :: crossover individuals
 add :: arc :: adds a recurrent connection
 add :: arlc :: adds a recurrent connection between two separate neurons
-test :: ssm :: switch to species mode
-test :: snm :: switch to network mode
-test :: snn1 :: set current network to net 1
-test :: snn2 :: set current network to net 2
-test :: ssnn :: set the species network to current network
-test :: sn1n :: set net 1 to current network
-test :: sn2n :: set net 2 to current network
+ssm :: switch to species mode
+snm :: switch to network mode
+toTest :: snn1 :: set current network to net 1
+toTest :: snn2 :: set current network to net 2
+ssnn :: set the species network to current network
+snsn :: sets the current network to the species network
+toTest :: sn1n :: set net 1 to current network
+toTest :: sn2n :: set net 2 to current network
+toTest :: sss1 :: set current species to species 1
+toTest :: sss2 :: set current species to species 2
+toTest :: ss1s :: set species 1 to current species
+toTest :: ss2s :: set species 2 to current species
+add :: cb :: connection brief
+add :: nb :: neuron brief

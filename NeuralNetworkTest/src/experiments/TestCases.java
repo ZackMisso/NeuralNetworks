@@ -18,8 +18,14 @@ public class TestCases{
         ArrayList<Double> outs=new ArrayList<>();
         for(int i=0;i<xorTest.getTests().size();i++){
             outs=net.run(xorTest.getTests().get(i));
-            if(xorTest.checkTest(outs,i)){
+            if(outs==null){
+                net.setFitness(-100000);
+                System.out.println("Set fitness to :: "+-100000);
+            }
+            else if(xorTest.checkTest(outs,i)){
+                //System.out.println("checkedTest");
                 net.setFitness(net.getFitness()+1.0);
+                //System.out.println(net.getFitness());
             }
             net.reset();
         }

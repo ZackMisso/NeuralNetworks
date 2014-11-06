@@ -7,6 +7,11 @@ public class Neuron_Add extends Neuron{
         super();
     }
     
+    // this constructor is used for a unit test
+    public Neuron_Add(int num){
+        setDepth(num);
+    }
+    
     public double evaluate(){
         if(getEvaluated())
             return getCache();

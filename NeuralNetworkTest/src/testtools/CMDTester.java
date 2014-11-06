@@ -17,8 +17,9 @@ import nodes.neurons.InputNeuron;
 import nodes.neurons.OutputNeuron;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.IOException;
+import java.util.Collections;
+//import java.io.File;
+//import java.io.IOException;
 public class CMDTester {
     private HistoricalTracker history;
     private Species species;
@@ -28,26 +29,26 @@ public class CMDTester {
     private NeuralNetwork net2; // to test speciation distance
     private NeuralNetwork currentNetwork;
     private Scanner input;
-    private String fileName;
+    private String fileName; // name of file to input from
     private boolean batchInput; // input from a file
     private boolean speciesMode;
     private boolean networkMode;
-    // TODO :: ADD SPECIES FUNCTIONALITY
-    // TODO :: POSSIBLY ADD HISTORICALTRACKER FUNCTIONALITY
+
     public CMDTester(){
     	//net=new NeuralNetwork();
-        fileName="instructions.txt";
-        batchInput=true;
-        try{
-            input=new Scanner(new File(fileName));
-        }catch(IOException e) {}
+        //fileName="instructions.txt";
+        //batchInput=true;
+        //try{
+        //    input=new Scanner(new File(fileName));
+        //}catch(IOException e) {}
+        input=new Scanner(System.in);
         net=null;
         net2=null;
         species=null;
         species2=null;
         speciesMode=false;
         networkMode=false;
-        displayNetworkInfo();
+        //displayNetworkInfo();
     	run();
     }
     
@@ -86,6 +87,8 @@ public class CMDTester {
                 System.out.print("Enter NeuronNum :: ");
                 displayNeuronInfo(input.nextInt());
             }
+            if(in.equals("dnb"))
+                displayNeuronBrief();
             if(in.equals("dci")){
                 System.out.print("Enter ConnectionNum :: ");
                 displayConnectionInfo(input.nextInt());
@@ -133,48 +136,71 @@ public class CMDTester {
                 recreateNeuralNetwork();
             }
             if(in.equals("db")){ // needs to be tested
-                if(networkMode)
-                    System.out.println("The distance betwrrn the two networks is :: "+distanceBetween(net,net2));
+                if(networkMode){
+                    System.out.println("The distance betwrrn the two networks is :: ");
+                    distanceBetween(net,net2);
+                }
                 else{
-                    System.out.println("There are "+currentSpecies.size()+" individuals");
+                    System.out.println("There are "+currentSpecies.getIndividuals().size()+" individuals");
                     int i;
                     int i2;
                     System.out.print("What is the first one? :: ");
-                    i=in.nextInt();
+                    i=input.nextInt();
                     System.out.print("What is the second one? :: ");
-                    i2=in.nextInt();
-                    double distance=distanceBetween(currentSpecies.getIndividuals.get(i),currentSpecies.getIndividuals().get(i2));
-                    System.out.println("The Distance is :: "+distance);
+                    i2=input.nextInt();
+                    distanceBetween(currentSpecies.getIndividuals().get(i),currentSpecies.getIndividuals().get(i2));
+                    //System.out.println("The Distance is :: "+distance);
                 }
             }
             if(in.equals("sf")){ // needs to be tested
                 System.out.println("What would you like the new fitness to be :: ");
-                double fit=in.nextDouble();
+                double fit=input.nextDouble();
                 setFitness(fit);
-                System.out.println("The current network's fitness is now :: "+distance);
+                System.out.println("The current network's fitness is now :: "+fit);
             }
             if(in.equals("sws")){ // needs to be tested
                 System.out.println("Switching Species");
                 switchSpecies();
             }
-            if(in.equals("crs")){
-                // implement
+            if(in.equals("crs")){ // needs to be tested
+                System.out.print("How many children will be in this new species :: ");
+                int num=input.nextInt();
+                System.out.print("How many input nodes will each individual have :: ");
+                int inputs=input.nextInt();
+                System.out.print("How many output nodes will each individual have :: ");
+                int outputs=input.nextInt();
+                System.out.println("Createing species in the current species");
+                createSpecies(num,inputs,outputs);
             }
-            if(in.equals("crn")){
-                // implement
+            if(in.equals("crn")){ // needs to be tested
+                System.out.print("How many input nodes will the individual have :: ");
+                int inputs=input.nextInt();
+                System.out.print("How many output nodes will the individual have :: ");
+                int outputs=input.nextInt();
+                System.out.print("Creating the individual in the current network");
+                createNetwork(inputs,outputs);
             }
-            if(in.equals("swn")){
-                // implement
+            if(in.equals("swn")){ // needs to be tested
+                if(networkMode){
+                    System.out.println("Switching Networks");
+                    switchNetwork(0);
+                }else{
+                    System.out.println("There are "+currentSpecies.getIndividuals().size()+" individuals");
+                    System.out.print("Which individual would you like to switch to :: ");
+                    int i=input.nextInt();
+                    System.out.println("Switching networks");
+                    switchNetwork(i);
+                }
             }
             if(in.equals("fmi")){ // needs to be tested
                 if(networkMode){
                     System.out.print("What network would you like to fork :: ");
-                    int i=in.nextInt();
+                    int i=input.nextInt();
                     forkAndMutate(i);
                 }else{
                     System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" individuals");
                     System.out.print("Which individual would you like to copy :: ");
-                    int i=in.nextInt();
+                    int i=input.nextInt();
                     forkAndMutate(i);
                 }
             }
@@ -186,10 +212,10 @@ public class CMDTester {
                     System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" individuals");
                     int i;
                     int i2;
-                    System.out.print("What is the first one you would like to crossover ::");
-                    i=in.nextInt();
+                    System.out.print("What is the first one you would like to crossover :: ");
+                    i=input.nextInt();
                     System.out.print("What is the second one you would like to crossover :: ");
-                    i2=in.nextInt();
+                    i2=input.nextInt();
                     System.out.println("Crossing over individuals");
                     crossoverIndividuals(i,i2);
                     System.out.println("The current individual is the child");
@@ -220,16 +246,44 @@ public class CMDTester {
             if(in.equals("ssnn")){ // needs to be tested
                 System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" individuals");
                 System.out.print("What network would you like to replace with the current one :: ");
-                int i=in.nextInt();
+                int i=input.nextInt();
                 setSToNetwork(i);
+            }
+            if(in.equals("snsn")){ // needs to be tested
+                System.out.println("The current Species has :: "+currentSpecies.getIndividuals().size()+" indivduals");
+                System.out.print("Which one whoul you like to set the current network to :: ");
+                int i=input.nextInt();
+                setNetworkToS(i);
             }
             if(in.equals("sn1n")){ // needs to be tested
                 System.out.println("Setting net 1 to the current network");
                 setNet1ToNetwork();
             }
-            if(in.equals("sn2n")){
+            if(in.equals("sn2n")){ // needs to be tested
                 System.out.println("Setting net 2 to the current network");
                 setNet2ToNetwork();
+            }
+            if(in.equals("sss1")){ // needs to be tested
+                System.out.println("Setting current species to species 1");
+                setSpeciesToSpec1();
+            }
+            if(in.equals("sss2")){ // needs to be tested
+                System.out.println("Setting current species to species 2");
+                setSpeciesToSpec2();
+            }
+            if(in.equals("ss1s")){ // needs to be tested
+                System.out.println("setting species 1 to the current species");
+                setSpec1ToSpecies();
+            }
+            if(in.equals("ss2s")){ // needs to be tested
+                System.out.println("setting species 2 to the current species");
+                setSpec2ToSpecies();
+            }
+            if(in.equals("ds")){ // needs to be tested
+                displaySpeciesInfo();
+            }
+            if(in.equals("nd")){ // needs to be tested
+                networkData();
             }
             // implement more as needed
     	}
@@ -238,36 +292,68 @@ public class CMDTester {
     // displays a brief summary of the individuals of a species
     private void displaySpeciesInfo(){
         ArrayList<NeuralNetwork> nets=currentSpecies.getIndividuals();
-        String output="";
+        String output="Avg Fitness :: "+currentSpecies.getAverageFitness()+"\n";
         for(int i=0;i<nets.size();i++){
             output+="Individual Number :: "+i+"\n";
-            output+="Nodes :: "+nets.get(i).getNodes().size()+"\n";
+            //output+="Nodes :: "+nets.get(i).getNodes().size()+"\n";
             output+="Neurons :: "+nets.get(i).getNeurons().size()+"\n";
             output+="Connections :: "+nets.get(i).getConnections().size()+"\n";
+            output+="Fitness :: "+nets.get(i).getFitness()+"\n";
             output+="\n";
         }
         System.out.println(output);
     }
+    
+    private void networkData(){ // needs to be tested
+        System.out.println("Network Data :: ");
+        if(currentNetwork==null)
+            System.out.println("Current Network is NULL");
+        for(int i=0;i<currentNetwork.getNeurons().size();i++)
+            neuronData(currentNetwork.getNeurons().get(i));
+        for(int i=0;i<currentNetwork.getConnections().size();i++)
+            connectionData(currentNetwork.getConnections().get(i));
+    }
+    
+    private void connectionData(Connection connection){ // needs to be tested
+        System.out.println("Connection :: "+connection.getInnovationNum()+" Weight :: "+connection.getWeight());
+    }
+    
+    private void neuronData(Neuron neuron){ // needs to be tested
+        System.out.println("Neuron :: "+neuron.getInnovationNum()+" Bias :: "+neuron.getBias());
+    }
 
     private void displayNetworkInfo(){
     	ArrayList<Node> nodes=currentNetwork.getAllNodes();
-        nodes=Node.sort(nodes);
-        int index=0;
-        while(nodes.get(index)instanceof Neuron){
+        //nodes=Node.sort(nodes);
+        for(int i=0;i<nodes.size();i++){
             String output="";
-            if(nodes.get(index)instanceof InputNeuron)
+            if(nodes.get(i)instanceof InputNeuron){
                 output="InputNeuron :: ";
-            else if(nodes.get(index)instanceof OutputNeuron)
+            }else if(nodes.get(i)instanceof OutputNeuron){
                 output="OutputNeuron :: ";
-            else
+            }else if(nodes.get(i)instanceof Neuron){
                 output="Neuron :: ";
-            System.out.println(output+nodes.get(index).getInnovationNum());
-            index++;
+            }else{
+                output="Connection :: ";
+            }
+            System.out.println(output+nodes.get(i).getInnovationNum());
         }
-        while(index<nodes.size()){
-            System.out.println("Connection :: "+nodes.get(index).getInnovationNum());
-            index++;
-        }
+        //int index=0;
+        //while(nodes.get(index)instanceof Neuron){
+        //    String output="";
+        //    if(nodes.get(index)instanceof InputNeuron)
+        //        output="InputNeuron :: ";
+        //    else if(nodes.get(index)instanceof OutputNeuron)
+        //        output="OutputNeuron :: ";
+        //    else
+        //        output="Neuron :: ";
+        //    System.out.println(output+nodes.get(index).getInnovationNum());
+        //    index++;
+        //}
+        //while(index<nodes.size()){
+        //    System.out.println("Connection :: "+nodes.get(index).getInnovationNum());
+        //    index++;
+        //}
     }
 
     private void displayNeuronInfo(int num){
@@ -277,8 +363,38 @@ public class CMDTester {
         output+="Bias :: "+neuron.getBias()+"\n";
         output+="Inputs :: "+Connection.getInnovations(neuron.getInputs())+"\n";
         output+="Outputs :: "+Connection.getInnovations(neuron.getOutputs())+"\n";
-        output+="Threshold :: "+neuron.getThreshold()+"\n";
+        output+="Depth :: "+neuron.getDepth();
+        //output+="Threshold :: "+neuron.getThreshold()+"\n";
         System.out.println(output);
+    }
+    
+    // prints out a brief of all of the neurons
+    private void displayNeuronBrief(){
+        ArrayList<Node> neurons=new ArrayList<>();
+        for(int i=0;i<currentNetwork.getNeurons().size();i++)
+            neurons.add(currentNetwork.getNeurons().get(i));
+        neurons=Node.sort(neurons);
+        for(int i=0;i<neurons.size();i++){
+            Neuron neuron=(Neuron)neurons.get(i);
+            if(neuron instanceof InputNeuron)
+                System.out.print("IN :: ");
+            if(neuron instanceof OutputNeuron)
+                System.out.print("OT :: ");
+            if(neuron instanceof Neuron_Add)
+                System.out.print("N :: ");
+            System.out.print(neuron.getInnovationNum()+" :: ");
+            ArrayList<Integer> inputs=new ArrayList<>();
+            ArrayList<Integer> outputs=new ArrayList<>();
+            for(int f=0;f<neuron.getInputs().size();f++)
+                inputs.add(new Integer(neuron.getInputs().get(f).getInnovationNum()));
+            for(int f=0;f<neuron.getOutputs().size();f++)
+                outputs.add(new Integer(neuron.getOutputs().get(f).getInnovationNum()));
+            Collections.sort(inputs);
+            Collections.sort(outputs);
+            System.out.print(inputs.toString()+" ");
+            System.out.print(outputs.toString()+" ");
+            System.out.println(neuron.getDepth());
+        }
     }
 
     private void displayConnectionInfo(int num){
@@ -401,26 +517,26 @@ public class CMDTester {
         if(currentSpecies==null){
             if(net==null){
                 System.out.println("Neural Network created in net");
-                net=new NeuralNetwork(inputs,outputs);
+                net=new NeuralNetwork(history,inputs,outputs);
                 if(net2==null)
                     currentNetwork=net;
             }else if(net2==null){
                 System.out.println("Neural Network created in net2");
-                net2=new NeuralNetwork(inputs,outputs);
+                net2=new NeuralNetwork(history,inputs,outputs);
                 if(net==null)
                     currentNetwork=net2;
             }else if(net==currentNetwork){
                 System.out.println("Neural Network created in net2");
                 net2=null;
-                net2=new NeuralNetwork(inputs,outputs);
+                net2=new NeuralNetwork(history,inputs,outputs);
             }else{ // net2==currentNetwork
                 System.out.println("Neural Network created in net");
                 net=null;
-                net=new NeuralNetwork(inputs,outputs);
+                net=new NeuralNetwork(history,inputs,outputs);
             }
         }else{
             System.out.println("Neural Network created in the current species");
-            currentSpecies.getIndividuals().add(new NeuralNetwork(inputs,outputs));
+            currentSpecies.getIndividuals().add(new NeuralNetwork(history,inputs,outputs));
         }
     }
 
@@ -448,32 +564,32 @@ public class CMDTester {
     // creates a new species with the specified stats
     private void createSpecies(int num,int inputs,int outputs){
         if(species==null){
-            species=new Species();
+            species=new Species(history);
             for(int i=0;i<num;i++)
-                species.getIndividuals().add(new NeuralNetwork(inputs,outputs));
+                species.getIndividuals().add(new NeuralNetwork(history,inputs,outputs));
             if(species2==null)
                 currentSpecies=species;
         }else if(species2==null){
-            species2=new Species();
+            species2=new Species(history);
             for(int i=0;i<num;i++)
-                species2.getIndividuals().add(new NeuralNetwork(inputs,outputs));
+                species2.getIndividuals().add(new NeuralNetwork(history,inputs,outputs));
             //currentSpecies=species2;
         }else if(species==currentSpecies){
             species2=null;
-            species2=new Species();
+            species2=new Species(history);
             for(int i=0;i<num;i++)
-                species2.getIndividuals().add(new NeuralNetwork(inputs,outputs));
+                species2.getIndividuals().add(new NeuralNetwork(history,inputs,outputs));
         }else{ // species2==currentSpecies
             species=null;
-            species=new Species();
+            species=new Species(history);
             for(int i=0;i<num;i++)
-                species.getIndividuals().add(new NeuralNetwork(inputs,outputs));
+                species.getIndividuals().add(new NeuralNetwork(history,inputs,outputs));
         }
     }
     
     // copies and mutates the current network
     private void forkAndMutate(int network){
-        NeuralNetork tempNet;
+        NeuralNetwork tempNet=null;
         if(speciesMode){
             tempNet=currentSpecies.getIndividuals().get(network);
         }
@@ -483,9 +599,10 @@ public class CMDTester {
             else
                 tempNet=net2;
         }
-        tempNet=tempNet.copyAndMutate();
+        if(tempNet!=null)
+            tempNet=tempNet.copyAndMutate();
         if(speciesMode){
-            currentSpecies.getIndividuals().get(network)=tempNet;
+            currentSpecies.getIndividuals().set(network,tempNet);
         }
         if(networkMode){
             if(network==0)
@@ -497,7 +614,15 @@ public class CMDTester {
     
     // crossover two individuals and sets the current network to the result
     private void crossoverIndividuals(int one,int two){
-        // implement
+        if(networkMode){
+            currentNetwork=net.crossOver(net2);
+        }else if(speciesMode){
+            NeuralNetwork oneNet=currentSpecies.getIndividuals().get(one);
+            NeuralNetwork twoNet=currentSpecies.getIndividuals().get(two);
+            currentNetwork=oneNet.crossOver(twoNet);
+        }else{
+            System.out.println("No running mode was specified");
+        }
     }
     
     // adds a recurrent connection to the specified neuron to itself
@@ -532,10 +657,17 @@ public class CMDTester {
         currentNetwork=net2;
     }
 
-    // sets the current network to the individual in the current species
+    // sets the individual in the current species to the current network
     private void setSToNetwork(int network){
         if(speciesMode){
-            currentSpecies.getIndividuals().get(network)=currentNetwork;
+            currentSpecies.getIndividuals().set(network,currentNetwork);
+        }
+    }
+    
+    // sets the current network to the individual in the current species
+    private void setNetworkToS(int network){
+        if(speciesMode){
+            currentNetwork=currentSpecies.getIndividuals().get(network);
         }
     }
 
@@ -546,7 +678,27 @@ public class CMDTester {
 
     // sets net2 to the current network
     private void setNet2ToNetwork(){
-        net2=network;
+        net2=currentNetwork;
+    }
+    
+    // sets the current species to species
+    private void setSpeciesToSpec1(){
+        currentSpecies=species;
+    }
+    
+    // sets the current species to species2
+    private void setSpeciesToSpec2(){
+        currentSpecies=species2;
+    }
+    
+    // sets species to the current species
+    private void setSpec1ToSpecies(){
+        species=currentSpecies;
+    }
+    
+    // sets species2 to the current species
+    private void setSpec2ToSpecies(){
+        species2=currentSpecies;
     }
 
     // Deprecated :: Zack

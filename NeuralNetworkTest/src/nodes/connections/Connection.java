@@ -9,6 +9,8 @@ public class Connection extends Node{
     private Neuron recieveNeuron;
     private double weight;
     private double cache;
+    //private int initIn;
+    //private int initOut;
     private boolean active;
     private boolean recurrent; // implement recurrent functionality
     
@@ -94,6 +96,8 @@ public class Connection extends Node{
     public Neuron getGiveNeuron(){return giveNeuron;}
     public Neuron getRecieveNeuron(){return recieveNeuron;}
     public double getWeight(){return weight;}
+    //public int getInitIn(){return initIn;}
+    //public int getInitOut(){return initOut;}
     public boolean getActive(){return active;}
     public boolean getRecurrent(){return recurrent;}
     
@@ -101,6 +105,8 @@ public class Connection extends Node{
     public void setGiveNeuron(Neuron param){giveNeuron=param;}
     public void setRecieveNeuron(Neuron param){recieveNeuron=param;}
     public void setWeight(double param){weight=param;}
+    //public void setInitIn(int param){initIn=param;}
+    //public void setInitOut(int param){initOut=param;}
     public void setActive(boolean param){active=param;}
     public void setRecurrent(boolean param){recurrent=param;}
 }
