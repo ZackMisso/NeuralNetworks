@@ -61,10 +61,15 @@ public class NodeToNode {
             newConnection.setActive(twoC.getActive());
         // set weight
         test=random.nextDouble();
-        if(test>.5)
-            newConnection.setWeight(oneC.getWeight());
-        else
-            newConnection.setWeight(twoC.getWeight());
+        
+        
+        //if(test>.5)
+        //    newConnection.setWeight(oneC.getWeight());
+        //else
+        //    newConnection.setWeight(twoC.getWeight());
+        
+        newConnection.setWeight((oneC.getWeight()+twoC.getWeight())/2);
+        
         // check for recurrency
         //if(newConnection.getRecieveNeuron()==newConnection.getGiveNeuron())
         //    newConnection.setRecurrent(true);
@@ -81,7 +86,7 @@ public class NodeToNode {
             newNeuron=new InputNeuron_Add();
             // implement
         }
-        if(oneN instanceof OutputNeuron){
+        else if(oneN instanceof OutputNeuron){
             newNeuron=new OutputNeuron_Add();
             // implement
         }else{
@@ -91,10 +96,15 @@ public class NodeToNode {
         // set up bias
         Random random=new Random();
         double test=random.nextDouble();
-        if(test>.5)
-            newNeuron.setBias(oneN.getBias());
-        else
-            newNeuron.setBias(twoN.getBias());
+        
+        
+        //if(test>.5)
+        //    newNeuron.setBias(oneN.getBias());
+        //else
+        //    newNeuron.setBias(twoN.getBias());
+        
+        newNeuron.setBias((oneN.getBias()+twoN.getBias())/2);
+        
         // inputs
         test=random.nextDouble();
         //ArrayList<Connection> connections=new ArrayList<>();

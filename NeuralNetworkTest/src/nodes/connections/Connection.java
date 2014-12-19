@@ -13,6 +13,7 @@ public class Connection extends Node{
     //private int initOut;
     private boolean active;
     private boolean recurrent; // implement recurrent functionality
+    private boolean calculating;
     
     public Connection(){
         giveNeuron=null;
@@ -22,14 +23,29 @@ public class Connection extends Node{
         setInnovationNum(-1);
         active=true;
         recurrent=false;
+        calculating=false;
     }
     
     public double calculateValue(){
+        //System.out.println("YEAAEY");
+        if(recurrent){
+            System.out.println("WHAT");
+            System.exit(0);
+        }
         if(!active)
             return 0.0;
         if(getEvaluated())
             return getCache();
-        setCache(giveNeuron.evaluate()*weight);
+        if(giveNeuron.getInnovationNum()==recieveNeuron.getInnovationNum()){
+            System.out.println("YEA BAMARAM");
+            System.exit(0);
+            return getCache();
+        }
+        if(!calculating){
+            calculating=true;
+            setCache(giveNeuron.evaluate()*weight);
+            calculating=false;
+        }
         //System.out.println("Connection :: "+getInnovationNum());
         //System.out.println("Weight :: "+weight);
         //System.out.println("Value To Push :: "+getCache());
@@ -41,9 +57,9 @@ public class Connection extends Node{
         weight=rng.changeDouble(weight,true);
     }
     
-    public void crossover(Connection other){
-        // implement
-    }
+    //public void crossover(Connection other){
+    //    // implement
+    //}
     
     public Connection makeCopy(ArrayList<Neuron> neurons,NeuralNetwork net){
         Connection copy=new Connection();
@@ -64,11 +80,11 @@ public class Connection extends Node{
         return copy;
     }
     
-    public Connection makeCopy(){
-        Connection copy=new Connection();
-        // implmeent maybe
-        return copy;
-    }
+    //public Connection makeCopy(){
+    //    Connection copy=new Connection();
+    //    // implmeent maybe
+    //    return copy;
+    //}
     
     public boolean isSameConnection(Connection other){
         if(giveNeuron.getInnovationNum()==other.getGiveNeuron().getInnovationNum())
@@ -100,6 +116,7 @@ public class Connection extends Node{
     //public int getInitOut(){return initOut;}
     public boolean getActive(){return active;}
     public boolean getRecurrent(){return recurrent;}
+    public boolean getCalculating(){return calculating;}
     
     // setter methods
     public void setGiveNeuron(Neuron param){giveNeuron=param;}
@@ -109,4 +126,5 @@ public class Connection extends Node{
     //public void setInitOut(int param){initOut=param;}
     public void setActive(boolean param){active=param;}
     public void setRecurrent(boolean param){recurrent=param;}
+    public void setCalculating(boolean param){calculating=param;}
 }

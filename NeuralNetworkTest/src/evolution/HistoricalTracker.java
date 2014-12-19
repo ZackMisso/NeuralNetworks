@@ -77,9 +77,11 @@ public class HistoricalTracker {
                 //System.out.println("This Out :: "+added.getInitOut());
                 //System.out.println("THis IN :: "+added.getInitIn());
                 if(addedNodes.get(i).getInitOut()==added.getInitOut()){
-                    //addedNodes.get(i).setInnovationNum(added.getInnovationNum());
-                    added.setInnovationNum(addedNodes.get(i).getInnovationNum());
-                    return;
+                    if(addedNodes.get(i)instanceof Neuron){
+                        //addedNodes.get(i).setInnovationNum(added.getInnovationNum());
+                        added.setInnovationNum(addedNodes.get(i).getInnovationNum());
+                        return;
+                    }
                 }
             }
         }
@@ -101,10 +103,12 @@ public class HistoricalTracker {
                 //System.out.println("This Out :: "+added.getInitOut());
                 //System.out.println("THis IN :: "+added.getInitIn());
                 if(addedNodes.get(i).getInitOut()==added.getInitOut()){
-                    //addedNodes.get(i).setInnovationNum(added.getInnovationNum());
-                    added.setInnovationNum(addedNodes.get(i).getInnovationNum());
-                    //System.out.println("Found a copy");
-                    return;
+                    if(addedNodes.get(i)instanceof Connection){
+                        //addedNodes.get(i).setInnovationNum(added.getInnovationNum());
+                        added.setInnovationNum(addedNodes.get(i).getInnovationNum());
+                        //System.out.println("Found a copy");
+                        return;
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package nodes.neurons;
 import nodes.Node;
 import nodes.connections.Connection;
+import nodes.connections.RecurrentConnection;
 import datastructures.RandomNumberGenerator;
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,6 +16,8 @@ public abstract class Neuron extends Node{
     private double bias;
     private int connectionCreated; // ignore this
     private int depth;
+    private boolean findingDepth;
+    
     
     public Neuron(){
         inputs=new ArrayList<>();
@@ -32,19 +35,34 @@ public abstract class Neuron extends Node{
         bias=random.nextDouble();
     }
     
-    public int findDepth(){ // NEED TO TEST
+    public int findDepth(){
         //if(depth!=-1)
         //    return depth;
         //System.out.println("THIS HAS BEEN RAN");
         //System.exit(0);
         //if(depth==-1)
         //    depth=0;
+        setFindingDepth(true);
         int temp=depth;
         if(inputs.size()==0&&!(this instanceof InputNeuron))
             temp=1;
-        for(int i=0;i<inputs.size();i++)
-            if(inputs.get(i).getGiveNeuron().findDepth()>=temp)
-                temp=inputs.get(i).getGiveNeuron().findDepth()+1;
+        for(int i=0;i<inputs.size();i++){
+            //if(inputs.get(i)instanceof RecurrentConnection)
+            //    System.out.println("HEY LISTEN");
+            if(!(inputs.get(i)instanceof RecurrentConnection)&&!inputs.get(i).getGiveNeuron().getFindingDepth()){
+            //if(inputs.get(i).getGiveNeuron().getInnovationNum()!=inputs.get(i).getRecieveNeuron().getInnovationNum()){
+                //System.out.println("THERE HE IS");
+                if(inputs.get(i) instanceof RecurrentConnection)
+                    System.out.println("UMMS");
+                if(inputs.get(i).getGiveNeuron().findDepth()>=temp){
+                    //System.out.println(inputs.get(i).getInnovationNum()+" :: HUMINAHUMINA");
+                    //if(inputs.get(i).getGiveNeuron()==inputs.get(i).getRecieveNeuron())
+                    //    System.out.println("ERROR>>> DOES NOT COMPUTE");
+                    temp=inputs.get(i).getGiveNeuron().getDepth()+1;
+                }
+            }
+        }
+        setFindingDepth(false);
         //System.out.println("Temp :: "+temp);
         //System.exit(0);
         depth=temp;
@@ -62,7 +80,10 @@ public abstract class Neuron extends Node{
     public void checkInputs(){
         for(int i=0;i<inputs.size();i++)
             if(!inputs.get(i).getEvaluated()){
-                inputs.get(i).calculateValue();
+                if(inputs.get(i)instanceof RecurrentConnection)
+                    ((RecurrentConnection)inputs.get(i)).calculateValue();
+                else
+                    inputs.get(i).calculateValue();
                 inputs.get(i).setEvaluated(true);
             }
     }
@@ -187,8 +208,14 @@ public abstract class Neuron extends Node{
         while(!one.isEmpty()&&!two.isEmpty()){
             if(one.get(0).getDepth()<two.get(0).getDepth())
                 list.add(one.remove(0));
-            else
+            else if(one.get(0).getDepth()>two.get(0).getDepth())
                 list.add(two.remove(0));
+            else{
+                if(one.get(0).getInnovationNum()>two.get(0).getInnovationNum())
+                    list.add(one.remove(0));
+                else
+                    list.add(two.remove(0));
+            }
         }
         while(!one.isEmpty())
             list.add(one.remove(0));
@@ -214,6 +241,7 @@ public abstract class Neuron extends Node{
     public double getBias(){return bias;}
     public int getDepth(){return depth;}
     public int getConnectionCreated(){return connectionCreated;}
+    public boolean getFindingDepth(){return findingDepth;}
     
     // setter methods
     public void setInputs(ArrayList<Connection> param){inputs=param;}
@@ -224,4 +252,5 @@ public abstract class Neuron extends Node{
     public void setBias(double param){bias=param;}
     public void setDepth(int param){depth=param;}
     public void setConnectionCreated(int param){connectionCreated=param;}
+    public void setFindingDepth(boolean param){findingDepth=param;}
 }

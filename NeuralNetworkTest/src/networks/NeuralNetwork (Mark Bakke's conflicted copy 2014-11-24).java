@@ -142,7 +142,7 @@ public class NeuralNetwork {
     public void mutate(){
         double chance=rng.simpleDouble();
         if(chance>.9)
-            mutateTopography();
+            mutateTopology();
         else
             mutateWeights();
     }
@@ -161,8 +161,8 @@ public class NeuralNetwork {
         }
     }
     
-    // mutates the topography of the neural network
-    public void mutateTopography(){
+    // mutates the topology of the neural network
+    public void mutateTopology(){
         // TODO :: IMPROVE THIS METHOD
         int nodeNum=rng.getInt(neurons.size(),null,false);
         Neuron neuron=neurons.get(nodeNum);
@@ -177,7 +177,7 @@ public class NeuralNetwork {
             }else if(connections.size()>GlobalConstants.MIN_CONNECTIONS){
                 turnOffConnection(outputs,neuron);
             }else{
-                mutateTopography(); // TODO ::  need to rewrite to avoid this case
+                mutateTopology(); // TODO ::  need to rewrite to avoid this case
                 //return;
             }
         }
@@ -188,7 +188,7 @@ public class NeuralNetwork {
             }else if(connections.size()>GlobalConstants.MIN_CONNECTIONS){
                 turnOffConnection(inputs,neuron);
             }else{
-                mutateTopography();
+                mutateTopology();
                 //return;
             }
         }else{ // hidden neurons
@@ -201,7 +201,7 @@ public class NeuralNetwork {
                 }else if(connections.size()>GlobalConstants.MIN_CONNECTIONS){
                     turnOffConnection(outputs,neuron);
                 }else{
-                    mutateTopography();
+                    mutateTopology();
                     //return;
                 }
             }else{
@@ -210,7 +210,7 @@ public class NeuralNetwork {
                 }else if(connections.size()>GlobalConstants.MIN_CONNECTIONS){
                     turnOffConnection(outputs,neuron);
                 }else{
-                    mutateTopography();
+                    mutateTopology();
                     //return;
                 }
             }
@@ -226,8 +226,7 @@ public class NeuralNetwork {
             neurons.get(i).findDepth();
         if(!findDepthSanityCheck()){
             System.out.println("Sanity check failed before add connection :: NeuralNetwork");
-            new CMDTester(this);
-            //System.exit(2);
+            System.exit(2);
         }
         if(neuron instanceof OutputNeuron){
             mutate();
@@ -406,11 +405,6 @@ public class NeuralNetwork {
         }
         int connectionNum=rng.getInt(connects.size(),null,false);
         Connection connection=connects.get(connectionNum);
-        if(connection instanceof RecurrentConnection){
-            connects.remove(connection);
-            addNeuron(connects,neuron);
-            return;
-        }
         Neuron otherNeuron=null;
         if(connection.getGiveNeuron()==neuron)
             otherNeuron=connection.getRecieveNeuron();
@@ -533,8 +527,6 @@ public class NeuralNetwork {
             for(int i=0;i<param.getInputs().size();i++){
                 inputs.get(i).setInput(param.getInputs().get(i));
             }
-            for(int i=0;i<neurons.size();i++)
-                neurons.get(i).evaluate();
             for(int i=0;i<outputs.size();i++){
                 outputs.get(i).evaluate();
                 results.add(outputs.get(i).getOutput());

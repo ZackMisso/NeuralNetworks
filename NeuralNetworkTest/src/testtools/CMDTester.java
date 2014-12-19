@@ -11,6 +11,7 @@ import evolution.species.Species;
 import experiments.TestCases;
 import nodes.Node;
 import nodes.connections.Connection;
+import nodes.connections.RecurrentConnection;
 import nodes.neurons.Neuron;
 import nodes.neurons.Neuron_Add;
 import nodes.neurons.InputNeuron;
@@ -333,6 +334,8 @@ public class CMDTester {
                 output="OutputNeuron :: ";
             }else if(nodes.get(i)instanceof Neuron){
                 output="Neuron :: ";
+            }else if(nodes.get(i)instanceof RecurrentConnection){
+                output="RecurrentConnection :: ";
             }else{
                 output="Connection :: ";
             }

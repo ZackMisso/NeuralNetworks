@@ -9,6 +9,8 @@ public class Neuron_Add extends Neuron{
     
     // this constructor is used for a unit test
     public Neuron_Add(int num){
+        System.out.println("THIS WAS USED :: NEURON_ADD");
+        System.exit(0);
         setDepth(num);
     }
     

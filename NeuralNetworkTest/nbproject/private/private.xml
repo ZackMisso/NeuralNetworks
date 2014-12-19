@@ -5,27 +5,32 @@
         <group>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/experiments/XORTest.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/GlobalConstants.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/Node.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/networks/NeuralNetwork.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/datastructures/NodeToNode.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/connections/RecurrentConnection.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/experiments/Test.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/datastructures/RandomNumberGenerator.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/Neuron.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/experiments/TestCases.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/testtools/GraphicalTester.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/Neuron_Add.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/EvolutionaryAlgorithm.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/Neuron_Add.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/HistoricalTracker.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/documentation/CMDCommands</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/connections/Connection.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/experiments/TestClass.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/species/Species.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/experiments/TestClass.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/FitnessFunction.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/core/Driver.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/InputNeuron_Add.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/OutputNeuron_Add.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/Node.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/datastructures/NodeToNode.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/InputNeuron.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/nodes/neurons/OutputNeuron.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/datastructures/RandomNumberGenerator.java</file>
+            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/testtools/GraphicalTester.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/SpeciationFunctions.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/documentation/TODOtracker</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/datastructures/IntToObject.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/evolution/FitnessFunction.java</file>
             <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/testtools/CMDTester.java</file>
-            <file>file:/Users/ZackMisso/Dropbox/Research/NeuralNetworks/NeuralNetworkTest/src/core/Driver.java</file>
         </group>
     </open-files>
 </project-private>

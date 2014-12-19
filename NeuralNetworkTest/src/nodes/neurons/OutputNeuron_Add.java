@@ -1,6 +1,5 @@
 package nodes.neurons;
 
-
 import nodes.neurons.OutputNeuron;
 
 public class OutputNeuron_Add extends OutputNeuron{

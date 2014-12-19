@@ -76,10 +76,10 @@ public class EvolutionaryAlgorithm {
                     }else{
                     ////////////////////////////////////////////////////////////////
                     //if(species.get(f).getIndividuals().get(g).getFitness()!=0)
-                        //if(species.get(f).getIndividuals().get(g).getFitness()==4.0){
-                        //    System.out.println("A solution was found at Generation :: "+i+" with a total number of species :: "+species.size());
-                        //    new CMDTester(species.get(f).getIndividuals().get(g));
-                        //}
+                     //   if(species.get(f).getIndividuals().get(g).getFitness()==4.0){
+                    //        System.out.println("A solution was found at Generation :: "+i+" with a total number of species :: "+species.size());
+                    //        new CMDTester(species.get(f).getIndividuals().get(g));
+                    //    }
                     }
                 }
                 // gets the list of individuals who no longer belong to this species
