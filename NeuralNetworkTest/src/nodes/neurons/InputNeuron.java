@@ -1,6 +1,4 @@
 package nodes.neurons;
-
-//import java.util.ArrayList;
 import java.util.Random;
 public abstract class InputNeuron extends Neuron{
     private double input;
@@ -31,9 +29,6 @@ public abstract class InputNeuron extends Neuron{
         else
             weight+=change;
     }
-    
-    //public abstract double evaluate();
-    //public abstract InputNeuron makeCopy();
     
     // getter methods
     public double getInput(){return input;}

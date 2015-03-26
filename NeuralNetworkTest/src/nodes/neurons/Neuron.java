@@ -8,10 +8,6 @@ import java.util.Random;
 public abstract class Neuron extends Node{
     private ArrayList<Connection> inputs;
     private ArrayList<Connection> outputs;
-    //private Neuron initInput; // what
-    //private Neuron initOutput; // what
-    //private int initIn; // should be used for initialization
-    //private int initOut; // should be used for initialization
     private double threshold;
     private double bias;
     private int connectionCreated; // ignore this
@@ -22,8 +18,6 @@ public abstract class Neuron extends Node{
     public Neuron(){
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
-        //initInput=null;
-        //initOutput=null;
         setInnovationNum(-100);
         threshold=1.0;
         connectionCreated=-1;
@@ -36,35 +30,20 @@ public abstract class Neuron extends Node{
     }
     
     public int findDepth(){
-        //if(depth!=-1)
-        //    return depth;
-        //System.out.println("THIS HAS BEEN RAN");
-        //System.exit(0);
-        //if(depth==-1)
-        //    depth=0;
         setFindingDepth(true);
         int temp=depth;
         if(inputs.size()==0&&!(this instanceof InputNeuron))
             temp=1;
         for(int i=0;i<inputs.size();i++){
-            //if(inputs.get(i)instanceof RecurrentConnection)
-            //    System.out.println("HEY LISTEN");
             if(!(inputs.get(i)instanceof RecurrentConnection)&&!inputs.get(i).getGiveNeuron().getFindingDepth()){
-            //if(inputs.get(i).getGiveNeuron().getInnovationNum()!=inputs.get(i).getRecieveNeuron().getInnovationNum()){
-                //System.out.println("THERE HE IS");
                 if(inputs.get(i) instanceof RecurrentConnection)
                     System.out.println("UMMS");
                 if(inputs.get(i).getGiveNeuron().findDepth()>=temp){
-                    //System.out.println(inputs.get(i).getInnovationNum()+" :: HUMINAHUMINA");
-                    //if(inputs.get(i).getGiveNeuron()==inputs.get(i).getRecieveNeuron())
-                    //    System.out.println("ERROR>>> DOES NOT COMPUTE");
                     temp=inputs.get(i).getGiveNeuron().getDepth()+1;
                 }
             }
         }
         setFindingDepth(false);
-        //System.out.println("Temp :: "+temp);
-        //System.exit(0);
         depth=temp;
         return depth;
     }
@@ -107,10 +86,8 @@ public abstract class Neuron extends Node{
             System.out.println("This depth not set :: Neuron");
         else if(other.getDepth()<0)
             System.out.println("Other depth not set :: Neuron");
-        if(depth==0&&other.getDepth()==0){ // the case they are both input neurons
-            //System.out.println("THIS WAS RAN :: NEURON");
+        if(depth==0&&other.getDepth()==0) // the case they are both input neurons
             return true;
-        }
         for(int i=0;i<outputs.size();i++)
             if(outputs.get(i).getGiveNeuron()==other||outputs.get(i).getRecieveNeuron()==other)
                 return true;
@@ -122,10 +99,6 @@ public abstract class Neuron extends Node{
 
     public void mutateBias(RandomNumberGenerator rng){
         bias=rng.changeDouble(bias,true);
-    }
-    
-    public void crossover(Neuron other){
-        // implement
     }
     
     public Connection getConnectionWith(Neuron other){
@@ -168,24 +141,6 @@ public abstract class Neuron extends Node{
     
     // IGNORE
     public boolean isSameNeuron(Neuron other){
-        //boolean outputs=false;
-        //boolean inputs=false;
-        /*if(initInput==null&&other.getInitInput()!=null)
-            return false;
-        if(initInput!=null&&other.getInitInput()==null)
-            return false;
-        if(initOutput==null&&other.getInitOutput()!=null)
-            return false;
-        if(initOutput!=null&&other.getInitOutput()==null)
-            return false;
-        if(initInput==null&&other.getInitInput()==null)
-            inputs=true;
-        if(initOutput==null&&other.getInitOutput()==null)
-            outputs=true;
-        if(!inputs&&initInput.getInnovationNum()==other.getInitInput().getInnovationNum())
-            inputs=true;
-        if(!outputs&&initOutput.getInnovationNum()==other.getInitOutput().getInnovationNum())
-            outputs=true;*/
         return other.getConnectionCreated()==connectionCreated;
     }
     
@@ -235,8 +190,6 @@ public abstract class Neuron extends Node{
     // getter methods
     public ArrayList<Connection> getInputs(){return inputs;}
     public ArrayList<Connection> getOutputs(){return outputs;}
-    //public Neuron getInitInput(){return initInput;}
-    //public Neuron getInitOutput(){return initOutput;}
     public double getThreshold(){return threshold;}
     public double getBias(){return bias;}
     public int getDepth(){return depth;}
@@ -246,8 +199,6 @@ public abstract class Neuron extends Node{
     // setter methods
     public void setInputs(ArrayList<Connection> param){inputs=param;}
     public void setOutputs(ArrayList<Connection> param){outputs=param;}
-    //public void setInitInput(Neuron param){initInput=param;}
-    //public void getSetInitOutput(Neuron param){initOutput=param;}
     public void setThreshold(double param){threshold=param;}
     public void setBias(double param){bias=param;}
     public void setDepth(int param){depth=param;}

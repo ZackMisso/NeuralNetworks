@@ -64,8 +64,6 @@ public class Test {
             else
                 chk.add(0.0);
         }
-        //System.out.println(chk);
-        //System.out.println(outputs+"\n");
         for(int i=0;i<chk.size();i++)
             if(chk.get(i)!=outputs.get(i))
                 return false;
@@ -73,14 +71,9 @@ public class Test {
     }
     
     private boolean exactTest(ArrayList<Double> test){
-        //System.out.println(test+" Experimental");
-        //System.out.println(outputs+" Actual");
-        for(int i=0;i<test.size();i++){
-            //System.out.println(test.get(i)+" "+outputs.get(i)+" "+(!test.get(i).equals(outputs.get(i))));
+        for(int i=0;i<test.size();i++)
             if(!test.get(i).equals(outputs.get(i)))
                 return false;
-        }
-        //System.out.println("THERE IS NOT AN ERROR HERES");
         return true;
     }
     

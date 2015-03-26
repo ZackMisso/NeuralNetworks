@@ -9,8 +9,6 @@ public class Connection extends Node{
     private Neuron recieveNeuron;
     private double weight;
     private double cache;
-    //private int initIn;
-    //private int initOut;
     private boolean active;
     private boolean recurrent; // implement recurrent functionality
     private boolean calculating;
@@ -27,7 +25,6 @@ public class Connection extends Node{
     }
     
     public double calculateValue(){
-        //System.out.println("YEAAEY");
         if(recurrent){
             System.out.println("WHAT");
             System.exit(0);
@@ -46,9 +43,6 @@ public class Connection extends Node{
             setCache(giveNeuron.evaluate()*weight);
             calculating=false;
         }
-        //System.out.println("Connection :: "+getInnovationNum());
-        //System.out.println("Weight :: "+weight);
-        //System.out.println("Value To Push :: "+getCache());
         setEvaluated(true);
         return getCache();
     }
@@ -56,10 +50,6 @@ public class Connection extends Node{
     public void mutateWeight(RandomNumberGenerator rng){
         weight=rng.changeDouble(weight,true);
     }
-    
-    //public void crossover(Connection other){
-    //    // implement
-    //}
     
     public Connection makeCopy(ArrayList<Neuron> neurons,NeuralNetwork net){
         Connection copy=new Connection();
@@ -75,16 +65,9 @@ public class Connection extends Node{
                 copy.setRecieveNeuron(neurons.get(i));
         }
         copy.getGiveNeuron().getOutputs().add(copy);
-        //System.out.println(getGiveNeuron().getOutputs().toString()+" HAHAHAHAHA");
         copy.getRecieveNeuron().getInputs().add(copy);
         return copy;
     }
-    
-    //public Connection makeCopy(){
-    //    Connection copy=new Connection();
-    //    // implmeent maybe
-    //    return copy;
-    //}
     
     public boolean isSameConnection(Connection other){
         if(giveNeuron.getInnovationNum()==other.getGiveNeuron().getInnovationNum())
@@ -112,8 +95,6 @@ public class Connection extends Node{
     public Neuron getGiveNeuron(){return giveNeuron;}
     public Neuron getRecieveNeuron(){return recieveNeuron;}
     public double getWeight(){return weight;}
-    //public int getInitIn(){return initIn;}
-    //public int getInitOut(){return initOut;}
     public boolean getActive(){return active;}
     public boolean getRecurrent(){return recurrent;}
     public boolean getCalculating(){return calculating;}
@@ -122,8 +103,6 @@ public class Connection extends Node{
     public void setGiveNeuron(Neuron param){giveNeuron=param;}
     public void setRecieveNeuron(Neuron param){recieveNeuron=param;}
     public void setWeight(double param){weight=param;}
-    //public void setInitIn(int param){initIn=param;}
-    //public void setInitOut(int param){initOut=param;}
     public void setActive(boolean param){active=param;}
     public void setRecurrent(boolean param){recurrent=param;}
     public void setCalculating(boolean param){calculating=param;}

@@ -32,42 +32,20 @@ public class Species{
     }
     
     public void mutate(){ // TODO :: Pass in RNG
-        //System.out.println("Species is now mutating :: Species.mutate");
         // sort the individuals in the species based on fitness
-        //boolean test=false;
-        //if(nets.size()==500){
-            //System.out.println("THIS IS THE START");
-            //System.out.println(maxAllowed); // WHAT!!!
-        //    test=true;
-        //}
-        nets=NeuralNetwork.sort(nets); // dont mutate first
+        nets=NeuralNetwork.sort(nets);
         // remove an individual if there are too many
-        if(maxAllowed<=0){
+        if(maxAllowed<=0)
             System.out.println(maxAllowed+" :: is zero or less. Size :: "+nets.size());
-        }
-        
-        while(nets.size()<maxAllowed){
-            //if(test)
-            //    System.out.println("THIS SHOULD NOT HAPPEN");
+        while(nets.size()<maxAllowed)
             nets.add(nets.get(0).copyAndMutate());
-        }
-        
         while(nets.size()>maxAllowed&&nets.size()>0){
             if(nets.size()<maxAllowed)
                 System.out.println("WHYYYYYY :: Species");
-            //System.out.println("Removing an individual :: Species");
             nets.remove(nets.size()-1);
-        }
-        
-        // add an individual if there are too few
-        //while(nets.size()<maxAllowed){
-        //    System.out.println("Adding an individual");
-        //    nets.add(nets.get(0).copyAndMutate());
-        //}
-        
+        }        
         // mutate every one
         Random random=new Random();
-        //System.out.println("Mutate Begin :: Species");
         for(int i=0;i<nets.size();i++){
             ArrayList<OutputNeuron> outputs=nets.get(i).findOutputs();
             for(int f=0;f<outputs.size();f++)
@@ -78,39 +56,27 @@ public class Species{
             else
                 nets.set(i,nets.get(i).copyAndMutate());
         }
-        
-        //if(test)
-        //    System.out.println(nets.size());
-        //System.out.println("Mutate End :: Species");
     }
     
     public void crossover(NeuralNetwork net,Random random){
         NeuralNetwork other;
         // find the other individual
-        //System.out.println("Crossover Begin");
         do{
             other=nets.get(random.nextInt(nets.size()));
-            //System.out.println("nets Size :: "+nets.size());
             if(nets.size()==1){
-                //System.out.println("MAJOR ERROR :: ONLY ONE INDIVIDUAL IN THE SPECIES :: Species");
-                //System.exit(0);
                 net=net.copyAndMutate();
-                //other=null;
                 return;
             }
         }while(other!=net);
         ArrayList<OutputNeuron> outputs=other.findOutputs();
             for(int i=0;i<outputs.size();i++)
                 outputs.get(i).findDepth();
-        //System.out.println("Crossover in Species End :: Species");
         // calls the neural network's crossover function
         if(other!=null)
             net=net.crossOver(other);
     }
     
     public void initFromStart(){
-        //if(tracker==null)
-        //    System.out.println("Tracker null :: Species");
         System.out.println("MAX ALLOWED :: "+maxAllowed);
         for(int i=0;i<maxAllowed;i++)
             nets.add(new NeuralNetwork(tracker));
@@ -129,7 +95,6 @@ public class Species{
         for(int i=0;i<nets.size();i++)
             avg+=nets.get(i).getFitness();
         System.out.println(avg+" :: "+nets.size());
-        //averageFitness=avg/nets.size();
     }
     
     public boolean shouldDie(){
@@ -155,7 +120,6 @@ public class Species{
         ArrayList<NeuralNetwork> deviated=new ArrayList<>();
         if(nets.size()==0){
             System.out.println("ERROR THERE WAS AN ERROR :: The individual list is empty");
-            //System.exit(1);
             return deviated;
         }
         NeuralNetwork base=nets.get(0);

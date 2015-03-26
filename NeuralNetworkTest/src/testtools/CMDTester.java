@@ -703,21 +703,4 @@ public class CMDTester {
     private void setSpec2ToSpecies(){
         species2=currentSpecies;
     }
-
-    // Deprecated :: Zack
-    //private ArrayList<Node> sort(ArrayList<Node> nodes){
-    //    ArrayList<Node> connections=new ArrayList<>();
-    //    ArrayList<Node> neurons=new ArrayList<>();
-    //    for(int i=0;i<nodes.size();i++){
-    //        if(nodes.get(i) instanceof Neuron)
-    //            neurons.add(nodes.get(i));
-    //        else
-    //            connections.add(nodes.get(i));
-    //    }
-    //    neurons=Node.sort(neurons);
-    //    connections=Node.sort(connections);
-    //    for(int i=0;i<connections.size();i++)
-    //        neurons.add(connections.get(i));
-    //    return neurons;
-    //}
 }

@@ -5,13 +5,11 @@ public class TestCases{
     private ArrayList<Test> tests;
     private XORTest xorTest;
     private ANDTest andTest;
-    //private boolean hack;
     
     public TestCases(){
         tests=new ArrayList<>();
         xorTest=new XORTest();
         andTest=new ANDTest();
-        //hack=false;
     }
     
     public void runXORTests(NeuralNetwork net){
@@ -22,11 +20,8 @@ public class TestCases{
                 net.setFitness(-100000);
                 System.out.println("Set fitness to :: "+-100000);
             }
-            else if(xorTest.checkTest(outs,i)){
-                //System.out.println("checkedTest");
+            else if(xorTest.checkTest(outs,i))
                 net.setFitness(net.getFitness()+1.0);
-                //System.out.println(net.getFitness());
-            }
             net.reset();
         }
     }

@@ -17,7 +17,6 @@ public class RecurrentConnection extends Connection{
     }
     
     public double calculateValue(){
-        //System.out.println("CALCULATE VALUE IS WORKING!!!! :: RecurrentConnection");
         setEvaluated(true);
         return getCache();
     }
@@ -26,13 +25,6 @@ public class RecurrentConnection extends Connection{
         newCache=0.0;
         updateCache();
     }
-    
-    // Should not need
-    //public Connection makeCopy(ArrayList<Neuron> neurons,NeuralNetwork net){
-    //    RecurrentConnection connection=(RecurrentConnection)super.makeCopy(neurons,net);
-    //    connection.setNewWeight(newWeight);
-    //    return connection;
-    //}
     
     public Connection makeCopy(ArrayList<Neuron> neurons,NeuralNetwork net){
         RecurrentConnection copy=new RecurrentConnection();
@@ -48,7 +40,6 @@ public class RecurrentConnection extends Connection{
                 copy.setRecieveNeuron(neurons.get(i));
         }
         copy.getGiveNeuron().getOutputs().add(copy);
-        //System.out.println(getGiveNeuron().getOutputs().toString()+" HAHAHAHAHA");
         copy.getRecieveNeuron().getInputs().add(copy);
         return copy;
     }

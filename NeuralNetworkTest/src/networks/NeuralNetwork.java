@@ -43,7 +43,6 @@ public class NeuralNetwork {
         inputs=new ArrayList<>();
         outputs=new ArrayList<>();
         tracker=param;
-        //System.out.println("Historical Tracker was set :: Neural Network");
         rng=new RandomNumberGenerator();
         fitness=0.0;
         nodeCnt=0;
@@ -101,42 +100,10 @@ public class NeuralNetwork {
         for(i=0;i<ins.size();i++)
             for(f=0;f<outs.size();f++)
                 makeConnection(ins.get(i),outs.get(f),insnum+outsnum+f+i*outs.size());
-        //if(tracker!=null){
-        //    //if(tracker.getInputNums().isEmpty())
-        //        //for(int i=0;i<ins.size();i++)
-        //}
-        if(tracker!=null){
-            //tracker.endGeneration();
+        if(tracker!=null)
             if(tracker.notSet())
                 tracker.setNextInnovation(insnum+outsnum+(f+1)*(i+1));
-        }
     }
-    
-// Temporarily Depreciated
-//    public void testMutate(){
-//        Node node=nodes.get(rng.getInt(nodes.size(),false));
-//        double weight=rng.simpleDouble();
-//        if(node instanceof Neuron){
-//            // implement Neuron mutations
-//            Neuron neuron=(Neuron)node;
-//            if(weight<.9){
-//                neuron.mutateBias(rng);
-//            }else{
-//                double chk=rng.simpleDouble();
-//                
-//                // implement
-//            }
-//        }else{
-//            // implement Connection mutations
-//            Connection connection=(Connection)node;
-//            if(weight<.9){
-//                connection.mutateWeight(rng);
-//            }else{
-//                double chk=rng.simpleDouble();
-//                // implement
-//            }
-//        }
-//    }
     
     // controls the mutation of the neural network
     public void mutate(){
@@ -149,16 +116,14 @@ public class NeuralNetwork {
     
     // mutates the weights of the neural network
     public void mutateWeights(){
-        //int nodeNum=random.nextInt(neurons.size()+connections.size());
         int nodeNum=rng.getInt(neurons.size(),null,false);
         if(nodeNum>=connections.size()){
             // change a random bias
             nodeNum-=connections.size();
             neurons.get(nodeNum).mutateBias(rng);
-        }else{
+        }else
             // change a random connection
             connections.get(nodeNum).mutateWeight(rng);
-        }
     }
     
     // mutates the topography of the neural network
@@ -219,15 +184,11 @@ public class NeuralNetwork {
     
     // new (More efficient new Random Connection method)
     public void newRandomConnection(Neuron neuron){
-        //ArrayList<OutputNeuron> outputs=findOutputs();
-        //    for(int i=0;i<outputs.size();i++)
-        //        outputs.get(i).findDepth();
         for(int i=0;i<neurons.size();i++)
             neurons.get(i).findDepth();
         if(!findDepthSanityCheck()){
             System.out.println("Sanity check failed before add connection :: NeuralNetwork");
             new CMDTester(this);
-            //System.exit(2);
         }
         if(neuron instanceof OutputNeuron){
             mutate();
@@ -238,16 +199,8 @@ public class NeuralNetwork {
         int index=0;
         for(;index<neurons.size()&&neurons.get(index)!=neuron;index++){}
         int maxRan=(new Random()).nextInt(neurons.size()-index);
-        //outputs=neurons.get(index+maxRan).findOutputs();
-        //    for(int i=0;i<outputs.size();i++)
-        //        outputs.get(i).findDepth();
-        //if(!findDepthSanityCheck()){
-        //    System.out.println("Sanity check failed before add connection :: NeuralNetwork");
-        //    System.exit(2);
-        //}
         if(maxRan==0){
             // recurrent connection to self
-            //mutate();
             if(neuron instanceof InputNeuron || neuron instanceof OutputNeuron){
                 mutate();
                 return;
@@ -265,73 +218,11 @@ public class NeuralNetwork {
         makeConnection(neuron,neurons.get(index+maxRan));
     }
     
-    // THIS METHOD IS VERY INEFFICIENT FIX IT LATER TODO
-    // Temporarily DEPRECIATED :: ZACK
-    /*public void newRandomConnectionWorks(Neuron neuron){
-        ArrayList<Neuron> connected=new ArrayList<>();
-        //neurons=Neuron.sortByDepth(neurons);
-        for(int i=0;i<neuron.getInputs().size();i++)
-            connected.add(neuron.getInputs().get(i).getGiveNeuron());
-        for(int i=0;i<neuron.getOutputs().size();i++)
-            connected.add(neuron.getOutputs().get(i).getRecieveNeuron());
-        connected.add(neuron);
-        ArrayList<Integer> indexes=new ArrayList<>();
-        for(int i=0;i<neurons.size();i++)
-            if(!connected.contains(neurons.get(i)))
-                indexes.add(i);
-        if(indexes.isEmpty()){
-            return;
-        }
-        int chosenNeuron=rng.getInt(indexes.size(),false);
-        double recogiv=rng.simpleDouble();
-        int otherIndex=indexes.get(chosenNeuron);
-        Neuron otherNeuron=neurons.get(otherIndex);
-        if(otherNeuron==null){
-            return;
-        }
-        if(otherNeuron instanceof InputNeuron&&neuron instanceof InputNeuron){
-            mutate();
-        }
-        else if(otherNeuron instanceof OutputNeuron&&neuron instanceof OutputNeuron){
-            mutate();
-        }
-        else if(otherNeuron instanceof InputNeuron&&neuron instanceof OutputNeuron){
-            makeConnection(otherNeuron,neuron);
-        }
-        else if(otherNeuron instanceof OutputNeuron&&neuron instanceof InputNeuron){
-            makeConnection(neuron,otherNeuron);
-        }
-        else if(otherNeuron instanceof InputNeuron){
-            makeConnection(otherNeuron,neuron);
-        }
-        else if(otherNeuron instanceof OutputNeuron){
-            makeConnection(neuron,otherNeuron);
-        }
-        else if(neuron instanceof InputNeuron){
-            makeConnection(neuron,otherNeuron);
-        }
-        else if(neuron instanceof OutputNeuron){
-            makeConnection(otherNeuron,neuron);
-        }
-        else{ // connection between two hidden neurons
-            if(recogiv>.5){
-                makeConnection(neuron,otherNeuron);
-            }else{
-                makeConnection(otherNeuron,neuron);
-            }
-        }
-    }*/
-
     // creates a new connection between two neurons
     // TODO :: EDIT THIS
     public Connection makeConnection(Neuron give,Neuron recieve){
         Connection connection;
-        //if(give.getInnovationNum()==recieve.getInnovationNum()){
-        //    connection=new RecurrentConnection();
-        //    System.out.println("Created a Recurrent Connection");
-        //}else{
-            connection=new Connection();
-        //}
+        connection=new Connection();
         connection.setEvaluated(false);
         connection.setActive(true);
         connection.setGiveNeuron(give);
@@ -373,7 +264,6 @@ public class NeuralNetwork {
     }
     
     public Connection makeConnection(Neuron give,Neuron recieve,int num){
-        //System.out.println("DOES THIS EVEN HAVE FUNCTIONALITY? :: NeuralNetwork");
         Connection connection=new Connection();
         connection.setEvaluated(false);
         connection.setActive(true);
@@ -384,7 +274,6 @@ public class NeuralNetwork {
         if(usingSpeciation){
             connection.setInitIn(give.getInnovationNum());
             connection.setInitOut(recieve.getInnovationNum());
-            //tracker.defineConnection(connection);
             connection.setInnovationNum(num);
         }
         else
@@ -420,7 +309,6 @@ public class NeuralNetwork {
         if(usingSpeciation){
             newNeuron.setInitIn(neuron.getInnovationNum());
             newNeuron.setInitOut(otherNeuron.getInnovationNum());
-            //System.out.println("This was ran!!!");
             tracker.defineNeuron(newNeuron);
             if(newNeuron.getInnovationNum()<0)
                 System.out.println("Start");
@@ -480,8 +368,6 @@ public class NeuralNetwork {
             if(similar.get(i).getTwo()!=null){
                 if(random.nextDouble()>.78){
                     newNodes.add(similar.get(i).mix());
-                    //if(newNodes.get(newNodes.size()-1)==null)
-                    //    System.out.println("Error is In MIX :: Crossover");
                 }else{
                     if(hasBetterFitness)
                         newNodes.add(similar.get(i).getOne());
@@ -493,10 +379,6 @@ public class NeuralNetwork {
         }
         for(int i=0;i<newNodes.size();i++){
             for(int f=0;f<newNetwork.getNeurons().size();f++){
-                //if(newNetwork.getNeurons()==null)
-                //    System.out.println("NewNetwork.Neurons are null");
-                //if(newNodes.get(i)==null)
-                //    System.out.println("NewNodes is null");
                 if(newNetwork.getNeurons().get(f).getInnovationNum()==newNodes.get(i).getInnovationNum()){
                     newNetwork.getNeurons().get(f).setBias(((Neuron)(newNodes.get(i))).getBias());
                 }
@@ -507,48 +389,33 @@ public class NeuralNetwork {
                 }
             }
         }
-        //newNetwork.setAllNodes(newNodes);
         return newNetwork;
     }
     
     public ArrayList<Double> run(Test param){
-        //try{
-            ArrayList<OutputNeuron> outputs=findOutputs();
-            for(int i=0;i<outputs.size();i++)
-                outputs.get(i).findDepth();
-        //try{
-            if(!findDepthSanityCheck()){
-                System.out.println("Find Depth sanity test failed");
-                new CMDTester(this);
-            }
-                //System.exit(2);
-            //if(neurons.size()>5){
-            //    for(int i=0;i<neurons.size();i++)
-            //        System.out.println("Depth for Neuron "+i+" :: "+neurons.get(i).getDepth());
-            //    //System.exit(0);
-            //    new CMDTester(this);
-            //}
-            ArrayList<InputNeuron> inputs=findInputs();
-            ArrayList<Double> results=new ArrayList<>();
-            for(int i=0;i<param.getInputs().size();i++){
-                inputs.get(i).setInput(param.getInputs().get(i));
-            }
-            for(int i=0;i<neurons.size();i++)
-                neurons.get(i).evaluate();
-            for(int i=0;i<outputs.size();i++){
-                outputs.get(i).evaluate();
-                results.add(outputs.get(i).getOutput());
-            }
+        ArrayList<OutputNeuron> outputs=findOutputs();
+        for(int i=0;i<outputs.size();i++)
+            outputs.get(i).findDepth();
+        if(!findDepthSanityCheck()){
+            System.out.println("Find Depth sanity test failed");
+            new CMDTester(this);
+        }
+        ArrayList<InputNeuron> inputs=findInputs();
+        ArrayList<Double> results=new ArrayList<>();
+        for(int i=0;i<param.getInputs().size();i++)
+            inputs.get(i).setInput(param.getInputs().get(i));
+        for(int i=0;i<neurons.size();i++)
+            neurons.get(i).evaluate();
+        for(int i=0;i<outputs.size();i++){
+            outputs.get(i).evaluate();
+            results.add(outputs.get(i).getOutput());
+        }
         try{
             nextGeneration();
             return results;
         }catch(StackOverflowError e){
             System.out.println("STACK OVERFLOW");
-            //ArrayList<OutputNeuron> outputs=findOutputs();
-            //for(int i=0;i<outputs.size();i++) // find depth is causing the stack overflow !!!
-            //    outputs.get(i).findDepth();
             new CMDTester(this);
-            //System.exit(0);
             return null;
         }
     }
@@ -565,18 +432,6 @@ public class NeuralNetwork {
         //findDepthUnitTest();
         // implement the step propogation
     }
-    
-    // DEPRECIATED :: ZACK
-    //private void findDepthUnitTest(){
-    //    for(int i=0;i<neurons.size();i++){
-    //        if(neurons.get(i).getDepth()==-1)
-    //            System.out.println("Neuron's depth value not set");
-    //        for(int f=0;f<i;f++)
-    //            if(neurons.get(f).getDepth()>neurons.get(i).getDepth())
-    //                System.out.println("List not sorted correctly");
-    //        // add more tests
-    //    }
-    //}
     
     // a sanity check for the find depth method
     private boolean findDepthSanityCheck(){
@@ -699,8 +554,6 @@ public class NeuralNetwork {
         for(int i=0;i<neurons.size();i++)
             nodes.add(neurons.get(i));
         for(int i=0;i<connections.size();i++){
-            //if(connections.get(i)instanceof RecurrentConnection)
-            //    System.out.println("There is a recurrent connection among us :: NeuralNetwork");
             nodes.add(connections.get(i));
         }
         return nodes;
